@@ -20,7 +20,10 @@ react-native start
 ### 系统效果图
 
 <div style="float:left;border:solid 1px 000;margin:2px;">
-<img width="300" height="500" src="doc/IMG_0599.JPG"/><img style="margin:10px" width="300" height="500" src="doc/IMG_0600.PNG"/>
+<img width="300" height="500" src="doc/IMG_0599.JPG"/>
+</div>
+<div style="float:left;border:solid 1px 000;margin:10px;">
+<img style="margin:10px" width="300" height="500" src="doc/IMG_0600.PNG"/>
 </div>
 <div style="float:left;border:solid 1px 000;margin:2px;">
 <img width="300" height="500" src="doc/IMG_0601.JPG"/><img style="margin:10px" width="300" height="500" src="doc/IMG_0602.PNG"/>
