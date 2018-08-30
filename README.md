@@ -19,8 +19,14 @@ react-native start
 
 ### 系统效果图
 
-<img width="300" height="600" src="doc/IMG_0599.JPG"/>
-<img width="300" height="600" src="doc/IMG_0600.PNG"/>
-<img width="300" height="600" src="doc/IMG_0601.JPG"/>
-<img width="300" height="600" src="doc/IMG_0602.PNG"/>
-<img width="300" height="600" src="doc/IMG_0603.PNG"/>
+<figure class="half">
+<img width="300" height="500" src="doc/IMG_0599.JPG"/>
+<img width="300" height="500" src="doc/IMG_0600.PNG"/>
+</figure>
+<figure class="half">
+<img width="300" height="500" src="doc/IMG_0601.JPG"/>
+<img width="300" height="500" src="doc/IMG_0602.PNG"/>
+</figure>
+<center>
+<img width="300" height="500" src="doc/IMG_0603.PNG"/>
+</center>
