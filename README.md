@@ -19,6 +19,7 @@ react-native start
 
 ### 系统效果图
 
+<img width="150" height="300" src="doc/IMG_0599.JPG"/>
 ![效果图](doc/IMG_0599.JPG =200x300)
 ![效果图](doc/IMG_0600.PNG =200x300)
 ![效果图](doc/IMG_0601.JPG =200x300)
