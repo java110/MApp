@@ -19,8 +19,8 @@ react-native start
 
 ### 系统效果图
 
-![效果图](doc/IMG_0599.JPG)
-![效果图](doc/IMG_0600.JPG)
-![效果图](doc/IMG_0601.JPG)
-![效果图](doc/IMG_0602.JPG)
-![效果图](doc/IMG_0603.JPG)
+![效果图](doc/IMG_0599.JPG =200x300)
+![效果图](doc/IMG_0600.PNG =200x300)
+![效果图](doc/IMG_0601.JPG =200x300)
+![效果图](doc/IMG_0602.PNG =200x300)
+![效果图](doc/IMG_0603.PNG =200x300)
