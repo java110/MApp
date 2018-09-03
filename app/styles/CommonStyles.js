@@ -22,6 +22,9 @@ const CommonStyles=StyleSheet.create({
         /*paddingTop:10,*/
         height:45
     },
+    row:{
+        flexDirection:'row',
+    }
 });
 
 export default CommonStyles

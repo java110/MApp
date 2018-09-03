@@ -35,7 +35,7 @@ class OrderMobx{
                 orderTime:"08-28 23:06",
                 deliveryTime:"08-28 23:10",
                 orderSource:"微信小程序",
-                money:134.00,
+                money:"134.00",
                 items:[
                     {
                         name:"青椒肉丝",
@@ -53,7 +53,7 @@ class OrderMobx{
                 orderTime:"08-28 23:06",
                 deliveryTime:"08-28 23:10",
                 orderSource:"app",
-                money:134.00,
+                money:"134.00",
                 items:[
                     {
                         name:"青椒肉丝",
@@ -71,7 +71,7 @@ class OrderMobx{
                 orderTime:"08-28 23:06",
                 deliveryTime:"08-28 23:10",
                 orderSource:"app商家版",
-                money:134.00,
+                money:"134.00",
                 items:[
                     {
                         name:"青椒肉丝",
@@ -89,7 +89,7 @@ class OrderMobx{
                 orderTime:"08-28 23:06",
                 deliveryTime:"08-28 23:10",
                 orderSource:"app商家版",
-                money:134.00,
+                money:"134.00",
                 items:[
                     {
                         name:"青椒肉丝",
@@ -107,7 +107,7 @@ class OrderMobx{
                 orderTime:"08-28 23:06",
                 deliveryTime:"08-28 23:10",
                 orderSource:"app商家版",
-                money:134.00,
+                money:"134.00",
                 items:[
                     {
                         name:"青椒肉丝",
@@ -121,7 +121,7 @@ class OrderMobx{
 
     @observable
     currentOrderInfo:Object={
-
+        logisticsInfo:{}
     };
 
     /**
@@ -135,18 +135,55 @@ class OrderMobx{
             orderId:"1234567891",
             orderSeq:"0002",
             userName:"吴(先生)",
+            userId:"1234567",
             userPhone:"15897089471",
             address:"青海省西宁市城中区五四大街22号湟嘉华园3号楼1323",
             orderTime:"08-28 23:06",
             deliveryTime:"08-28 23:10",
             orderSource:"app",
-            money:134.00,
+            money:"134.00",
+            payMoney:"136.00",
+            remark:"java110官方测试订单",
+            orderStatus:"已完成",
+            logisticsInfo:{
+                logisticsName:"张三",
+                phone:"15897089471",
+                company:"青海恒运快递公司"
+            },
+            orderAttrs:[{
+                attrName:"快递费用",
+                attrValue:"￥2.00",
+            }],
             items:[
                 {
                     name:"青椒肉丝",
-                    price:15.00,
+                    price:"15.00",
                     imageUrl:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535611318920&di=a3018808c6cd6ddea6c87d540db5f98b&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Fd6ca7bcb0a46f21fd8b1b87bfd246b600c33ae15.jpg",
-                    count:1
+                    count:1,
+                    shopCount:999,
+                    catalogName:"热菜",
+                    hotBuy:"N",
+                    preferential:"Y"
+                },
+                {
+                    name:"青海土特产烤洋芋",
+                    price:"15.00",
+                    imageUrl:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535611318920&di=a3018808c6cd6ddea6c87d540db5f98b&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Fd6ca7bcb0a46f21fd8b1b87bfd246b600c33ae15.jpg",
+                    count:1,
+                    shopCount:999,
+                    catalogName:"热菜",
+                    hotBuy:"Y",
+                    preferential:"Y"
+                },
+                {
+                    name:"青海特产羊肉串",
+                    price:"2.00",
+                    imageUrl:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535611318920&di=a3018808c6cd6ddea6c87d540db5f98b&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Fd6ca7bcb0a46f21fd8b1b87bfd246b600c33ae15.jpg",
+                    count:1,
+                    shopCount:999,
+                    catalogName:"热菜",
+                    hotBuy:"Y",
+                    preferential:"Y"
                 }
             ]
         }

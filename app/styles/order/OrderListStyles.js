@@ -64,7 +64,7 @@ const OrderListStyles=StyleSheet.create({
 
 
     rowDataFootView:{
-        height:40,
+        height:35,
         backgroundColor:'#FFF',
         flexDirection:'row',
         alignItems:'center',
@@ -80,9 +80,12 @@ const OrderListStyles=StyleSheet.create({
     },
     rowDataFootViewButton:{
         marginLeft:10,
+        borderColor:'#DEDEDE',
+        borderWidth:1,
+        height:24
     },
     rowDataFootView_1_Text:{
-        fontSize:14,
+        fontSize:12,
 
     }
 

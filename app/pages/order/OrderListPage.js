@@ -121,8 +121,8 @@ export default class OrderListPage extends Component{
                                 <Text style={OrderListStyles.rowDataFootView_1_Text}>共计 {rowData.items.slice().length} 件</Text>
                             </View>
                             <View style={OrderListStyles.rowDataFootView_1}>
-                                <Button type = "secondary" size="sm" title="确定订单" onPress={() => {}}/>
-                                <Button type = "secondary" size="sm" style={OrderListStyles.rowDataFootViewButton} title="详细订单" onPress={() => {this._onOrderDetail(rowData.orderId)}}/>
+                                <Button type = "default" size="sm" titleStyle = {{color:'#555',fontSize:12}} style={OrderListStyles.rowDataFootViewButton} title="确定订单" onPress={() => {}}/>
+                                <Button type = "default" size="sm" titleStyle = {{color:'#555',fontSize:12}} style={OrderListStyles.rowDataFootViewButton} title="详细订单" onPress={() => {this._onOrderDetail(rowData.orderId)}}/>
                             </View>
                         </View>
                 </View>
