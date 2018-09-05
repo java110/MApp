@@ -4,6 +4,7 @@ import {View, Image, Text, Platform, ScrollView, TouchableOpacity, ListView} fro
 import OrderStyles from "../../styles/order/OrderStyles";
 import IndexHeaderPage from "../index/IndexHeaderPage";
 import CountTag from "../common/CountTag";
+import OrderMenu from "../../constants/OrderMenu"
 
 export default class OrderPage extends Component{
 
@@ -18,54 +19,63 @@ export default class OrderPage extends Component{
                   imagePath:require("../../images/openStore.png"),
                   name:"待确定",
                   routeName:"OrderList",
+                  menuCd:OrderMenu.MENU_CD_NO_SURE,
                   count:8,
               },
               {
                   imagePath:require("../../images/Auditing.png"),
                   name:"抢单中",
                   routeName:"OrderList",
+                  menuCd:OrderMenu.MENU_CD_GRAB_ORDER,
                   count:101,
               },
               {
                   imagePath:require("../../images/buy.png"),
                   name:"待派送",
                   routeName:"OrderList",
+                  menuCd:OrderMenu.MENU_CD_NO_DELIVERY,
                   count:0,
               },
               {
                   imagePath:require("../../images/logisticsMenu.png"),
                   name:"派送中",
                   routeName:"OrderList",
+                  menuCd:OrderMenu.MENU_CD_DELIVERY,
                   count:0,
               },
               {
                   imagePath:require("../../images/marketMenu.png"),
                   name:"已完成",
                   routeName:"OrderList",
+                  menuCd:OrderMenu.MENU_CD_COMPLETE,
                   count:0,
               },
               {
                   imagePath:require("../../images/sampleMenu.png"),
                   name:"退款/退货",
                   routeName:"OrderList",
+                  menuCd:OrderMenu.MENU_CD_RETURN,
                   count:0,
               },
               {
                   imagePath:require("../../images/storeMenu.png"),
                   name:"查询订单",
-                  routeName:"OrderList",
+                  routeName:"QueryOrderList",
+                  menuCd:OrderMenu.MENU_CD_QUERY_ORDER,
                   count:0,
               },
               {
                   imagePath:require("../../images/openStore.png"),
                   name:"已确定",
                   routeName:"OrderList",
+                  menuCd:OrderMenu.MENU_CD_SURE,
                   count:30,
               },
               {
                   imagePath:require("../../images/moreMenu.png"),
                   name:"全部订单",
                   routeName:"OrderList",
+                  menuCd:OrderMenu.MENU_CD_ALL,
                   count:30,
               }];
         // 初始状态
@@ -81,7 +91,7 @@ export default class OrderPage extends Component{
      * @returns {XML}
      */
       render(){
-
+        console.log("进入OrderPage页面 render");
           return (
               <View style={[OrderStyles.container,OrderStyles.body]}>
                   <View style={((Platform.OS === 'android' && Platform.Version >= 19) || Platform.OS ==='ios')?OrderStyles.header:OrderStyles.header_android_low}>
@@ -142,7 +152,7 @@ export default class OrderPage extends Component{
     _renderRow(rowData){
 
         return (
-            <TouchableOpacity onPress={() => {this._onPressMenu(rowData.routeName,rowData.name)}} activeOpacity={0.5} style={OrderStyles.cellBackStyle}>
+            <TouchableOpacity onPress={() => {this._onPressMenu(rowData.routeName,rowData.name,rowData.menuCd)}} activeOpacity={0.5} style={OrderStyles.cellBackStyle}>
                 <View style={OrderStyles.menuViewImageView}>
                     {
                         rowData.count == 0 ? null :<View style={OrderStyles.menuViewBadge}>
@@ -160,10 +170,12 @@ export default class OrderPage extends Component{
 
     /**
      * 点击菜单按钮
+     *
      * @private
      */
-    _onPressMenu(routeName,name){
+    _onPressMenu(routeName,name,menuCd){
         let tmpName = name.endsWith('订单')?name:name+"订单";
-        this.props.navigation.navigate(routeName,{'name':tmpName});
+
+        this.props.navigation.navigate(routeName,{'name':tmpName,'menuCd':menuCd});
     }
 }

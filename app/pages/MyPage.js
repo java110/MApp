@@ -22,6 +22,10 @@ export default class MyPage extends Component{
         };
     }
 
+    /**
+     *
+     * @returns {XML}
+     */
     render(){
         console.log("进入我的页面");
         return (

@@ -5,14 +5,16 @@ import OrderListStyles from "../../styles/order/OrderListStyles";
 import CommonStyles from "../../styles/CommonStyles";
 import ContextHeaderPage from "../ContextHeaderPage";
 import orderMobx from "../../mobx/order/OrderMobx";
-import {Button} from "teaset";
 import {observer} from "mobx-react";
+
 import OrderMenu from "../../constants/OrderMenu";
+import SearchInput from "../../../components/SearchInput";
+import {Button} from "teaset";
 /**
  * 订单列表页
  */
 @observer
-export default class OrderListPage extends Component{
+export default class QueryOrderListPage extends Component{
 
 
     // 构造
@@ -21,6 +23,7 @@ export default class OrderListPage extends Component{
           const { params } = this.props.navigation.state;
           this.params = params;
           const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+          this.ds =ds;
         // 初始状态
           console.log('OrderListPage:',orderMobx.orderListData.orders);
         this.state = {
@@ -29,22 +32,26 @@ export default class OrderListPage extends Component{
                 //_onSetting:this._onSetting,
                 _onBackPage:this._onBackPage
             },
-            dataSource : ds.cloneWithRows(orderMobx.orderListData.orders.slice())
+            //dataSource : ds.cloneWithRows(orderMobx.orderListData.orders.slice())
+            dataSource : ds.cloneWithRows([]),
+            searchValue:'',
         };
         this._onBackPage = this._onBackPage.bind(this);
         this._onCallUser = this._onCallUser.bind(this);
         this._onOrderDetail = this._onOrderDetail.bind(this);
         this._onSureOrder = this._onSureOrder.bind(this);
+        this._doSearchOrder = this._doSearchOrder.bind(this);
       }
 
     /**
      * 页面渲染
      */
     render(){
-        console.log("进入OrderListPage页面 render",this.props.navigation.state);
+        //console.log("进入OrderListPage页面 render",this.props.navigation.state);
         return (
             <View style={[OrderListStyles.container,OrderListStyles.body]}>
                 {this.renderHeader()}
+                {this.renderQueryInput()}
                 {this.renderOrderDatas()}
             </View>
         );
@@ -65,6 +72,47 @@ export default class OrderListPage extends Component{
       }
 
     /**
+     *  <SearchInput style={{width:300}}
+     placeholder='请输入订单编号 或 序号'
+     value={this.state.searchValue}
+     onChangeText={text => this.setState({searchValue: text})}
+
+     onSubmitEditing={this._doSearchOrder}
+     />
+     <Button type = "default" size="sm" titleStyle = {{color:'#555',fontSize:12}}  title="搜索" onPress={() => {this._doSearchOrder}}/>
+     * @returns {XML}
+     */
+    renderQueryInput(){
+          return (
+              <View style={OrderListStyles.queryOrderView}>
+                <SearchInput
+                    _onChangeText={text => this.setState({searchValue: text})}
+                    _soSearch={this._doSearchOrder}
+                    placeholder="请输入订单编号 或 序号"
+                    inputValue = {this.state.searchValue}
+                />
+
+              </View>
+          )
+    }
+
+    /**
+     * 搜索订单
+     * @private
+     */
+    _doSearchOrder(){
+
+        orderMobx.doSearchOrder(this.state.text)
+        this.setState(
+            {
+                dataSource : this.ds.cloneWithRows(orderMobx.orderListData.orders.slice())
+            }
+        );
+
+
+    }
+
+    /**
      * 渲染数据
      * @returns {XML}
      */
@@ -74,6 +122,7 @@ export default class OrderListPage extends Component{
                   <ListView
                       dataSource={this.state.dataSource}
                       renderRow={this._renderRow.bind(this)}
+                      enableEmptySections={true}
                       renderSeparator={this._renderSeparator.bind(this)}
                   />
               </ScrollView>

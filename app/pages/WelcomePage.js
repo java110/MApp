@@ -13,13 +13,17 @@ export default class WelcomePage extends Component{
 
     constructor(){
         super();
+        this.state={
+            canClickEnter:false,
+        }
     }
     render(){
-
-        return (
-            <TouchableOpacity onPress={() =>{this.props.navigation.navigate('Home',{})}} activeOpacity={1}>
-            <Image style={WelcomeStyles.backImage} source={require("../images/welcome.png")}></Image>
+        let wel = this.state.canClickEnter ? <TouchableOpacity onPress={() =>{this.props.navigation.navigate('Home',{})}} activeOpacity={1}>
+                <Image style={WelcomeStyles.backImage} source={require("../images/welcome.png")}></Image>
             </TouchableOpacity>
+            : <Image style={WelcomeStyles.backImage} source={require("../images/welcome.png")}></Image>;
+        return (
+                wel
         );
     }
 
@@ -27,6 +31,6 @@ export default class WelcomePage extends Component{
         console.log("componentDidMount 开始调用")
         setTimeout(() =>{
             this.props.navigation.navigate('Home',{})
-        },5000)
+        },3000)
     }
 }

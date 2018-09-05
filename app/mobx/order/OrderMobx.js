@@ -124,6 +124,7 @@ class OrderMobx{
         logisticsInfo:{}
     };
 
+
     /**
      * 重设 当前订单ID
      * @param orderId
@@ -195,6 +196,41 @@ class OrderMobx{
     @action
     refreshOrderListData(){
         //
+    }
+
+    @action
+    doSureOrderData(orderId:String){
+        //这里调用接口修改数据状态
+    }
+
+    /**
+     * 搜索这里先写死
+     * @param orderId
+     */
+    @action
+    doSearchOrder(orderId){
+        this.orderListData = {
+            orders:[
+                {
+                    orderId:"1234567890",
+                    orderSeq:"0001",
+                    userName:"吴(先生)",
+                    userPhone:"15897089471",
+                    address:"青海省西宁市城中区五四大街22号湟嘉华园3号楼1323",
+                    orderTime:"08-28 23:06",
+                    deliveryTime:"08-28 23:10",
+                    orderSource:"微信小程序",
+                    money:"134.00",
+                    items:[
+                        {
+                            name:"青椒肉丝",
+                            price:15.00,
+                            count:1
+                        }
+                    ]
+                }
+            ]
+        }
     }
 }
 

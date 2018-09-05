@@ -21,6 +21,7 @@ export default class HomePage extends Component{
     }
 
     render(){
+        console.log("HomePage 页面刷新");
         return (
         <View style={HomeStyles.container}>
             <TabNavigator>
@@ -93,8 +94,23 @@ export default class HomePage extends Component{
     
     componentWillUnmount(){
         console.log("componentWillUnmount 调用了")
-        
-        
+    }
+
+    shouldComponentUpdate() {
+        console.log("shouldComponentUpdate 调用了")
+        return true;
+    }
+
+    componentWillReceiveProps(){
+        console.log("componentWillReceiveProps 调用了")
+    }
+
+    componentWillUpdate(){
+        console.log("componentWillUpdate 调用了")
+    }
+
+    componentDidUpdate(){
+        console.log("componentDidUpdate 调用了")
     }
 
     onBackPressed = () => {

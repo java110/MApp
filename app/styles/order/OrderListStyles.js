@@ -87,6 +87,13 @@ const OrderListStyles=StyleSheet.create({
     rowDataFootView_1_Text:{
         fontSize:12,
 
+    },
+
+    queryOrderView:{
+      height:40,
+        flexDirection:'row',
+        alignItems:'center',
+        marginBottom:10,
     }
 
 
