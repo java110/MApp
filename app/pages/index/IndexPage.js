@@ -180,7 +180,7 @@ export default class IndexPage extends Component{
                         <Text style={IndexStyles.headerView_2_text}>扫一扫</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={IndexStyles.headerViewCenter}>
+                <TouchableOpacity style={IndexStyles.headerViewCenter} onPress={()=>this.props.navigation.navigate('Shop',{})}>
                     <View style={IndexStyles.headerViewCenter}>
                         <Image style={IndexStyles.headerView_2_image} source={require('../../images/shopping.png')}></Image>
                     </View>

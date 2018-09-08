@@ -8,7 +8,7 @@ import orderMobx from "../../mobx/order/OrderMobx";
 import {observer} from "mobx-react";
 
 import OrderMenu from "../../constants/OrderMenu";
-import SearchInput from "../../../components/SearchInput";
+import SearchInput from "../../../components/search/SearchInput";
 import {Button} from "teaset";
 /**
  * 订单列表页

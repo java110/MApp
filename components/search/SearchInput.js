@@ -18,7 +18,7 @@ export default class SearchInput extends Component{
             <View style={{ paddingRight: 15, paddingLeft: 15,backgroundColor: "#fff",flex:1}}>
                 <View style={{ flex:1, flexDirection: 'row', justifyContent:'space-between',alignItems: 'center' }} >
                     <View style={{flexDirection: 'row',alignItems: 'center',marginLeft:5}}>
-                        <Image source={require('../icon/search/search.png')} style={{ width: 15, height: 15 }}></Image>
+                        <Image source={require('../../icon/search/search.png')} style={{ width: 15, height: 15 }}></Image>
                         <TextInput underlineColorAndroid="transparent" placeholder={this.props.placeholder} style={{ marginLeft: 0, width: 200 }}
                                    onChangeText={this.props._onChangeText}
                                    value={this.props.inputValue}

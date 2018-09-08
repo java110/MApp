@@ -18,6 +18,9 @@ import CodeReadingPage from "./pages/common/CodeReadingPage";
 import OrderDetailPage from "./pages/order/OrderDetailPage";
 import OrderPage from "./pages/order/OrderPage";
 import QueryOrderListPage from "./pages/order/QueryOrderListPage";
+import ShopPage from "./pages/shop/ShopPage";
+import ShopCatalogPage from "./pages/shop/ShopCatalogPage";
+import AddShopCatalogPage from "./pages/shop/AddShopCatalogPage";
 
 /**
  *
@@ -84,7 +87,17 @@ const RootStack = createStackNavigator({
         },
         OrderDetail:{
         screen:OrderDetailPage
-        }
+        },
+    Shop:{
+        screen:ShopPage
+    },
+    ShopCatalog:{
+        screen:ShopCatalogPage
+    },
+    AddShopCatalog:{
+        screen:AddShopCatalogPage
+    }
+
 },{
     headerMode:'none'});
 
