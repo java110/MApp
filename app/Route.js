@@ -21,6 +21,7 @@ import QueryOrderListPage from "./pages/order/QueryOrderListPage";
 import ShopPage from "./pages/shop/ShopPage";
 import ShopCatalogPage from "./pages/shop/ShopCatalogPage";
 import AddShopCatalogPage from "./pages/shop/AddShopCatalogPage";
+import BlueToothPrinterPage from "./pages/test/BlueToothPrinterPage";
 
 /**
  *
@@ -96,6 +97,9 @@ const RootStack = createStackNavigator({
     },
     AddShopCatalog:{
         screen:AddShopCatalogPage
+    },
+    BlueToothPrinter:{
+        screen:BlueToothPrinterPage
     }
 
 },{

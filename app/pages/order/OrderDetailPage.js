@@ -1,8 +1,9 @@
 import React,{Component} from 'react';
 
-import {View, Text, Image, TouchableOpacity, Platform, ScrollView, ListView} from 'react-native';
+import {View, Text, Image, TouchableOpacity, Platform, ScrollView, ListView,PermissionsAndroid} from 'react-native';
 
 import {Badge, Button} from 'teaset';
+
 
 import orderMobx from "../../mobx/order/OrderMobx";
 import OrderDetailStyles from "../../styles/order/OrderDetailStyles";
@@ -10,6 +11,7 @@ import OrderDetailStyles from "../../styles/order/OrderDetailStyles";
 import CommonStyles from "../../styles/CommonStyles";
 import ContextHeaderPage from "../ContextHeaderPage";
 import {observer} from "mobx-react";
+
 
 /**
  * 订单详情页
@@ -122,7 +124,7 @@ export default class OrderDetailPage extends Component{
                         style={OrderDetailStyles.listViewItem}
                     />
                     <View style={[OrderDetailStyles.orderDetailInfoView,OrderDetailStyles.OrderInfoButtonView]}>
-                        <Button type = "default" titleStyle = {{color:'#F24E3E'}} size="sm" style={OrderDetailStyles.OrderInfoButton} title="打印订单" onPress={() => {}}/>
+                        <Button type = "default" titleStyle = {{color:'#F24E3E'}} size="sm" style={OrderDetailStyles.OrderInfoButton} title="打印订单" onPress={() => {this.props.navigation.navigate('BlueToothPrinter',{})}}/>
                         <Button type = "secondary" titleStyle = {{color:'#555'}} size="sm" style={[OrderDetailStyles.OrderInfoButton,OrderDetailStyles.orderInfoButtonPublic]} title="确定订单" onPress={() => {}}/>
                         <Button type = "secondary" titleStyle = {{color:'#555'}} size="sm" style={[OrderDetailStyles.OrderInfoButton,OrderDetailStyles.orderInfoButtonPublic]} title="退单" onPress={() => {}}/>
                     </View>
@@ -396,6 +398,23 @@ export default class OrderDetailPage extends Component{
             dataSource : this.state.ds.cloneWithRows(orderMobx.currentOrderInfo.items.slice()),
             orderAttrDataSource:this.state.orderAttrDs.cloneWithRows(orderMobx.currentOrderInfo.orderAttrs.slice())
         });
+
+
+        if (Platform.OS === 'android' && Platform.Version >= 23) {
+            PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
+                if (result) {
+                    console.log("Permission is OK");
+                } else {
+                    PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
+                        if (result) {
+                            console.log("User accept");
+                        } else {
+                            console.log("User refuse");
+                        }
+                    });
+                }
+            });
+        }
     }
 
     /**
