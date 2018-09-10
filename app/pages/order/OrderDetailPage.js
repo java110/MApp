@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 
-import {View, Text, Image, TouchableOpacity, Platform, ScrollView, ListView,PermissionsAndroid} from 'react-native';
+import {View, Text, Image, TouchableOpacity, Platform, ScrollView, ListView,PermissionsAndroid,Alert} from 'react-native';
 
 import {Badge, Button} from 'teaset';
 
@@ -11,8 +11,11 @@ import OrderDetailStyles from "../../styles/order/OrderDetailStyles";
 import CommonStyles from "../../styles/CommonStyles";
 import ContextHeaderPage from "../ContextHeaderPage";
 import {observer} from "mobx-react";
+import ESC from "../../../components/ecs/Ecs";
+import BleModule from '../../../components/print/BleModule';
 
 
+global.BluetoothManager = new BleModule();
 /**
  * 订单详情页
  */
@@ -37,11 +40,17 @@ export default class OrderDetailPage extends Component{
             ds : ds,
             dataSource : ds.cloneWithRows([]),
             orderAttrDs : orderAttrDs,
-            orderAttrDataSource:orderAttrDs.cloneWithRows([])
+            orderAttrDataSource:orderAttrDs.cloneWithRows([]),
+            isConnected: false
         };
 
           this._onBackPage = this._onBackPage.bind(this);
           this._onCallUser = this._onCallUser.bind(this);
+
+          this._printShopDetail=this._printShopDetail.bind(this);
+          this._connect = this._connect.bind(this);
+          this._write = this._write.bind(this);
+          this.alert = this.alert.bind(this);
       }
 
     /**
@@ -124,7 +133,7 @@ export default class OrderDetailPage extends Component{
                         style={OrderDetailStyles.listViewItem}
                     />
                     <View style={[OrderDetailStyles.orderDetailInfoView,OrderDetailStyles.OrderInfoButtonView]}>
-                        <Button type = "default" titleStyle = {{color:'#F24E3E'}} size="sm" style={OrderDetailStyles.OrderInfoButton} title="打印订单" onPress={() => {this.props.navigation.navigate('BlueToothPrinter',{})}}/>
+                        <Button type = "default" titleStyle = {{color:'#F24E3E'}} size="sm" style={OrderDetailStyles.OrderInfoButton} title="打印订单" onPress={() => {this._printShopDetail()}}/>
                         <Button type = "secondary" titleStyle = {{color:'#555'}} size="sm" style={[OrderDetailStyles.OrderInfoButton,OrderDetailStyles.orderInfoButtonPublic]} title="确定订单" onPress={() => {}}/>
                         <Button type = "secondary" titleStyle = {{color:'#555'}} size="sm" style={[OrderDetailStyles.OrderInfoButton,OrderDetailStyles.orderInfoButtonPublic]} title="退单" onPress={() => {}}/>
                     </View>
@@ -385,6 +394,12 @@ export default class OrderDetailPage extends Component{
     }
     componentWillMount() {
         console.log("OrderDetailPage componentWillMount ");
+        BluetoothManager.start();
+        this.connectPeripheralListener = BluetoothManager.addListener('BleManagerConnectPeripheral',this.handleConnectPeripheral);
+        this.disconnectPeripheralListener = BluetoothManager.addListener('BleManagerDisconnectPeripheral',this.handleDisconnectPeripheral);
+        //1.0 获取蓝牙ID
+        let blueToothId = "57:4C:54:16:7D:1F";
+        this._connect(blueToothId)
 
     }
 
@@ -415,6 +430,16 @@ export default class OrderDetailPage extends Component{
                 }
             });
         }
+
+
+    }
+
+    componentWillUnmount(){
+        this.connectPeripheralListener.remove();
+        this.disconnectPeripheralListener.remove();
+        if(this.state.isConnected){
+            BluetoothManager.disconnect();  //退出时断开蓝牙连接
+        }
     }
 
     /**
@@ -435,6 +460,106 @@ export default class OrderDetailPage extends Component{
     }
 
     _onBackPage(){
+
+    }
+
+    /**
+     * 商品答应
+     * @private
+     */
+    _printShopDetail(){
+        BluetoothManager.isPeripheralConnected()
+            .then((isConnected) => {
+                if (isConnected) {
+                    console.log('Peripheral is connected!');
+                    this._write();
+                } else {
+                    console.log('Peripheral is NOT connected!');
+                    this.alert("无法连接打印机，请检查蓝牙是否连接正确");
+                }
+            }).catch(error=>{
+            this.alert("无法连接打印机，请检查蓝牙是否连接正确");
+        });
+
+    }
+
+    /**
+     * 连接蓝牙设备
+     * @param id
+     * @private
+     */
+    _connect(id){
+        //当前蓝牙正在连接时不能打开另一个连接进程
+        if(BluetoothManager.isConnecting){
+            console.log('当前蓝牙正在连接时不能打开另一个连接进程');
+            return;
+        }
+
+        BluetoothManager.connect(id)
+            .then(peripheralInfo=>{
+                this.setState({
+                    isConnected:true
+                });
+            })
+            .catch(err=>{
+                this.alert("连接打印机失败");
+            })
+    }
+
+    /**
+     * 写数据
+     * @param index
+     * @private
+     */
+    _write(index = 0){
+
+        let orderInfo = orderMobx.currentOrderInfo;
+
+        let items = orderInfo.items;
+        let shops = [];
+        for(let itemIndex = 0;itemIndex<items.length;itemIndex++){
+            let item = items[itemIndex];
+            let shop = {
+                name:item.name,
+                count:"x"+item.count,
+                price:item.price
+            };
+            shops.push(shop);
+        }
+
+        let printParam = {
+            title:"微小区",
+            author:"java110",
+            shops:shops,
+            total:orderInfo.payMoney,
+            tranId:orderInfo.orderId,
+            shopName:"他乡客栈",
+            userName:orderInfo.userName,
+            orderTime:orderInfo.deliveryTime
+        };
+
+        BluetoothManager.write(ESC.print(printParam),index)
+            .then(()=>{
+                this.bluetoothReceiveData = [];
+            })
+            .catch(err=>{
+                this.alert('发送失败');
+            })
+    }
+
+    alert(text){
+        Alert.alert('提示',text,[{ text:'确定',onPress:()=>{ } }]);
+    }
+
+    //蓝牙设备已连接
+    handleConnectPeripheral=(args)=>{
+        console.log('BleManagerConnectPeripheral:', args);
+    }
+
+    //蓝牙设备已断开连接
+    handleDisconnectPeripheral=(args)=>{
+        console.log('BleManagerDisconnectPeripheral:', args);
+        BluetoothManager.initUUID();  //断开连接后清空UUID
 
     }
 

@@ -272,6 +272,9 @@ export default class BleModule{
      * */
     write(data,index = 0) {
         // data = this.addProtocol(data);   //在数据的头尾加入协议格式，如0A => FEFD010AFCFB，不同的蓝牙协议应作相应的更改
+
+        console.log("write",this.peripheralId);
+
         return new Promise( (resolve, reject) =>{
             BleManager.write(this.peripheralId, this.writeWithResponseServiceUUID[index], this.writeWithResponseCharacteristicUUID[index], data)
                 .then(() => {
@@ -279,7 +282,7 @@ export default class BleModule{
                     resolve();
                 })
                 .catch((error) => {
-                    console.log('Write  failed: ',data);
+                    console.log('Write  failed: ',data,error);
                     reject(error);
                 });
         });
@@ -330,6 +333,7 @@ export default class BleModule{
         BleManager.getConnectedPeripherals([])
             .then((peripheralsArray) => {
                 console.log('Connected peripherals: ', peripheralsArray);
+
             }).catch(error=>{
 
         })
@@ -346,11 +350,14 @@ export default class BleModule{
                     resolve(isConnected);
                     if (isConnected) {
                         console.log('Peripheral is connected!');
+                        return true;
                     } else {
                         console.log('Peripheral is NOT connected!');
+                        return false;
                     }
                 }).catch(error=>{
-                reject(error);
+                //reject(error);
+                return false;
             })
         });
     }

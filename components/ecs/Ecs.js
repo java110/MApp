@@ -34,7 +34,7 @@ let printArray = [];
 
 function writeTextToDevice(text){
     let re = iconv.encode(text,'gbk')
-    console.log("writeTextToDevice",Array.from(re));
+    //console.log("writeTextToDevice",Array.from(re));
     // return an array of bytes
 
     printArray = printArray.concat(Array.from(re));
@@ -86,7 +86,7 @@ function writeHexToDevice(hexString) {
         hexA.push(v);
         pos += 2;
     }
-    console.log("writeHexToDevice",hexA);
+    //console.log("writeHexToDevice",hexA);
     printArray = printArray.concat(hexA);
     return hexA;
 }

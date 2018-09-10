@@ -11,7 +11,7 @@ import {
     Dimensions,
     Alert,
 } from 'react-native'
-import BleModule from './BleModule';
+import BleModule from '../../../components/print/BleModule';
 
 import ESC from "../../../components/ecs/Ecs";
 
@@ -122,6 +122,7 @@ export default class BlueToothPrinterPage extends Component {
     }
 
     connect(item){
+        console.log("connect:",item);
         //当前蓝牙正在连接时不能打开另一个连接进程
         if(BluetoothManager.isConnecting){
             console.log('当前蓝牙正在连接时不能打开另一个连接进程');
