@@ -51,12 +51,20 @@ class ShopMobx{
 
     ];
 
+    @observable
+    currentModifyCatalogData:Object = {
+        itemName:"",
+        itemValue:"",
+    };
+
     @action
     addShopCatalog(catalogName,catalogSeq){
+        //调用后台服务保存数据
+        let catalogId = Date.now()+""; // 这个需要后端返回
         this.catalogData.push({
                   itemName:catalogName,
                   itemValue:catalogSeq,
-                  action:"QQQQ"
+                  action:catalogId
         });
 
         this.catalogData = this.catalogData.sort(this.compare('itemValue'));
@@ -66,12 +74,94 @@ class ShopMobx{
         console.log("添加目录",this.catalogData);
     }
 
+    /**
+     * 编辑 商品目录
+     * @param catalogId
+     * @param catalogName
+     * @param catalogSeq
+     */
+    @action
+    editShopCatalog(catalogId){
+        //调用远程服务刷数据
+
+
+
+        let catalogSize = this.catalogData.length;
+
+        for(let catalogIndex = 0; catalogIndex< catalogSize ; catalogIndex ++){
+            let catalogObj = this.catalogData[catalogIndex];
+
+            if(catalogObj.action == catalogId){
+                catalogObj.itemName = this.currentModifyCatalogData.itemName;
+                catalogObj.itemValue = this.currentModifyCatalogData.itemValue;
+                //this.currentModifyCatalogData = catalogObj;
+                break ;
+            }
+        }
+
+        this.catalogData = this.catalogData.sort(this.compare('itemValue'));
+
+        console.log("editShopCatalog",this.catalogData);
+    }
+
     compare(itemValue){
         return (a,b) =>{
             let value1 = a[itemValue];
             let value2 = b[itemValue];
             return value1 - value2;
         }
+    }
+
+    /**
+     * 刷新当前修改的目录数据
+     * @param catalogId
+     */
+    @action
+    refreshCurrentModifyCatalogData(catalogId){
+        let catalogSize = this.catalogData.length;
+
+        for(let catalogIndex = 0; catalogIndex< catalogSize ; catalogIndex ++){
+            let catalogObj = this.catalogData[catalogIndex];
+
+            if(catalogObj.action == catalogId){
+                this.currentModifyCatalogData = catalogObj;
+                break ;
+            }
+        }
+
+        console.log('refreshCurrentModifyCatalogData',this.currentModifyCatalogData);
+    }
+
+
+    @action
+    refreshCurrentCatalogDataName(catalogName){
+        this.currentModifyCatalogData.itemName= catalogName;
+
+    }
+
+    @action
+    refreshCurrentCatalogDataSeq(catalogSeq){
+        this.currentModifyCatalogData.itemValue= catalogSeq;
+
+    }
+
+    @action
+    deleteCurrentCatalog(){
+
+        //调用服务器删除
+
+        let catalogSize = this.catalogData.length;
+        let catalogDataTmp = [];
+        for(let catalogIndex = 0; catalogIndex< catalogSize ; catalogIndex ++){
+            let catalogObj = this.catalogData[catalogIndex];
+
+            if(catalogObj.action !== this.currentModifyCatalogData.action){
+                //this.currentModifyCatalogData = catalogObj;
+                catalogDataTmp.push(catalogObj);
+            }
+        }
+        this.catalogData = catalogDataTmp;
+        this.catalogData = this.catalogData.sort(this.compare('itemValue'));
     }
 
 

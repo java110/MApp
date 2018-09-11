@@ -94,7 +94,7 @@ export default class ShopCatalogPage extends Component{
      * @private
      */
     _onPress(action){
-
+        this.props.navigation.navigate('EditShopCatalog',{catalogId:action});
     }
 
 

@@ -15,7 +15,7 @@ const AddShopCatalogStyles=StyleSheet.create({
     catalogBodyView:{
         backgroundColor:'#FFF',
         height:120,
-        marginTop:10,
+        marginTop:12,
         paddingLeft:10,
         paddingRight:10,
     },

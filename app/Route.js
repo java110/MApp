@@ -22,6 +22,7 @@ import ShopPage from "./pages/shop/ShopPage";
 import ShopCatalogPage from "./pages/shop/ShopCatalogPage";
 import AddShopCatalogPage from "./pages/shop/AddShopCatalogPage";
 import BlueToothPrinterPage from "./pages/test/BlueToothPrinterPage";
+import EditShopCatalogPage from "./pages/shop/EditShopCatalogPage";
 
 /**
  *
@@ -97,6 +98,9 @@ const RootStack = createStackNavigator({
     },
     AddShopCatalog:{
         screen:AddShopCatalogPage
+    },
+    EditShopCatalog:{
+        screen:EditShopCatalogPage
     },
     BlueToothPrinter:{
         screen:BlueToothPrinterPage
