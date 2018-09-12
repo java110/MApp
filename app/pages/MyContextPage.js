@@ -18,7 +18,7 @@ export default class MyContextPage extends Component{
     constructor(props){
         super(props);
         this.state = {
-            data: [{message:'当前正在开发中',pageAction:PageActionConst.alert,itemImage:require('../images/setting.png'),itemName:'设置',itemValue:'',itemActionImage:require('../images/more.png')},
+            data: [{message:'Settings',pageAction:PageActionConst.page,itemImage:require('../images/setting.png'),itemName:'设置',itemValue:'',itemActionImage:require('../images/more.png')},
                 {message:'当前正在开发中',pageAction:PageActionConst.alert,itemImage:require('../images/report.png'),itemName:'意见反馈',itemValue:'',itemActionImage:require('../images/more.png')},
                 {message:'当前正在开发中',pageAction:PageActionConst.alert,itemImage:require('../images/help.png'),itemName:'帮助中心',itemValue:'',itemActionImage:require('../images/more.png')},
                 {message:'15897089471',pageAction:PageActionConst.tel,itemImage:require('../images/phone.png'),itemName:'客户热线',itemValue:'15897089471',itemActionImage:require('../images/more.png')},

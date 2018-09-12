@@ -10,7 +10,7 @@ import CompleteHeaderView from "../../../components/header/CompleteHeaderView";
 import CommonStyles from "../../styles/CommonStyles";
 import {observer} from "mobx-react";
 
-import DeleteButtonView from "../../../components/common/DeleteButtonView";
+import DeleteButtonView from "../../../components/button/DeleteButtonView";
 
 @observer
 export default class EditShopCatalogPage extends Component{

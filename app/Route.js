@@ -23,6 +23,8 @@ import ShopCatalogPage from "./pages/shop/ShopCatalogPage";
 import AddShopCatalogPage from "./pages/shop/AddShopCatalogPage";
 import BlueToothPrinterPage from "./pages/test/BlueToothPrinterPage";
 import EditShopCatalogPage from "./pages/shop/EditShopCatalogPage";
+import SettingsPage from "./pages/settings/SettingsPage";
+import SettingPrinterPage from "./pages/settings/SettingPrinterPage";
 
 /**
  *
@@ -104,6 +106,12 @@ const RootStack = createStackNavigator({
     },
     BlueToothPrinter:{
         screen:BlueToothPrinterPage
+    },
+    Settings:{
+        screen:SettingsPage
+    },
+    SettingPrinter:{
+        screen:SettingPrinterPage
     }
 
 },{

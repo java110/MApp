@@ -55,7 +55,7 @@ export default class DeleteButtonView extends Component{
                             <View style={styles.modelViewSelect}>
                                 <TouchableOpacity style={[styles.modelViewSelectRow]}
                                                   onPress={this._onDelete}>
-                                    <Text style={styles.modelViewSelectText}>确定</Text>
+                                    <Text style={[styles.modelViewSelectText,styles.modelButtonText]}>确定删除</Text>
                                 </TouchableOpacity>
                             </View>
 
@@ -133,21 +133,21 @@ const styles = StyleSheet.create({
     },
 
     modalView:{
-        height:150,
+        height:125,
         width:screenWidth,
 
     },
 
     modelViewSelect:{
         backgroundColor:'#FFF',
-        borderRadius:5,
+        borderRadius:10,
     },
     modelViewSelectRowLine:{
         borderBottomWidth:1,
         borderBottomColor:'#F5F5F5',
     },
     modelViewSelectRow:{
-        height:50,
+        height:53,
         justifyContent:'center',
         alignItems:'center'
     },
@@ -155,8 +155,11 @@ const styles = StyleSheet.create({
         fontSize:18,
 
     },
+    modelButtonText:{
+        color:'#F24E3E'
+    },
     modelViewSelectCancel:{
-        marginTop:15,
+        marginTop:8,
 
     },
 
