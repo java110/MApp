@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 
-import {View, Text, Image, TouchableOpacity, Platform, ScrollView, ListView,PermissionsAndroid,Alert} from 'react-native';
+import {View, Text, Image, TouchableOpacity, Platform, ScrollView, ListView,PermissionsAndroid,Alert,AsyncStorage} from 'react-native';
 
 import {Badge, Button} from 'teaset';
 
@@ -13,6 +13,7 @@ import ContextHeaderPage from "../ContextHeaderPage";
 import {observer} from "mobx-react";
 import ESC from "../../../components/ecs/Ecs";
 import BleModule from '../../../components/print/BleModule';
+import PrintConst from "../../constants/PrintConst";
 
 
 global.BluetoothManager = new BleModule();
@@ -398,8 +399,9 @@ export default class OrderDetailPage extends Component{
         this.connectPeripheralListener = BluetoothManager.addListener('BleManagerConnectPeripheral',this.handleConnectPeripheral);
         this.disconnectPeripheralListener = BluetoothManager.addListener('BleManagerDisconnectPeripheral',this.handleDisconnectPeripheral);
         //1.0 获取蓝牙ID
-        let blueToothId = "57:4C:54:16:7D:1F";
-        this._connect(blueToothId)
+        this._retrieveData();
+        /*let blueToothId = "57:4C:54:16:7D:1F";
+        this._connect(blueToothId)*/
 
     }
 
@@ -561,6 +563,22 @@ export default class OrderDetailPage extends Component{
         console.log('BleManagerDisconnectPeripheral:', args);
         BluetoothManager.initUUID();  //断开连接后清空UUID
 
+    }
+
+    _retrieveData = async () => {
+        console.log("进入_retrieveData方法");
+        try {
+            const value = await AsyncStorage.getItem(PrintConst.PRINT_INFO_KEY);
+            console.log("_retrieveData ",value)
+            if (value !== null) {
+                // We have data!!
+                let valueObj = JSON.parse(value);
+                this._connect(valueObj.printId);
+            }
+        } catch (error) {
+            // Error retrieving data
+            console.log("_retrieveData ",error)
+        }
     }
 
 }
