@@ -20,8 +20,15 @@ class ShopMobx{
         {
             imagePath:require("../../images/Auditing.png"),
             name:"商品管理",
-            routeName:"OrderList",
+            routeName:"ShopManage",
             menuCd:ShopMenu.MENU_CD_NO_SURE,
+        },
+        {
+            imagePath:require("../../images/sampleMenu.png"),
+            name:"优惠管理",
+            routeName:"OrderList",
+            menuCd:ShopMenu.MENU_CD_NO_DELIVERY,
+            count:0,
         },
         {
             imagePath:require("../../images/buy.png"),
@@ -49,6 +56,94 @@ class ShopMobx{
     catalogData:Array =[
 
 
+    ];
+
+    @observable
+    shopItemData:Array = [{
+        shopId:"1232132",
+        catalogId:"123213",
+        name:"北京方便面",
+        hotBuy:"Y",
+        salePrice:"1.50",
+        openShopCount:"Y",
+        shopCount:"10",
+        startDate:"2018-07-07 11:04:00",
+        endDate:"2019-07-07 11:04:00",
+        shopAttr:[{
+            attrId:"123456",
+            specCd:"870987",
+            value:"不错"
+        }],
+        shopPhoto:[{
+            shopPhotoId:"122222",
+            shopPhotoTypeCd:"L",
+            photo:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535611318920&di=a3018808c6cd6ddea6c87d540db5f98b&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Fd6ca7bcb0a46f21fd8b1b87bfd246b600c33ae15.jpg"
+        }],
+        shopPreferential:{
+            preferentialId:"12323",
+            preferentialType:"N",
+            preferentialValue:"30",
+            preferentialStartDate:"2018-07-07 11:04:00",
+            preferentialEndDate:"2019-07-07 11:04:00"
+        },
+        shopDescribe:"北京方便面"
+    },{
+        shopId:"1232132",
+        catalogId:"123213",
+        name:"北京方便面",
+        hotBuy:"Y",
+        salePrice:"1.50",
+        openShopCount:"Y",
+        shopCount:"10",
+        startDate:"2018-07-07 11:04:00",
+        endDate:"2019-07-07 11:04:00",
+        shopAttr:[{
+            attrId:"123456",
+            specCd:"870987",
+            value:"不错"
+        }],
+        shopPhoto:[{
+            shopPhotoId:"122222",
+            shopPhotoTypeCd:"L",
+            photo:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535611318920&di=a3018808c6cd6ddea6c87d540db5f98b&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Fd6ca7bcb0a46f21fd8b1b87bfd246b600c33ae15.jpg"
+        }],
+        shopPreferential:{
+            preferentialId:"12323",
+            preferentialType:"N",
+            preferentialValue:"30",
+            preferentialStartDate:"2018-07-07 11:04:00",
+            preferentialEndDate:"2019-07-07 11:04:00"
+        },
+        shopDescribe:"北京方便面"
+    },{
+        shopId:"1232132",
+        catalogId:"123213",
+        name:"北京方便面",
+        hotBuy:"Y",
+        salePrice:"1.50",
+        openShopCount:"Y",
+        shopCount:"10",
+        startDate:"2018-07-07 11:04:00",
+        endDate:"2019-07-07 11:04:00",
+        shopAttr:[{
+            attrId:"123456",
+            specCd:"870987",
+            value:"不错"
+        }],
+        shopPhoto:[{
+            shopPhotoId:"122222",
+            shopPhotoTypeCd:"L",
+            photo:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535611318920&di=a3018808c6cd6ddea6c87d540db5f98b&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Fd6ca7bcb0a46f21fd8b1b87bfd246b600c33ae15.jpg"
+        }],
+        shopPreferential:{
+            preferentialId:"12323",
+            preferentialType:"N",
+            preferentialValue:"30",
+            preferentialStartDate:"2018-07-07 11:04:00",
+            preferentialEndDate:"2019-07-07 11:04:00"
+        },
+        shopDescribe:"北京方便面"
+    }
     ];
 
     @observable
