@@ -23,6 +23,7 @@ export default class ShopCatalogPage extends Component{
       constructor(props) {
         super(props);
         this.currentPageName = "目录管理";
+        shopMobx.reloadShopCatalogData();
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         // 初始状态
         this.state = {
