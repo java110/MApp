@@ -18,6 +18,7 @@ export default class ShopManagePage extends Component{
 
           const dsLeft = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
           const dsRight = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+          shopMobx.reloadShopCatalogData();
           let leftData = shopMobx.catalogData.slice();
           let shopItemData = shopMobx.shopItemData.slice();
         // 初始状态
@@ -25,10 +26,9 @@ export default class ShopManagePage extends Component{
             rightDataSource : dsRight.cloneWithRows(shopItemData),
             leftDataSource : dsLeft.cloneWithRows(leftData),
         };
-
         this._onBackPage = this._onBackPage.bind(this);
         this._onSearch = this._onSearch.bind(this);
-          this._onPlus = this._onPlus.bind(this);
+        this._onPlus = this._onPlus.bind(this);
       }
 
     /**

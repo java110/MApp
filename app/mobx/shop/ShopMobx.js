@@ -1,5 +1,7 @@
 import {observable, action, runInAction, autorun} from 'mobx';
+import {AsyncStorage} from 'react-native';
 import ShopMenu from "../../constants/ShopMenu";
+import ShopConst from "../../constants/ShopConst";
 
 
 /**
@@ -165,7 +167,7 @@ class ShopMobx{
         this.catalogData = this.catalogData.sort(this.compare('itemValue'));
 
         //this.flushListData();
-
+        this.saveShopCatalog();
         console.log("添加目录",this.catalogData);
     }
 
@@ -195,7 +197,7 @@ class ShopMobx{
         }
 
         this.catalogData = this.catalogData.sort(this.compare('itemValue'));
-
+        this.saveShopCatalog();
         console.log("editShopCatalog",this.catalogData);
     }
 
@@ -256,6 +258,8 @@ class ShopMobx{
             }
         }
         this.catalogData = catalogDataTmp;
+
+        this.saveShopCatalog();
         this.catalogData = this.catalogData.sort(this.compare('itemValue'));
     }
 
@@ -267,7 +271,47 @@ class ShopMobx{
         this.catalogData = [];
 
         this.catalogData = listDataTmp;
+    }
 
+    /**
+     * 从磁盘中加载数据
+     * add by wuxw 2018-09-18
+     */
+    @action
+    reloadShopCatalogData(){
+        this.reloadShopCatalog();
+    }
+
+    /**
+     * 保存数据
+     */
+    saveShopCatalog(){
+        AsyncStorage.setItem(ShopConst.SAVE_CATALOG_KEY, JSON.stringify(this.catalogData),(error)=>{
+            if (error){
+                console.log("存值失败",error);
+            }else{
+                console.log('存值成功!');
+                //这里调用后端发起保存数据
+            }
+        });
+    }
+
+    /**
+     * 加载 商品目录
+     * @returns {Promise.<void>}
+     */
+    reloadShopCatalog = async () =>{
+        try {
+            const value = await AsyncStorage.getItem(ShopConst.SAVE_CATALOG_KEY);
+            if (value !== null) {
+                let valueObj = JSON.parse(value);
+                this.catalogData = valueObj;
+
+            }
+        } catch (error) {
+            // Error retrieving data
+            console.log("_retrieveData ",error)
+        }
     }
 
 }

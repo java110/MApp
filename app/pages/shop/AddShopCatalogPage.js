@@ -21,6 +21,7 @@ export default class AddShopCatalogPage extends Component{
             catalogSeq:(shopMobx.catalogData.length+1)+"",
         };
 
+        shopMobx.reloadShopCatalogData();
 
           this._onComplete = this._onComplete.bind(this);
           this._onBackPage = this._onBackPage.bind(this);
