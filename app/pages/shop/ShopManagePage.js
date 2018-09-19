@@ -7,6 +7,7 @@ import CommonStyles from "../../styles/CommonStyles";
 import PlusSearchHeaderView from "../../../components/header/PlusSearchHeaderView";
 import ShopManageStyles from "../../styles/shop/ShopManageStyles";
 import {observer} from "mobx-react";
+import {Button} from "teaset";
 
 @observer
 export default class ShopManagePage extends Component{
@@ -16,19 +17,20 @@ export default class ShopManagePage extends Component{
       constructor(props) {
         super(props);
 
-          const dsLeft = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+          this.dsLeft = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
           const dsRight = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-          shopMobx.reloadShopCatalogData();
+          shopMobx.flushCatalogDataCheckStatus();
           let leftData = shopMobx.catalogData.slice();
           let shopItemData = shopMobx.shopItemData.slice();
         // 初始状态
         this.state = {
             rightDataSource : dsRight.cloneWithRows(shopItemData),
-            leftDataSource : dsLeft.cloneWithRows(leftData),
+            leftDataSource : this.dsLeft.cloneWithRows(leftData),
         };
         this._onBackPage = this._onBackPage.bind(this);
         this._onSearch = this._onSearch.bind(this);
         this._onPlus = this._onPlus.bind(this);
+        this._onPressMenu = this._onPressMenu.bind(this);
       }
 
     /**
@@ -36,6 +38,7 @@ export default class ShopManagePage extends Component{
      * @returns {XML}
      */
       render(){
+          console.log("render 方法执行",shopMobx.catalogData);
           return (
               <View style={ShopManageStyles.container}>
                   {this.renderHeader()}
@@ -101,8 +104,14 @@ export default class ShopManagePage extends Component{
      */
     _renderLeftRow(rowData){
         return (
-            <TouchableOpacity onPress={() => {this._onPressMenu(rowData.itemName,rowData.action)}} activeOpacity={0.5} style={ShopManageStyles.cellBackStyle}>
-                <Text style={ShopManageStyles.leftViewText} numberOfLines={2}>{rowData.itemName}</Text>
+            <TouchableOpacity
+                onPress={() => {this._onPressMenu(rowData.itemName,rowData.action)}}
+                activeOpacity={0.5}
+                style={[ShopManageStyles.cellBackStyle,{backgroundColor:rowData.check?'#FFF':'#F3F3F3'}]}
+            >
+                <View style={ShopManageStyles.cellBackStyleView}>
+                    <Text style={ShopManageStyles.leftViewText} numberOfLines={2}>{rowData.itemName}</Text>
+                </View>
             </TouchableOpacity>
         );
     }
@@ -136,16 +145,32 @@ export default class ShopManagePage extends Component{
         }
         return (
             <View style={ShopManageStyles.rightViewRow}>
-                <View style={ShopManageStyles.rightViewRowLeft}>
-                    <Image source={{uri:logoUri}} style={ShopManageStyles.shopLogo}/>
-                </View>
-
-                <View style={ShopManageStyles.rightViewRowRight}>
-                    <Text style={ShopManageStyles.rightViewRowRightTitle}>{rowData.name}</Text>
-                    <View style={ShopManageStyles.rightViewRowRight_row}>
-                        <Text>售价</Text>
-                        <Text>￥{rowData.salePrice}</Text>
+                <View style={ShopManageStyles.rightViewRowUp}>
+                    <View style={ShopManageStyles.rightViewRowLeft}>
+                        <Image source={{uri:logoUri}} style={ShopManageStyles.shopLogo}/>
                     </View>
+
+                    <View style={ShopManageStyles.rightViewRowRight}>
+                        <Text style={ShopManageStyles.rightViewRowRightTitle} numberOfLines={1}>{rowData.name}</Text>
+                        <View style={ShopManageStyles.rightViewRowRight_row}>
+                            <Text style={ShopManageStyles.rightViewRowRightText}>库    存:</Text>
+                            <Text style={[ShopManageStyles.rightViewRowRightText,ShopManageStyles.marginLeftText]} numberOfLines={1}>{rowData.shopCount}</Text>
+                        </View>
+                        <View style={ShopManageStyles.rightViewRowRight_row}>
+                            <Text style={ShopManageStyles.rightViewRowRightText}>售    价:</Text>
+                            <Text style={[ShopManageStyles.rightViewRowRightText,ShopManageStyles.marginLeftText,ShopManageStyles.colorText]} numberOfLines={1}>￥{rowData.salePrice}</Text>
+                        </View>
+                        <View style={ShopManageStyles.rightViewRowRight_row}>
+                            <Text style={ShopManageStyles.rightViewRowRightText}>有效期:</Text>
+                            <Text style={[ShopManageStyles.rightViewRowRightText,ShopManageStyles.marginLeftText]} numberOfLines={1}>{rowData.endDate}</Text>
+                        </View>
+                    </View>
+                </View>
+                <View style={ShopManageStyles.rightViewRowDown}>
+                    <Button type = "default" size="sm" titleStyle = {{color:'#555',fontSize:12}} style={ShopManageStyles.rightViewRowDownButton} title="下架" onPress={() => {}}/>
+                    <Button type = "default" size="sm" titleStyle = {{color:'#555',fontSize:12}} style={ShopManageStyles.rightViewRowDownButton} title="推荐" onPress={() => {}}/>
+                    <Button type = "default" size="sm" titleStyle = {{color:'#555',fontSize:12}} style={[ShopManageStyles.rightViewRowDownButton]} title="修改商品" onPress={() => {}}/>
+                    <Button type = "default" size="sm" titleStyle = {{color:'#555',fontSize:12}} style={ShopManageStyles.rightViewRowDownButton} title="查看商品" onPress={() => {}}/>
                 </View>
             </View>
         );
@@ -164,7 +189,7 @@ export default class ShopManagePage extends Component{
     }
 
     componentWillReceiveProps() {
-
+        console.log("componentWillReceiveProps方法调用");
     }
 
     /**
@@ -185,5 +210,13 @@ export default class ShopManagePage extends Component{
 
     _onPlus(){
         this.props.navigation.navigate("Home",{});
+    }
+
+    _onPressMenu(itemName,action){
+        shopMobx.flushCatalogDataCheckStatusByCatalogId(action);
+        let leftData = shopMobx.catalogData.slice();
+        this.setState({
+            leftDataSource : this.dsLeft.cloneWithRows(leftData),
+        });
     }
 }

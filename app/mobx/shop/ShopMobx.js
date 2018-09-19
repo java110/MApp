@@ -288,6 +288,43 @@ class ShopMobx{
     }
 
     /**
+     * 初始化刷第一个为true 其他都为false
+     */
+    @action
+    flushCatalogDataCheckStatus(){
+        let catalogsLength = this.catalogData.length;
+
+        for(let catalogIndex = 0; catalogIndex < catalogsLength;catalogIndex ++){
+            if(catalogIndex == 0){
+                this.catalogData[catalogIndex].check=true;
+                continue;
+            }
+
+            this.catalogData[catalogIndex].check=false;
+        }
+    }
+
+    /**
+     * 根据 目录ID 刷状态
+     * 指定 目录ID 刷为true 其他为false
+     * @param catalogId
+     */
+    @action
+    flushCatalogDataCheckStatusByCatalogId(catalogId){
+        let catalogsLength = this.catalogData.length;
+        for(let catalogIndex = 0; catalogIndex < catalogsLength;catalogIndex ++){
+            if(this.catalogData[catalogIndex].action == catalogId){
+                this.catalogData[catalogIndex].check=true;
+                continue;
+            }
+
+            this.catalogData[catalogIndex].check=false;
+        }
+
+        console.log("flushCatalogDataCheckStatusByCatalogId ",this.catalogData);
+    }
+
+    /**
      * 保存数据
      */
     saveShopCatalog(){
