@@ -56,8 +56,17 @@ const ShopManageStyles=StyleSheet.create({
         borderRadius:10,
     },
     rightViewRowRight:{
-        justifyContent:'center',
-    }
+        marginTop:10,
+    },
+    rightViewRowRightTitle:{
+        color:'#555',
+        fontSize:16,
+    },
+    rightViewRowRight_row:{
+        flexDirection:'row',
+
+    },
+
 });
 
 export default ShopManageStyles

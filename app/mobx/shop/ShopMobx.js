@@ -10,6 +10,11 @@ import ShopConst from "../../constants/ShopConst";
  */
 class ShopMobx{
 
+    // 构造
+      constructor() {
+          this.reloadShopCatalog();
+      }
+
 
     @observable
     shopData:Array = [

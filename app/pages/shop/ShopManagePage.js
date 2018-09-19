@@ -141,8 +141,8 @@ export default class ShopManagePage extends Component{
                 </View>
 
                 <View style={ShopManageStyles.rightViewRowRight}>
-                    <Text>{rowData.name}</Text>
-                    <View>
+                    <Text style={ShopManageStyles.rightViewRowRightTitle}>{rowData.name}</Text>
+                    <View style={ShopManageStyles.rightViewRowRight_row}>
                         <Text>售价</Text>
                         <Text>￥{rowData.salePrice}</Text>
                     </View>
