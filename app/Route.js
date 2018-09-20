@@ -26,6 +26,7 @@ import EditShopCatalogPage from "./pages/shop/EditShopCatalogPage";
 import SettingsPage from "./pages/settings/SettingsPage";
 import SettingPrinterPage from "./pages/settings/SettingPrinterPage";
 import ShopManagePage from "./pages/shop/ShopManagePage";
+import AddShopPage from "./pages/shop/AddShopPage";
 
 /**
  *
@@ -116,6 +117,9 @@ const RootStack = createStackNavigator({
     },
     ShopManage:{
         screen:ShopManagePage
+    },
+    AddShop:{
+        screen:AddShopPage
     }
 
 },{

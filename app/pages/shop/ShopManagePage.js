@@ -209,7 +209,7 @@ export default class ShopManagePage extends Component{
     }
 
     _onPlus(){
-        this.props.navigation.navigate("Home",{});
+        this.props.navigation.navigate("AddShop",{});
     }
 
     _onPressMenu(itemName,action){
