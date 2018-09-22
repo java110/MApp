@@ -16,7 +16,6 @@ export default class RowRightHasImageView extends Component{
 
 
     static propTypes ={
-        viewId:PropTypes.string.isRequired,
         leftText:PropTypes.string.isRequired,
         imageData:PropTypes.object.isRequired,
         _onClick:PropTypes.func.isRequired
@@ -37,7 +36,7 @@ export default class RowRightHasImageView extends Component{
 
         return (
           <TouchableOpacity
-              onPress={this._onClick(this.props.viewId)}
+              onPress={this._onClick()}
               style={[styles.rowView,this.props.style]}
           >
               <View style={styles.rowView_0}>
@@ -61,9 +60,9 @@ export default class RowRightHasImageView extends Component{
      * @param data 当前数据
      * @private
      */
-    _onClick(data){
+    _onClick(){
         if(this.props.hasOwnProperty("_onClick")){
-            this.props._onClick(data);
+            this.props._onClick();
         }
     }
 }

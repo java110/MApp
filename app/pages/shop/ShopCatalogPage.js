@@ -2,14 +2,16 @@ import React,{Component} from 'react';
 
 import {View,Text,Image, TouchableOpacity,Platform,ListView} from 'react-native';
 
-import PlusHeaderView from "../../../components/header/PlusHeaderView";
-
 import shopMobx from "../../mobx/shop/ShopMobx";
 import ShopCatalogStyles from "../../styles/shop/ShopCatalogStyles";
 import CommonStyles from "../../styles/CommonStyles";
-import SimpleListView from "../../../components/listview/SimpleListView";
 
 import {observer} from "mobx-react";
+
+import {
+    PlusHeaderView,
+    SimpleListView
+}from 'Java110';
 
 /**
  * 商品目录管理页面

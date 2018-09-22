@@ -4,10 +4,13 @@ import {View, Image, Text, Platform, ScrollView, TouchableOpacity, ListView} fro
 
 import shopMobx from '../../mobx/shop/ShopMobx';
 import CommonStyles from "../../styles/CommonStyles";
-import PlusSearchHeaderView from "../../../components/header/PlusSearchHeaderView";
 import ShopManageStyles from "../../styles/shop/ShopManageStyles";
 import {observer} from "mobx-react";
 import {Button} from "teaset";
+
+import {
+    PlusSearchHeaderView
+} from 'Java110';
 
 @observer
 export default class ShopManagePage extends Component{

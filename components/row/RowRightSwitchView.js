@@ -1,24 +1,23 @@
 import React,{Component} from 'react';
 
-import {View,Image,Text,TouchableOpacity,StyleSheet,TextInput} from 'react-native';
+import {View,Image,Text,TouchableOpacity,StyleSheet,TextInput,Switch} from 'react-native';
 import PropTypes from 'prop-types';
 /**
- * 一行 右边是图片的组件
+ * 一行 右边是Switch 开关
  *
- *  viewId ID 可以写一个不重复的值，将在_onClick 时回传
+ *  viewId ID 可以写一个不重复的值，将在_onSwitchValueChange 时回传
  *  leftText 左侧显示的文字
- *  textPlaceholder placeholder
- *  _onChangeText 文本改变回调方法
- *  inputValue 输入框值
+ *  _onSwitchValueChange 开关转换
+ *  switchValue 输入框值
  * add by wuxw 2018-09-20
  */
-export default class RowRightTextInputView extends Component{
+export default class RowRightSwitchView extends Component{
 
 
     static propTypes ={
         leftText:PropTypes.string.isRequired,
-        textPlaceholder:PropTypes.string.isRequired,
-        _onChangeText:PropTypes.func.isRequired,
+        _onSwitchValueChange:PropTypes.func.isRequired,
+        switchValue:PropTypes.bool.isRequired,
     };
 
 
@@ -27,10 +26,10 @@ export default class RowRightTextInputView extends Component{
         super(props);
         // 初始状态
         this.state = {
-            inputValue:this.props.inputValue,
+            switchValue:this.props.switchValue,
         };
 
-        this._onChangeText = this._onChangeText.bind(this);
+        this._onSwitchValueChange = this._onSwitchValueChange.bind(this);
       }
 
     /**
@@ -47,15 +46,12 @@ export default class RowRightTextInputView extends Component{
                       <Text style={styles.rowViewText}>{this.props.leftText}</Text>
                   </View>
                   <View style={styles.rowView_1}>
-                      <TextInput
-                          underlineColorAndroid="transparent"
-                          placeholder={this.props.textPlaceholder}
-                          style={{ marginLeft: 0, width: 220,}}
-                          onChangeText={(value)=>{this._onChangeText(value)}}
-                          keyboardType={this.props.keyboardText}
-                          value={this.state.inputValue}
-                          ref="keyWordInput"
-                          onSubmitEditing={() => { this.refs.keyWordInput.blur() }}/>
+                      <Switch
+                          value={this.state.switchValue}
+                          onTintColor='#F24E3E'
+                          thumbTintColor='#FFFFFF'
+                          onValueChange={(value)=>{this._onSwitchValueChange(value)}}
+                      ></Switch>
                   </View>
               </View>
           </View>
@@ -67,13 +63,13 @@ export default class RowRightTextInputView extends Component{
      * @param data 当前数据
      * @private
      */
-    _onChangeText(value){
-        if(this.props.hasOwnProperty("_onChangeText")){
-            this.props._onChangeText(value);
+    _onSwitchValueChange(value){
+        if(this.props.hasOwnProperty("_onSwitchValueChange")){
+            this.props._onSwitchValueChange(value);
         }
 
         this.setState({
-            inputValue : value
+            switchValue : value
         });
     }
 }
@@ -97,6 +93,7 @@ const styles = StyleSheet.create({
     rowView_0:{
         flex:1,
         flexDirection:'row',
+        justifyContent:'space-between',
         alignItems:'center',
         borderBottomWidth:1,
         borderBottomColor:"#F3F3F3",

@@ -3,9 +3,14 @@ import React,{Component} from 'react';
 import {View,Image, Text, TextInput,Platform} from 'react-native';
 import CommonStyles from "../../styles/CommonStyles";
 import AddShopStyles from "../../styles/shop/AddShopStyles";
-import CompleteHeaderView from "../../../components/header/CompleteHeaderView";
-import RowRightHasImageView from "../../../components/row/RowRightHasImageView";
-import RowRightTextInputView from "../../../components/row/RowRightTextInputView";
+
+import {
+    CompleteHeaderView,
+    RowRightHasImageView,
+    RowRightTextInputView,
+    RowRightSwitchView,
+    RowRightDateView
+} from 'Java110';
 
 /**
  * 添加商品
@@ -21,12 +26,20 @@ export default class AddShopPage extends Component{
         super(props);
         // 初始状态
         this.state = {
+            shopLogo:"",
             shopName:"",
+            shopPrice:"",
+            openShopCount:"N",
+            shopCount:"",
+            shopDesc:"",
+            startDate:"",
+            endDate:"",
         };
 
         this._onComplete = this._onComplete.bind(this);
         this._onBackPage = this._onBackPage.bind(this);
         this._onShopItemClick = this._onShopItemClick.bind(this);
+        this._onSwitchValueChange=this._onSwitchValueChange.bind(this);
       }
 
     /**
@@ -98,25 +111,69 @@ export default class AddShopPage extends Component{
         return (
             <View style={AddShopStyles.shopItemView}>
                 <RowRightHasImageView
-                    viewId="1"
                     leftText="商品logo"
                     imageData={{url:""}}
-                    _onClick = {this._onShopItemClick}
+                    _onClick={()=>{console.log("选择照片")}}
                     style={AddShopStyles.shopItemRowView}
-                    />
+                />
                 <RowRightTextInputView
-                    viewId="2"
                     leftText="商品名称"
                     textPlaceholder={"请输入商品名称，必填"}
-                    _onChangeText = {this._onShopItemClick}
+                    _onChangeText = {(value)=>{this.setState({shopName:value,})}}
                     inputValue={this.state.shopName}
                     style={AddShopStyles.shopItemRowView}
                 />
-                <RowRightHasImageView
-                    viewId="3"
-                    leftText="其他"
-                    imageData={{url:""}}
-                    _onClick = {this._onShopItemClick}
+                <RowRightTextInputView
+                    leftText="商品价格"
+                    textPlaceholder={"请输入商品价格，必填，如12.00"}
+                    _onChangeText = {(value)=>{this.setState({shopPrice:value,})}}
+                    inputValue={this.state.shopPrice}
+                    keyboardText={'numeric'}
+                    style={AddShopStyles.shopItemRowView}
+                />
+                <RowRightSwitchView
+                    leftText="显示库存"
+                    switchValue={false}
+                    _onSwitchValueChange={(value)=>{this._onSwitchValueChange(value)}}
+                    style={AddShopStyles.shopItemRowView}
+                />
+                {
+                    this.state.openShopCount == 'Y'?
+                        <RowRightTextInputView
+                            leftText="库存数量"
+                            textPlaceholder={"请输入商品数量，必填，如999"}
+                            _onChangeText = {(value)=>{this.setState({shopCount:value,})}}
+                            inputValue={this.state.shopCount}
+                            keyboardText={'numeric'}
+                            style={AddShopStyles.shopItemRowView}
+                        />
+                        :null
+                }
+
+                <RowRightTextInputView
+                    leftText="商品描述"
+                    textPlaceholder={"请输入商品描述，必填"}
+                    _onChangeText = {(value)=>{this.setState({shopDesc:value,})}}
+                    inputValue={this.state.shopDesc}
+                    style={AddShopStyles.shopItemRowView}
+                />
+                <RowRightDateView
+                    leftText="开始时间"
+                    _onChangeDate = {(date)=>{this.setState({
+                        startDate:date,
+                    })}}
+                    date={this.state.startDate}
+                    textPlaceholder="请输入开始时间，必填"
+                    style={AddShopStyles.shopItemRowView}
+                />
+
+                <RowRightDateView
+                    leftText="结束时间"
+                    _onChangeDate = {(date)=>{this.setState({
+                        endDate:date,
+                    })}}
+                    textPlaceholder="请输入结束时间，必填"
+                    date={this.state.endDate}
                     style={AddShopStyles.shopItemRowView}
                 />
             </View>
@@ -150,5 +207,23 @@ export default class AddShopPage extends Component{
      */
     _onShopItemClick(viewId:String){
 
+    }
+
+    /**
+     * 开关类方法
+     * @param viewId
+     * @param value
+     * @private
+     */
+    _onSwitchValueChange(value){
+        if(value == true){
+            this.setState({
+                openShopCount:'Y',
+            });
+        }else{
+            this.setState({
+                openShopCount:'N',
+            });
+        }
     }
 }

@@ -17,6 +17,7 @@
     "react-native": "0.55.4",
     "react-native-ble-manager": "^6.4.0",
     "react-native-camera": "^1.0.0",
+    "react-native-datepicker": "^1.7.2",
     "react-native-image-crop-picker": "^0.20.3",
     "react-native-swiper": "^1.5.13",
     "react-native-tab-navigator": "^0.3.4",

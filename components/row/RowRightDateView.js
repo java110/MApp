@@ -1,24 +1,24 @@
 import React,{Component} from 'react';
 
-import {View,Image,Text,TouchableOpacity,StyleSheet,TextInput} from 'react-native';
+import {View,Image,Text,TouchableOpacity,StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
+import DatePicker from 'react-native-datepicker'
 /**
- * 一行 右边是图片的组件
+ * 时间行
  *
- *  viewId ID 可以写一个不重复的值，将在_onClick 时回传
  *  leftText 左侧显示的文字
- *  textPlaceholder placeholder
- *  _onChangeText 文本改变回调方法
- *  inputValue 输入框值
+ *  _onChangeDate 文本改变回调方法
+ *  date 输入框值
  * add by wuxw 2018-09-20
  */
-export default class RowRightTextInputView extends Component{
+export default class RowRightDateView extends Component{
 
 
     static propTypes ={
         leftText:PropTypes.string.isRequired,
+        date:PropTypes.string.isRequired,
+        _onChangeDate:PropTypes.func.isRequired,
         textPlaceholder:PropTypes.string.isRequired,
-        _onChangeText:PropTypes.func.isRequired,
     };
 
 
@@ -27,10 +27,10 @@ export default class RowRightTextInputView extends Component{
         super(props);
         // 初始状态
         this.state = {
-            inputValue:this.props.inputValue,
+            date:this.props.date,
         };
 
-        this._onChangeText = this._onChangeText.bind(this);
+        this._onChangeDate = this._onChangeDate.bind(this);
       }
 
     /**
@@ -47,15 +47,30 @@ export default class RowRightTextInputView extends Component{
                       <Text style={styles.rowViewText}>{this.props.leftText}</Text>
                   </View>
                   <View style={styles.rowView_1}>
-                      <TextInput
-                          underlineColorAndroid="transparent"
+                      <DatePicker
+                          style={{width: 200}}
+                          date={this.state.date}
+                          mode="date"
                           placeholder={this.props.textPlaceholder}
-                          style={{ marginLeft: 0, width: 220,}}
-                          onChangeText={(value)=>{this._onChangeText(value)}}
-                          keyboardType={this.props.keyboardText}
-                          value={this.state.inputValue}
-                          ref="keyWordInput"
-                          onSubmitEditing={() => { this.refs.keyWordInput.blur() }}/>
+                          format="YYYY-MM-DD"
+                          minDate="2018-01-01"
+                          maxDate="2099-01-01"
+                          confirmBtnText="确定"
+                          cancelBtnText="取消"
+                          showIcon={false}
+                          customStyles={{
+                              dateInput: {
+                                  marginLeft: 5,
+                                  borderWidth:0,
+                                  alignItems:'flex-start',
+                              },
+                              placeholderText:{
+                                  color:'#aaaaaa'
+                              }
+                              // ... You can check the source to find the other keys.
+                          }}
+                          onDateChange={(date) => {this._onChangeDate(date)}}
+                      />
                   </View>
               </View>
           </View>
@@ -67,13 +82,13 @@ export default class RowRightTextInputView extends Component{
      * @param data 当前数据
      * @private
      */
-    _onChangeText(value){
-        if(this.props.hasOwnProperty("_onChangeText")){
-            this.props._onChangeText(value);
+    _onChangeDate(date){
+        if(this.props.hasOwnProperty("_onChangeDate")){
+            this.props._onChangeDate(date);
         }
 
         this.setState({
-            inputValue : value
+            date : date
         });
     }
 }
