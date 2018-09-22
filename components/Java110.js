@@ -16,6 +16,7 @@ import SelectListView from './listview/SelectListView';
 import SimpleListView from './listview/SimpleListView';
 
 import SelectPhotoView from './photo/SelectPhotoView';
+import CameraScreenView from './photo/CameraScreenView';
 
 import BleModule from './print/BleModule';
 
@@ -37,6 +38,7 @@ const Java110={
     SelectListView,
     SimpleListView,
     SelectPhotoView,
+    CameraScreenView,
     BleModule,
     RowRightDateView,
     RowRightHasImageView,

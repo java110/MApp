@@ -9,13 +9,14 @@ import PersonListViewPage from "./PersonListViewPage";
 
 import RNCamera from 'react-native-camera';
 
-import personMobx from '../mobx/person/PersonMobx'
+import personMobx from '../mobx/person/PersonMobx';
+
 import {observer} from "mobx-react";
 
 
 
 @observer
-export default class PersonPage extends Component<Props>{
+export default class PersonPage extends Component{
 
 
     // 构造
@@ -29,6 +30,7 @@ export default class PersonPage extends Component<Props>{
         this.personMobx = this.props.personMobx;
 
         console.log("PersonPage",personMobx);
+
 
         let headerImage = personMobx.personInfo.headerImage;
         this.state = {

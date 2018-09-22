@@ -1,6 +1,6 @@
-import React,{Component} from 'react';
+import React, { Component } from 'react';
 
-import {View,Image,Text,TouchableOpacity,StyleSheet} from 'react-native';
+import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 /**
  * 一行 右边是图片的组件
@@ -12,46 +12,53 @@ import PropTypes from 'prop-types';
  *
  * add by wuxw 2018-09-20
  */
-export default class RowRightHasImageView extends Component{
+export default class RowRightHasImageView extends Component {
 
 
-    static propTypes ={
-        leftText:PropTypes.string.isRequired,
-        imageData:PropTypes.object.isRequired,
-        _onClick:PropTypes.func.isRequired
+    static propTypes = {
+        leftText: PropTypes.string.isRequired,
+        imageData: PropTypes.object.isRequired,
+        _onClick: PropTypes.func.isRequired
     };
 
 
     // 构造
-      constructor(props) {
+    constructor(props) {
         super(props);
         // 初始状态
         this.state = {};
-      }
+        this._onClick = this._onClick.bind(this);
+    }
 
     /**
      * 渲染
      */
-    render(){
-
+    render() {
+        console.log("rowIamge", this.props.imageData);
         return (
-          <TouchableOpacity
-              onPress={this._onClick()}
-              style={[styles.rowView,this.props.style]}
-          >
-              <View style={styles.rowView_0}>
-                  <View>
-                      <Text style={styles.rowViewText}>{this.props.leftText}</Text>
-                  </View>
-                  <View style={styles.rowView_1}>
-                      <Image source={this.props.imageData}></Image>
-                      <Image
-                          source={require('../../icon/listview/more.png')}
-                          style={styles.rowViewRightImage}
-                      ></Image>
-                  </View>
-              </View>
-          </TouchableOpacity>
+            <TouchableOpacity
+                onPress={this._onClick}
+                style={[styles.rowView, this.props.style]}
+            >
+                <View style={styles.rowView_0}>
+                    <View>
+                        <Text style={styles.rowViewText}>{this.props.leftText}</Text>
+                    </View>
+                    <View style={styles.rowView_1}>
+                        {
+                            this.props.imageData.hasOwnProperty('uri') && this.props.imageData.uri == '' ?
+                            null :
+                            <Image source={this.props.imageData}
+                                style={styles.rowViewRightValueImage}
+                            ></Image>
+                        }
+                        <Image
+                            source={require('../../icon/listview/more.png')}
+                            style={styles.rowViewRightImage}
+                        ></Image>
+                    </View>
+                </View>
+            </TouchableOpacity>
         );
     }
 
@@ -60,8 +67,8 @@ export default class RowRightHasImageView extends Component{
      * @param data 当前数据
      * @private
      */
-    _onClick(){
-        if(this.props.hasOwnProperty("_onClick")){
+    _onClick() {
+        if (this.props.hasOwnProperty("_onClick")) {
             this.props._onClick();
         }
     }
@@ -71,33 +78,39 @@ export default class RowRightHasImageView extends Component{
  * 样式
  */
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
+    container: {
+        flex: 1,
     },
-    rowView:{
-        backgroundColor:'#FFF',
-        paddingLeft:10,
-        paddingRight:10,
+    rowView: {
+        backgroundColor: '#FFF',
+        paddingLeft: 10,
+        paddingRight: 10,
     },
-    rowViewText:{
-        fontSize:16,
-        color:'#333'
+    rowViewText: {
+        fontSize: 16,
+        color: '#333'
     },
-    rowView_0:{
-        flex:1,
-        flexDirection:'row',
-        justifyContent:'space-between',
-        alignItems:'center',
-        borderBottomWidth:1,
-        borderBottomColor:"#F3F3F3",
+    rowView_0: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: "#F3F3F3",
     },
-    rowView_1:{
-        flexDirection:'row',
-        justifyContent:'flex-end',
-        alignItems:'center',
+    rowView_1: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
     },
-    rowViewRightImage:{
-        height:12,
-        width:12
+    rowViewRightValueImage: {
+        height: 60,
+        width: 60,
+        marginRight: 5,
+        borderRadius: 5
+    },
+    rowViewRightImage: {
+        height: 12,
+        width: 12
     },
 });

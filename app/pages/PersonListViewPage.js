@@ -51,7 +51,6 @@ export default class PersonListViewPage extends Component{
 
 
     _renderRow(rowData){
-
         return (
             <TouchableOpacity onPress={() =>{this._onPersonPress(rowData.pageAction,rowData.itemValueType,rowData.message,rowData.itemValue)}} activeOpacity={0.5}>
                 {
