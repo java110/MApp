@@ -13,6 +13,7 @@ class ShopMobx{
     // 构造
       constructor() {
           this.reloadShopCatalog();
+          this.reloadShopItemFromPhone();
       }
 
 
@@ -66,92 +67,7 @@ class ShopMobx{
     ];
 
     @observable
-    shopItemData:Array = [{
-        shopId:"1232132",
-        catalogId:"123213",
-        name:"北京方便面",
-        hotBuy:"Y",
-        salePrice:"1.50",
-        openShopCount:"Y",
-        shopCount:"10",
-        startDate:"2018-07-07 11:04:00",
-        endDate:"2019-07-07 11:04:00",
-        shopAttr:[{
-            attrId:"123456",
-            specCd:"870987",
-            value:"不错"
-        }],
-        shopPhoto:[{
-            shopPhotoId:"122222",
-            shopPhotoTypeCd:"L",
-            photo:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535611318920&di=a3018808c6cd6ddea6c87d540db5f98b&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Fd6ca7bcb0a46f21fd8b1b87bfd246b600c33ae15.jpg"
-        }],
-        shopPreferential:{
-            preferentialId:"12323",
-            preferentialType:"N",
-            preferentialValue:"30",
-            preferentialStartDate:"2018-07-07 11:04:00",
-            preferentialEndDate:"2019-07-07 11:04:00"
-        },
-        shopDescribe:"北京方便面"
-    },{
-        shopId:"1232132",
-        catalogId:"123213",
-        name:"北京方便面",
-        hotBuy:"Y",
-        salePrice:"1.50",
-        openShopCount:"Y",
-        shopCount:"10",
-        startDate:"2018-07-07 11:04:00",
-        endDate:"2019-07-07 11:04:00",
-        shopAttr:[{
-            attrId:"123456",
-            specCd:"870987",
-            value:"不错"
-        }],
-        shopPhoto:[{
-            shopPhotoId:"122222",
-            shopPhotoTypeCd:"L",
-            photo:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535611318920&di=a3018808c6cd6ddea6c87d540db5f98b&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Fd6ca7bcb0a46f21fd8b1b87bfd246b600c33ae15.jpg"
-        }],
-        shopPreferential:{
-            preferentialId:"12323",
-            preferentialType:"N",
-            preferentialValue:"30",
-            preferentialStartDate:"2018-07-07 11:04:00",
-            preferentialEndDate:"2019-07-07 11:04:00"
-        },
-        shopDescribe:"北京方便面"
-    },{
-        shopId:"1232132",
-        catalogId:"123213",
-        name:"北京方便面",
-        hotBuy:"Y",
-        salePrice:"1.50",
-        openShopCount:"Y",
-        shopCount:"10",
-        startDate:"2018-07-07 11:04:00",
-        endDate:"2019-07-07 11:04:00",
-        shopAttr:[{
-            attrId:"123456",
-            specCd:"870987",
-            value:"不错"
-        }],
-        shopPhoto:[{
-            shopPhotoId:"122222",
-            shopPhotoTypeCd:"L",
-            photo:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535611318920&di=a3018808c6cd6ddea6c87d540db5f98b&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Fd6ca7bcb0a46f21fd8b1b87bfd246b600c33ae15.jpg"
-        }],
-        shopPreferential:{
-            preferentialId:"12323",
-            preferentialType:"N",
-            preferentialValue:"30",
-            preferentialStartDate:"2018-07-07 11:04:00",
-            preferentialEndDate:"2019-07-07 11:04:00"
-        },
-        shopDescribe:"北京方便面"
-    }
-    ];
+    shopItemData:Array = [];
 
     @observable
     currentModifyCatalogData:Object = {
@@ -324,6 +240,32 @@ class ShopMobx{
         console.log("flushCatalogDataCheckStatusByCatalogId ",this.catalogData);
     }
 
+    @action
+    reflushTempCatalogData(catalogId,tmpCatalogData){
+        for(let tmpIndex = 0 ; tmpIndex < tmpCatalogData.length;tmpIndex++){
+            tmpCatalogData[tmpIndex].id = tmpCatalogData[tmpIndex].action;
+            tmpCatalogData[tmpIndex].value = tmpCatalogData[tmpIndex].itemName;
+            if(tmpCatalogData[tmpIndex].id == catalogId){
+                tmpCatalogData[tmpIndex].check = '1';
+            }else{
+                tmpCatalogData[tmpIndex].check = '0';
+            }
+        }
+
+        tmpCatalogData = tmpCatalogData.sort(this.compare('itemValue'));
+        return tmpCatalogData;
+    }
+    
+    @action
+    getCatalogName(catalogId){
+        for(let tmpIndex = 0 ; tmpIndex < this.catalogData.length;tmpIndex++){
+            
+            if(this.catalogData[tmpIndex].action == catalogId){
+                return this.catalogData[tmpIndex].itemName;
+            }
+        }
+    }
+
     /**
      * 保存数据
      */
@@ -356,6 +298,74 @@ class ShopMobx{
         }
     }
 
+    /**
+     * 添加商品信息
+     */
+    @action
+    addShopItemData(stateInfo){
+
+        let shopId = Date.now()+"";
+        let shopPhotoId = Date.now()+"001";
+
+        let shopItemInfo = {
+            shopId:shopId,
+            catalogId:"123213",
+            name:stateInfo.shopName,
+            hotBuy:"N",
+            salePrice:stateInfo.shopPrice,
+            openShopCount:stateInfo.openShopCount,
+            shopCount:stateInfo.shopCount,
+            startDate:stateInfo.startDate,
+            endDate:stateInfo.endDate,
+            shopAttr:[],
+            shopPhoto:[{
+                shopPhotoId:shopPhotoId,
+                shopPhotoTypeCd:"L",
+                photo:stateInfo.shopLogo
+            }],
+            shopPreferential:{
+            },
+            shopDescribe:stateInfo.shopDesc,
+        }
+        this.shopItemData.push(shopItemInfo);
+
+        this.shopItemData = this.shopItemData.sort(this.compare('shopId'));
+
+        //this.flushListData();
+        this.saveShopItemToPhone();
+    }
+
+     /**
+     * 保存数据
+     */
+    saveShopItemToPhone(){
+        AsyncStorage.setItem(ShopConst.SAVE_SHOP_ITEM_INFO_KEY, JSON.stringify(this.shopItemData),(error)=>{
+            if (error){
+                console.log("存值失败",error);
+            }else{
+                console.log('存值成功!');
+                //这里调用后端发起保存数据
+            }
+        });
+    }
+
+    /**
+     * 加载 商品数据
+     * @returns {Promise.<void>}
+     */
+    reloadShopItemFromPhone = async () =>{
+        try {
+            const value = await AsyncStorage.getItem(ShopConst.SAVE_SHOP_ITEM_INFO_KEY);
+            if (value !== null) {
+                let valueObj = JSON.parse(value);
+                this.shopItemData = valueObj;
+
+            }
+        } catch (error) {
+            // Error retrieving data
+            console.log("_retrieveData ",error)
+        }
+    }
 }
 
 

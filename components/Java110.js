@@ -15,7 +15,7 @@ import NoIconMenuListView from './listview/NoIconMenuListView';
 import SelectListView from './listview/SelectListView';
 import SimpleListView from './listview/SimpleListView';
 
-import SelectPhotoView from './photo/SelectPhotoView';
+import SelectPhotoModelView from './photo/SelectPhotoModelView';
 import CameraScreenView from './photo/CameraScreenView';
 
 import BleModule from './print/BleModule';
@@ -24,8 +24,11 @@ import RowRightDateView from './row/RowRightDateView';
 import RowRightHasImageView from './row/RowRightHasImageView';
 import RowRightSwitchView from './row/RowRightSwitchView';
 import RowRightTextInputView from './row/RowRightTextInputView';
+import RowRightHasTextView from './row/RowRightHasTextView';
 
 import SearchInput from './search/SearchInput';
+
+import SelectView from './select/SelectView';
 
 const Java110={
     DeleteButtonView,
@@ -37,7 +40,7 @@ const Java110={
     NoIconMenuListView,
     SelectListView,
     SimpleListView,
-    SelectPhotoView,
+    SelectPhotoModelView,
     CameraScreenView,
     BleModule,
     RowRightDateView,
@@ -45,6 +48,8 @@ const Java110={
     RowRightSwitchView,
     RowRightTextInputView,
     SearchInput,
+    SelectView,
+    RowRightHasTextView
 };
 
 module.exports=Java110

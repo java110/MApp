@@ -4,16 +4,19 @@ import { View, Image, Text, TextInput, Platform } from 'react-native';
 import CommonStyles from "../../styles/CommonStyles";
 import AddShopStyles from "../../styles/shop/AddShopStyles";
 
+
 import {
     CompleteHeaderView,
     RowRightHasImageView,
     RowRightTextInputView,
     RowRightSwitchView,
     RowRightDateView,
-    SelectPhotoView,
-    CameraScreenView
+    SelectPhotoModelView,
+    CameraScreenView,
+    SelectView,
+    RowRightHasTextView
 } from 'Java110';
-
+import shopMobx from '../../mobx/shop/ShopMobx';
 /**
  * 添加商品
  *
@@ -36,8 +39,12 @@ export default class AddShopPage extends Component {
             shopDesc: "",
             startDate: "",
             endDate: "",
-            imageModelShow:false,
-            showTakePhoto:false,
+            catalogId: "",
+            catalogName:"",
+            imageModelShow: false,
+            showTakePhoto: false,
+            catalogSelectModelShow: false,
+            tmpCatalogData: shopMobx.catalogData,
         };
 
         this._onComplete = this._onComplete.bind(this);
@@ -48,6 +55,7 @@ export default class AddShopPage extends Component {
         this._onSelectPhoto = this._onSelectPhoto.bind(this);
         this._getPhotoData = this._getPhotoData.bind(this);
         this._onClosePhoto = this._onClosePhoto.bind(this);
+        this._onClosePhoto = this._onSelectCatalog.bind(this);
     }
 
     /**
@@ -58,19 +66,19 @@ export default class AddShopPage extends Component {
 
             <View style={AddShopStyles.container}>
                 {
-                    this.state.showTakePhoto?
-                    this._renderTakePhotoScreen()
-                    :this.renderShopInfo()
+                    this.state.showTakePhoto ?
+                        this._renderTakePhotoScreen()
+                        : this.renderShopInfo()
                 }
-               
+
             </View>
         );
     }
 
-    renderShopInfo(){
-        return(
+    renderShopInfo() {
+        return (
             <View>
-                 {this._renderHeader()}
+                {this._renderHeader()}
                 {this._renderShopInfo()}
             </View>
         );
@@ -103,6 +111,7 @@ export default class AddShopPage extends Component {
                 {this._renderShopInfoTitle()}
                 {this._renderShopInfoContent()}
                 {this._renderTakePhoto()}
+                {this._renderSelectCatalog()}
             </View>
         );
     }
@@ -132,15 +141,21 @@ export default class AddShopPage extends Component {
             <View style={AddShopStyles.shopItemView}>
                 <RowRightHasImageView
                     leftText="商品logo"
-                    imageData={{uri:this.state.shopLogo}}
-                    _onClick={() => {this.setState({imageModelShow:true})}}
-                    style={[AddShopStyles.shopItemRowView,{height:70}]}
+                    imageData={{ uri: this.state.shopLogo }}
+                    _onClick={() => { this.setState({ imageModelShow: true }) }}
+                    style={[AddShopStyles.shopItemRowView, { height: 70 }]}
                 />
                 <RowRightTextInputView
                     leftText="商品名称"
                     textPlaceholder={"请输入商品名称，必填"}
                     _onChangeText={(value) => { this.setState({ shopName: value, }) }}
                     inputValue={this.state.shopName}
+                    style={AddShopStyles.shopItemRowView}
+                />
+                <RowRightHasTextView
+                    leftText="所属目录"
+                    rightText={this.state.catalogName}
+                    _onClick={() => { this.setState({ catalogSelectModelShow: true }) }}
                     style={AddShopStyles.shopItemRowView}
                 />
                 <RowRightTextInputView
@@ -209,7 +224,7 @@ export default class AddShopPage extends Component {
      */
     _renderTakePhoto() {
         return (
-            <SelectPhotoView
+            <SelectPhotoModelView
                 imageModelShow={this.state.imageModelShow}
                 _onOpenPhoto={this._onOpenPhoto}
                 _onSelectPhoto={this._onSelectPhoto}
@@ -218,9 +233,32 @@ export default class AddShopPage extends Component {
     }
 
     /**
+     * 选择目录组件
+     */
+    _renderSelectCatalog() {
+        //封装目录信息
+        let tmpCatalogData = this.state.tmpCatalogData;
+        tmpCatalogData = shopMobx.reflushTempCatalogData(this.state.catalogId, tmpCatalogData)
+        return (
+            <SelectView
+                selectModelShow={this.state.catalogSelectModelShow}
+                data={tmpCatalogData.slice()}
+                _onSelectCheck={(id) => {
+                    this._onSelectCatalog(id);
+                }}
+                _onCancle={()=>{
+                    this.setState({
+                        catalogSelectModelShow:false,
+                    });    
+                }}
+            />
+        );
+    }
+
+    /**
      * 显示拍照页面
      */
-    _renderTakePhotoScreen(){
+    _renderTakePhotoScreen() {
         return (
             <CameraScreenView
                 _getPhotoData={this._getPhotoData}
@@ -232,12 +270,12 @@ export default class AddShopPage extends Component {
 
 
     /**
-     * 添加目录
+     * 添加商品
      * @private
      */
     _onComplete() {
         //this.props.navigation.navigate("AddShopCatalog",{})
-
+        shopMobx.addShopItemData(this.state);
         this._onBackPage();
     }
 
@@ -279,37 +317,52 @@ export default class AddShopPage extends Component {
     /**
      * 打开相机
      */
-    _onOpenPhoto(){
+    _onOpenPhoto() {
         this.setState({
-            imageModelShow:false,
-            showTakePhoto:true,
+            imageModelShow: false,
+            showTakePhoto: true,
         });
     }
 
     /**
      * 相册中选取 图片
      */
-    _onSelectPhoto(){
-
+    _onSelectPhoto(cameraImageContext) {
+        this.setState({
+            imageModelShow: false,
+            shopLogo: cameraImageContext,
+        });
     }
 
     /**
      * 获取拍照信息
      * @param {照片信息} photoData 
      */
-    _getPhotoData(photoData){
+    _getPhotoData(photoData) {
         this.setState({
-            shopLogo:photoData,
-            showTakePhoto:false,
+            shopLogo: photoData,
+            showTakePhoto: false,
         });
     }
 
     /**
      * 关闭拍照
      */
-    _onClosePhoto(){
+    _onClosePhoto() {
         this.setState({
-            showTakePhoto:false,
+            showTakePhoto: false,
+        });
+    }
+
+    /**
+     * 选择目录
+     */
+    _onSelectCatalog(id) {
+        let tmpCatalogData = this.state.tmpCatalogData;
+        this.setState({
+            catalogId: id,
+            tmpCatalogData:shopMobx.reflushTempCatalogData(id, tmpCatalogData),
+            catalogName:shopMobx.getCatalogName(id),
         });
     }
 }

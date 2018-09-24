@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 
 import { View, Text, TouchableOpacity, Modal, StyleSheet,Dimensions } from 'react-native';
 
+import ImageCropPicker from 'react-native-image-crop-picker';
+
 import PropTypes from 'prop-types';
 /**
  * 拍照或从相册中选择
  */
-export default class SelectPhotoView extends Component {
+export default class SelectPhotoModelView extends Component {
 
     static propTypes ={
         imageModelShow:PropTypes.bool.isRequired,
@@ -129,9 +131,43 @@ export default class SelectPhotoView extends Component {
      * @private
      */
     _onSelectPhoto(){
-        if(this.props.hasOwnProperty("_onSelectPhoto")){
-            this.props._onSelectPhoto();
-        }
+        ImageCropPicker.openPicker({ 
+            multiple: false,
+            mediaType:'photo',
+            cropperToolbarColor: '#F24E3E',
+         })
+            .then(images => { 
+                console.log(images);
+                //需要去截图
+                ImageCropPicker.openCropper({
+                    cropping: true,
+                    path: images.path,
+                    width: 100,
+                    height: 100,
+                    mediaType: 'photo',
+                    maxWidth: 600,
+                    maxHeight: 600,
+                    includeBase64: true,
+                    cropperCircleOverlay: true,
+                    showCropGuidelines: false,
+                    hideBottomControls: true,
+                    cropperToolbarColor: '#F24E3E',
+                    cropperToolbarTitle: "截取图像",
+                    compressImageMaxWidth: 100,
+                    compressImageMaxHeight: 100,
+
+                }).then(image => {
+                    console.log('received cropped image', image);
+                    const cameraImageContext = 'data:image/png;base64,' + image.data;
+                    if(this.props.hasOwnProperty("_onSelectPhoto")){
+                        this.props._onSelectPhoto(cameraImageContext);
+                    }
+
+                }).catch(e => {
+                    console.log(e);
+                    alert(e.message ? e.message : e);
+                });
+             });
     }
 
     _onViewPhoto(data){

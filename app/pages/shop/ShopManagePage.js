@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 
-import {View, Image, Text, Platform, ScrollView, TouchableOpacity, ListView} from 'react-native';
+import {View, Image, Text, Platform, ScrollView, TouchableOpacity, ListView,FlatList} from 'react-native';
 
 import shopMobx from '../../mobx/shop/ShopMobx';
 import CommonStyles from "../../styles/CommonStyles";
@@ -123,20 +123,23 @@ export default class ShopManagePage extends Component{
      * 右边显示商品目录
      */
     renderRightInfo(){
+        let shopItemData = shopMobx.shopItemData.slice();
         return(
             <ScrollView style={ShopManageStyles.rightView}>
-                <ListView
-                    dataSource={this.state.rightDataSource}
-                    renderRow={this._renderRightRow.bind(this)}
-                    contentContainerStyle={ShopManageStyles.listViewStyle}
-                    removeClippedSubviews={false}
-                    enableEmptySections={true}
+                <FlatList
+                    ref={(flatList)=>this._flatList = flatList}
+                    data={shopItemData}
+                    keyExtractor={(item,index)=>item.shopId}
+                    renderItem={this._renderRightRow.bind(this)}
+                    refreshing={false}
                 />
             </ScrollView>
         );
     }
 
     _renderRightRow(rowData){
+
+        rowData = rowData.item;
 
         let logoUri = ""; //这里写为默认图片地址
         for(let shopPhoneIndex = 0 ; shopPhoneIndex < rowData.shopPhoto.length;shopPhoneIndex++){
@@ -180,19 +183,22 @@ export default class ShopManagePage extends Component{
     }
 
     componentWillMount() {
-
+        console.log("componentWillMount方法调用");
     }
 
     componentDidMount() {
-
+        console.log("componentDidMount方法调用");
     }
 
     componentWillUnmount() {
-
+        console.log("componentWillUnmount方法调用");
     }
 
     componentWillReceiveProps() {
         console.log("componentWillReceiveProps方法调用");
+    }
+    componentDidUpdate(){
+        console.log("componentDidUpdate方法调用");
     }
 
     /**

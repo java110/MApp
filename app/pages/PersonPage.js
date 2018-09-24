@@ -13,6 +13,8 @@ import personMobx from '../mobx/person/PersonMobx';
 
 import {observer} from "mobx-react";
 
+import ImageCropPicker from 'react-native-image-crop-picker';
+
 
 
 @observer
@@ -227,5 +229,43 @@ export default class PersonPage extends Component{
      */
     _onSelectPhoto(){
 
+        this.setState({
+            imageModelShow:false,
+        });
+        ImageCropPicker.openPicker({ 
+            multiple: false,
+            mediaType:'photo',
+            cropperToolbarColor: '#F24E3E',
+         })
+            .then(images => { 
+                console.log(images);
+                //需要去截图
+                ImageCropPicker.openCropper({
+                    cropping: true,
+                    path: images.path,
+                    width: 100,
+                    height: 100,
+                    mediaType: 'photo',
+                    maxWidth: 600,
+                    maxHeight: 600,
+                    includeBase64: true,
+                    cropperCircleOverlay: true,
+                    showCropGuidelines: false,
+                    hideBottomControls: true,
+                    cropperToolbarColor: '#F24E3E',
+                    cropperToolbarTitle: "截取图像",
+                    compressImageMaxWidth: 100,
+                    compressImageMaxHeight: 100,
+
+                }).then(image => {
+                    console.log('received cropped image', image);
+                    const cameraImageContext = 'data:image/png;base64,' + image.data;
+                    personMobx.modifyHeaderImage(cameraImageContext);
+
+                }).catch(e => {
+                    console.log(e);
+                    alert(e.message ? e.message : e);
+                });
+             });
     }
 };
