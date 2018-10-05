@@ -4,7 +4,7 @@ import ShopManagePage from "../../pages/shop/ShopManagePage";
 
 const holdScreenWidth = Dimensions.get('window').width;
 const shopCountViewWith = holdScreenWidth / 2;
-const screenWidth = holdScreenWidth - 100;
+const screenWidth = holdScreenWidth - 90;
 const ShopManageStyles=StyleSheet.create({
     container: {
         flex: 1,
@@ -46,7 +46,7 @@ const ShopManageStyles=StyleSheet.create({
         paddingTop:3,
     },
     rightViewRow:{
-        //height:90,
+        height:118,
         borderBottomWidth:1,
         borderBottomColor:"#F3F3F3"
     },
@@ -60,6 +60,8 @@ const ShopManageStyles=StyleSheet.create({
         justifyContent:'center',
         alignItems:'center'
     },
+    shopRightSectionTitleView:{height:25,backgroundColor:'#F3F3F3',justifyContent:'center',paddingLeft:10},
+    shopRightSectionTitleText:{fontSize:12,color:'#777'},
     shopLogo:{
         height:70,
         width:70,

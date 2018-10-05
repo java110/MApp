@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, Image, Text, TextInput, Platform } from 'react-native';
 import CommonStyles from "../../styles/CommonStyles";
 import AddShopStyles from "../../styles/shop/AddShopStyles";
+import _ from 'lodash'
 
 
 import {
@@ -44,7 +45,7 @@ export default class AddShopPage extends Component {
             imageModelShow: false,
             showTakePhoto: false,
             catalogSelectModelShow: false,
-            tmpCatalogData: shopMobx.catalogData,
+            tmpCatalogData: _.cloneDeep(shopMobx.catalogData.slice()),
         };
 
         this._onComplete = this._onComplete.bind(this);

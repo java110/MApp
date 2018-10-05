@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 
-import {View, Image, Text, Platform, ScrollView, TouchableOpacity, ListView,FlatList} from 'react-native';
+import {View, Image, Text, Platform, ScrollView, TouchableOpacity, ListView,FlatList,SectionList} from 'react-native';
 
 import shopMobx from '../../mobx/shop/ShopMobx';
 import CommonStyles from "../../styles/CommonStyles";
@@ -20,20 +20,20 @@ export default class ShopManagePage extends Component{
       constructor(props) {
         super(props);
 
-          this.dsLeft = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
           const dsRight = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
           shopMobx.flushCatalogDataCheckStatus();
-          let leftData = shopMobx.catalogData.slice();
-          let shopItemData = shopMobx.shopItemData.slice();
+          //let shopItemData = shopMobx.shopItemData.slice();
         // 初始状态
         this.state = {
-            rightDataSource : dsRight.cloneWithRows(shopItemData),
-            leftDataSource : this.dsLeft.cloneWithRows(leftData),
+            //rightDataSource : dsRight.cloneWithRows(shopItemData),
+            leftData : shopMobx.catalogData.slice(),
         };
         this._onBackPage = this._onBackPage.bind(this);
         this._onSearch = this._onSearch.bind(this);
         this._onPlus = this._onPlus.bind(this);
         this._onPressMenu = this._onPressMenu.bind(this);
+        this.itemChange = this.itemChange.bind(this);
+        this._getItemLayout = this._getItemLayout.bind(this);
       }
 
     /**
@@ -85,17 +85,18 @@ export default class ShopManagePage extends Component{
      * 左边显示商品目录
      */
     renderLeftInfo(){
+        let leftData = shopMobx.catalogData.slice();
         return(
-            <ScrollView style={ShopManageStyles.leftView}>
-                <ListView
-                    dataSource={this.state.leftDataSource}
-                    renderRow={this._renderLeftRow.bind(this)}
-                    contentContainerStyle={ShopManageStyles.listViewStyle}
-                    removeClippedSubviews={false}
-                    enableEmptySections={true}
+            <View style={ShopManageStyles.leftView}>
+                <FlatList
+                    ref={(flatList)=>this._leftFlatList = flatList}
+                    data={leftData}
+                    keyExtractor={(item,index)=>item.action}
+                    renderItem={this._renderLeftRow.bind(this)}
+                    refreshing={false}
                     renderSeparator={this._renderSeparator}
                 />
-            </ScrollView>
+            </View>
         );
     }
 
@@ -106,6 +107,8 @@ export default class ShopManagePage extends Component{
      * @private
      */
     _renderLeftRow(rowData){
+        console.log("_renderLeftRow",rowData);
+        rowData = rowData.item;
         return (
             <TouchableOpacity
                 onPress={() => {this._onPressMenu(rowData.itemName,rowData.action)}}
@@ -123,24 +126,62 @@ export default class ShopManagePage extends Component{
      * 右边显示商品目录
      */
     renderRightInfo(){
-        let shopItemData = shopMobx.shopItemData.slice();
+        let shopItemData = shopMobx.shopItemDataList;
         return(
-            <ScrollView style={ShopManageStyles.rightView}>
-                <FlatList
-                    ref={(flatList)=>this._flatList = flatList}
-                    data={shopItemData}
-                    keyExtractor={(item,index)=>item.shopId}
+            <View style={ShopManageStyles.rightView}>
+                <SectionList
+                    ref={(sectionList)=>this._sectionList = sectionList}
+                    sections={shopItemData}
+                    renderSectionHeader={this._renderRightHeader.bind(this)}
                     renderItem={this._renderRightRow.bind(this)}
-                    refreshing={false}
-                />
-            </ScrollView>
+                    keyExtractor={ (item) => item.shopId }
+                    onViewableItemsChanged={ (info) => this.itemChange(info) }
+                    getItemLayout={this._getItemLayout}
+                />    
+            </View>
+        );
+    }
+    
+    _getItemLayout(data, index) {
+    // console.log("_getItemLayout",data,index);
+    let [length, separator, header] = [118, 0, 25];
+    // console.log("_getItemLayout",{length, offset: (length + separator) * index + header, index})
+    // return {length, offset: (length + separator) * index + header, index};
+    let tmpOffset = 0;
+    for(let tmpIndex = 0 ;tmpIndex < index;tmpIndex ++){
+        let dataCount = 0;
+        for(let dataIndex = 0;dataIndex< data.length;dataIndex ++){
+            dataCount += data[dataIndex].data.length+2;
+            if(tmpIndex == 1 || tmpIndex == dataCount+1){
+                tmpOffset = tmpOffset + header;
+                break;
+            }else if(tmpIndex == dataCount){ //这里应该是 section foot 不做处理
+                break;
+            }else if(tmpIndex == 0){
+                tmpOffset == 0;
+                break;
+            }else if(tmpIndex < dataCount){
+                tmpOffset = tmpOffset + length;
+                break;
+            }
+        }
+    }
+
+    //console.log("_getItemLayout",data,index,tmpOffset);
+    return {length, offset: tmpOffset, index};
+    }
+
+    _renderRightHeader({section}){
+        return (
+            <View style={ShopManageStyles.shopRightSectionTitleView}>
+                <Text style={ShopManageStyles.shopRightSectionTitleText}>{section.catalogName}</Text>
+            </View>
         );
     }
 
     _renderRightRow(rowData){
-
+        //console.log('_renderRightRow',rowData);
         rowData = rowData.item;
-
         let logoUri = ""; //这里写为默认图片地址
         for(let shopPhoneIndex = 0 ; shopPhoneIndex < rowData.shopPhoto.length;shopPhoneIndex++){
             let sPhone = rowData.shopPhoto[shopPhoneIndex];
@@ -201,6 +242,18 @@ export default class ShopManagePage extends Component{
         console.log("componentDidUpdate方法调用");
     }
 
+    itemChange(info){
+        // let section = info.viewableItems[0].section.section;
+        // if (section) {
+        //   let index = Headers.indexOf(section);
+        //   if (index < 0) {
+        //     index = 0;
+        //   }
+        //   this.setState({ cell : index });
+        // }
+      };
+
+
     /**
      * 返回按钮
      * @private
@@ -225,7 +278,18 @@ export default class ShopManagePage extends Component{
         shopMobx.flushCatalogDataCheckStatusByCatalogId(action);
         let leftData = shopMobx.catalogData.slice();
         this.setState({
-            leftDataSource : this.dsLeft.cloneWithRows(leftData),
+            leftData : leftData,
         });
+        //根据目录ID找 key
+        let key = shopMobx.getShopSectionKeyByCatalogId(action);
+        if(key == -1){ //当前目录没有商品信息
+            return ;
+        }
+        this._sectionList.scrollToLocation({ 
+            sectionIndex: key,
+            itemIndex: 0,
+          viewOffset: 0, 
+          viewPosition:0
+        })
     }
 }

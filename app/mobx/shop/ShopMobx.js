@@ -1,8 +1,7 @@
-import {observable, action, runInAction, autorun} from 'mobx';
+import {observable, action, runInAction, autorun, computed} from 'mobx';
 import {AsyncStorage} from 'react-native';
 import ShopMenu from "../../constants/ShopMenu";
 import ShopConst from "../../constants/ShopConst";
-
 
 /**
  * 商品 处理类
@@ -266,6 +265,16 @@ class ShopMobx{
         }
     }
 
+    @action
+    getCatalogInfo(catalogId){
+        for(let tmpIndex = 0 ; tmpIndex < this.catalogData.length;tmpIndex++){
+            
+            if(this.catalogData[tmpIndex].action == catalogId){
+                return this.catalogData[tmpIndex];
+            }
+        }
+    }
+
     /**
      * 保存数据
      */
@@ -307,9 +316,11 @@ class ShopMobx{
         let shopId = Date.now()+"";
         let shopPhotoId = Date.now()+"001";
 
+        //目录ID
+        let catalogId = stateInfo.catalogId;
         let shopItemInfo = {
             shopId:shopId,
-            catalogId:"123213",
+            catalogId:catalogId,
             name:stateInfo.shopName,
             hotBuy:"N",
             salePrice:stateInfo.shopPrice,
@@ -327,12 +338,78 @@ class ShopMobx{
             },
             shopDescribe:stateInfo.shopDesc,
         }
-        this.shopItemData.push(shopItemInfo);
 
-        this.shopItemData = this.shopItemData.sort(this.compare('shopId'));
+        if(!this._hasCatalogInShopItem(catalogId,this.shopItemData)){
+            let shopData = {
+                catalogId:catalogId,
+                key:catalogId,
+                catalogName:this.getCatalogInfo(catalogId).itemName,
+                catalogSeq:this.getCatalogInfo(catalogId).itemValue,
+                data:[shopItemInfo]
+            };
+            this.shopItemData.push(shopData);
+        }else{
+            for(let shopIndex = 0 ;shopIndex <this.shopItemData.length;shopIndex ++){
+                if(this.shopItemData[shopIndex].catalogId == catalogId){
+                    this.shopItemData[shopIndex].data.push(shopItemInfo);
+                }
+            }
+        }
+
+        this.shopItemData = this.shopItemData.sort(this.compare('catalogSeq'));
 
         //this.flushListData();
         this.saveShopItemToPhone();
+    }
+
+    @computed get shopItemDataList(){
+
+         //刷key
+         let tempShopItemData = this.shopItemData.map((v)=>{
+            return {
+                catalogId:v.catalogId,
+                key:v.key,
+                catalogName:v.catalogName,
+                catalogSeq:v.catalogSeq,
+                data:v.data.slice()
+            }
+        }).slice();
+
+         for(let tmpShopItemIndex = 0;tmpShopItemIndex < tempShopItemData.length; tmpShopItemIndex++){
+            tempShopItemData[tmpShopItemIndex].key = tmpShopItemIndex;
+        }
+
+        return tempShopItemData;
+    }
+
+    /**
+     * 根据商品目录ID找key
+     * @param {目录ID} catalogId 
+     */
+    @action
+    getShopSectionKeyByCatalogId(catalogId){
+        for(let tmpShopItemIndex = 0;tmpShopItemIndex < this.shopItemData.length; tmpShopItemIndex++){
+            if(this.shopItemData[tmpShopItemIndex].catalogId == catalogId){
+                return this.shopItemData[tmpShopItemIndex].key;
+            }
+        }
+
+        return -1;
+    }
+
+    /**
+     * 商品列表中是否已经存在 目录ID
+     * @param {目录ID} catalogId 
+     * @param {商品信息} shopItemData 
+     */
+    _hasCatalogInShopItem(catalogId,shopItemData){
+        for(let shopIndex = 0 ;shopIndex <shopItemData.length;shopIndex ++){
+            if(shopItemData[shopIndex].catalogId == catalogId){
+                return true;
+            }
+        }
+
+        return false;
     }
 
      /**
