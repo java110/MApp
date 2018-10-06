@@ -19,6 +19,8 @@ react-native start
 
 ### 系统效果图
 
+[下载apk](output/MApp.apk)
+
 <div style="align=center">
 <img width="300" height="500" src="doc/IMG_0599.JPG"/>
 </div>
