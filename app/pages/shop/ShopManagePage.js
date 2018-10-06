@@ -19,15 +19,14 @@ export default class ShopManagePage extends Component{
     // 构造
       constructor(props) {
         super(props);
-
-          const dsRight = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
           shopMobx.flushCatalogDataCheckStatus();
-          //let shopItemData = shopMobx.shopItemData.slice();
-        // 初始状态
         this.state = {
-            //rightDataSource : dsRight.cloneWithRows(shopItemData),
             leftData : shopMobx.catalogData.slice(),
         };
+
+        this.pressLeft=false;
+        this.pressLeftWait = false; //定时器是否在工作
+        this.timers = [];
         this._onBackPage = this._onBackPage.bind(this);
         this._onSearch = this._onSearch.bind(this);
         this._onPlus = this._onPlus.bind(this);
@@ -107,7 +106,7 @@ export default class ShopManagePage extends Component{
      * @private
      */
     _renderLeftRow(rowData){
-        console.log("_renderLeftRow",rowData);
+        //console.log("_renderLeftRow",rowData);
         rowData = rowData.item;
         return (
             <TouchableOpacity
@@ -233,6 +232,11 @@ export default class ShopManagePage extends Component{
 
     componentWillUnmount() {
         console.log("componentWillUnmount方法调用");
+        if(this.timers.length >0){
+            for(let timerIndex = 0; timerIndex < this.timers.length;timerIndex++){
+                clearTimeout(this.timers[timerIndex]);
+            }
+        }
     }
 
     componentWillReceiveProps() {
@@ -243,14 +247,33 @@ export default class ShopManagePage extends Component{
     }
 
     itemChange(info){
-        // let section = info.viewableItems[0].section.section;
-        // if (section) {
-        //   let index = Headers.indexOf(section);
-        //   if (index < 0) {
-        //     index = 0;
-        //   }
-        //   this.setState({ cell : index });
-        // }
+        console.log('itemChange pressLeft',this.pressLeft);
+        if(this.pressLeft){ //说明在点击左边菜单，这里不做处理
+            if(this.timers.length==0){
+                let timer = setTimeout(()=>{
+                    this.pressLeft = false;
+                    this.timers.pop();
+                },500);
+                this.timers.push(timer);
+            } 
+            return ;
+        }
+        console.log("itemChange",info);
+        let viewableItemsLenght = info.viewableItems.length;
+        let catalogId ;
+        if(viewableItemsLenght > 1){
+            catalogId = info.viewableItems[1].section.catalogId;
+        }else{
+            catalogId = info.viewableItems[0].section.catalogId;
+        }
+        
+        if (catalogId) {
+            shopMobx.flushCatalogDataCheckStatusByCatalogId(catalogId);
+            let leftData = shopMobx.catalogData.slice();
+            this.setState({
+                leftData : leftData,
+            });
+        }
       };
 
 
@@ -275,6 +298,11 @@ export default class ShopManagePage extends Component{
     }
 
     _onPressMenu(itemName,action){
+        
+        // if(this.pressLeft){
+        //     return ;
+        // }
+        this.pressLeft = true;
         shopMobx.flushCatalogDataCheckStatusByCatalogId(action);
         let leftData = shopMobx.catalogData.slice();
         this.setState({
@@ -283,6 +311,7 @@ export default class ShopManagePage extends Component{
         //根据目录ID找 key
         let key = shopMobx.getShopSectionKeyByCatalogId(action);
         if(key == -1){ //当前目录没有商品信息
+            this.pressLeft=false;
             return ;
         }
         this._sectionList.scrollToLocation({ 
@@ -290,6 +319,8 @@ export default class ShopManagePage extends Component{
             itemIndex: 0,
           viewOffset: 0, 
           viewPosition:0
-        })
+        });
+
+       
     }
 }
