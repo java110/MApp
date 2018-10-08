@@ -364,8 +364,12 @@ class ShopMobx{
 
     @computed get shopItemDataList(){
 
-         //刷key
-         let tempShopItemData = this.shopItemData.map((v)=>{
+        return this.refreshKeyFromShopItem();         
+    }
+
+    refreshKeyFromShopItem(){
+        //刷key
+        let tempShopItemData = this.shopItemData.map((v)=>{
             return {
                 catalogId:v.catalogId,
                 key:v.key,
@@ -388,9 +392,10 @@ class ShopMobx{
      */
     @action
     getShopSectionKeyByCatalogId(catalogId){
-        for(let tmpShopItemIndex = 0;tmpShopItemIndex < this.shopItemData.length; tmpShopItemIndex++){
-            if(this.shopItemData[tmpShopItemIndex].catalogId == catalogId){
-                return this.shopItemData[tmpShopItemIndex].key;
+        let tempShopItemData = this.refreshKeyFromShopItem();
+        for(let tmpShopItemIndex = 0;tmpShopItemIndex < tempShopItemData.length; tmpShopItemIndex++){
+            if(tempShopItemData[tmpShopItemIndex].catalogId == catalogId){
+                return tempShopItemData[tmpShopItemIndex].key;
             }
         }
 

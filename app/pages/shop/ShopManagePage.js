@@ -126,6 +126,7 @@ export default class ShopManagePage extends Component{
      */
     renderRightInfo(){
         let shopItemData = shopMobx.shopItemDataList;
+        console.log("renderRightInfo",shopItemData);
         return(
             <View style={ShopManageStyles.rightView}>
                 <SectionList
@@ -315,6 +316,7 @@ export default class ShopManagePage extends Component{
             this.pressLeft=false;
             return ;
         }
+        console.log("_onPressMenu :: key",key);
         this._sectionList.scrollToLocation({ 
             sectionIndex: key,
             itemIndex: 0,

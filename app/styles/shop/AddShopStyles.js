@@ -25,7 +25,7 @@ const AddShopStyles=StyleSheet.create({
     },
     shopItemView:{
         //height:60,
-        flex:1,
+        //flex:1,
     },
     shopItemRowView:{
         height:45,

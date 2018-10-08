@@ -3,6 +3,7 @@ import {View,Text,Image,TextInput, Platform } from 'react-native';
 import AddShopStyles from "../../styles/shop/AddShopStyles";
 import CommonStyles from "../../styles/CommonStyles";
 
+
 import {
     CompleteHeaderView,
     RowRightHasImageView,
@@ -16,6 +17,7 @@ import {
     DeleteButtonView
 } from 'Java110';
 import shopMobx from '../../mobx/shop/ShopMobx';
+import _ from 'lodash';
 
 /**
  * 编辑商品页面
@@ -42,7 +44,7 @@ export default class EditShopPage extends Component{
             startDate:shopMobx.getShopColumnValueByColumnNameAndShopId('startDate',shopId),
             endDate: shopMobx.getShopColumnValueByColumnNameAndShopId('endDate',shopId),
             catalogId: shopMobx.getShopColumnValueByColumnNameAndShopId('catalogId',shopId),
-            catalogName:shopMobx.getShopColumnValueByColumnNameAndShopId('catalogName',shopId),
+            catalogName:shopMobx.getCatalogName(shopMobx.getShopColumnValueByColumnNameAndShopId('catalogId',shopId)),
             imageModelShow: false,
             showTakePhoto: false,
             catalogSelectModelShow: false,
@@ -230,7 +232,7 @@ export default class EditShopPage extends Component{
      */
     _renderDeleteShopInfo(){
         return (
-            <View style={{marginTop:12,flex:1}}>
+            <View style={{marginTop:12}}>
                 <DeleteButtonView
                     _onDelete = {this._onDelete}
                     _viewButtonName = "删除商品"
@@ -388,8 +390,8 @@ export default class EditShopPage extends Component{
     }
 
     _onDelete(){
-        this.deleteShopItemData(this.state.shopId);
+        shopMobx.deleteShopItemData(this.state.shopId);
         //返回
-        _onBackPage();
+        this._onBackPage();
     }
 }
