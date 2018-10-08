@@ -29,8 +29,13 @@ export default class WelcomePage extends Component{
 
     componentDidMount(){
         console.log("componentDidMount 开始调用")
-        setTimeout(() =>{
-            this.props.navigation.navigate('Home',{})
+        this.timer = setTimeout(() =>{
+            this.props.navigation.navigate('Home',{});
+            this.timer && clearTimeout(this.timer);
         },3000)
+    }
+
+    componentWillUnmount(){
+        //this.timer && clearTimeout(this.timer);
     }
 }

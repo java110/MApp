@@ -215,7 +215,7 @@ export default class ShopManagePage extends Component{
                 <View style={ShopManageStyles.rightViewRowDown}>
                     <Button type = "default" size="sm" titleStyle = {{color:'#555',fontSize:12}} style={ShopManageStyles.rightViewRowDownButton} title="下架" onPress={() => {}}/>
                     <Button type = "default" size="sm" titleStyle = {{color:'#555',fontSize:12}} style={ShopManageStyles.rightViewRowDownButton} title="推荐" onPress={() => {}}/>
-                    <Button type = "default" size="sm" titleStyle = {{color:'#555',fontSize:12}} style={[ShopManageStyles.rightViewRowDownButton]} title="修改商品" onPress={() => {}}/>
+                    <Button type = "default" size="sm" titleStyle = {{color:'#555',fontSize:12}} style={[ShopManageStyles.rightViewRowDownButton]} title="修改商品" onPress={() => {this.props.navigation.navigate('EditShop',{shopId:rowData.shopId})}}/>
                     <Button type = "default" size="sm" titleStyle = {{color:'#555',fontSize:12}} style={ShopManageStyles.rightViewRowDownButton} title="查看商品" onPress={() => {}}/>
                 </View>
             </View>
@@ -253,6 +253,7 @@ export default class ShopManagePage extends Component{
                 let timer = setTimeout(()=>{
                     this.pressLeft = false;
                     this.timers.pop();
+                    this.timer && clearTimeout(this.timer);
                 },500);
                 this.timers.push(timer);
             } 

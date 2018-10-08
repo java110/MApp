@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 
 import {View, Text, Image, TouchableOpacity, Modal,StyleSheet,Dimensions} from 'react-native';
 
+import PropTypes from 'prop-types';
+
 /**
  * 删除按钮
  *
@@ -11,6 +13,10 @@ import {View, Text, Image, TouchableOpacity, Modal,StyleSheet,Dimensions} from '
 export default class DeleteButtonView extends Component{
 
 
+    static propTypes ={
+        _onDelete:PropTypes.func.isRequired,
+        _viewButtonName:PropTypes.string.isRequired
+    };
     // 构造
     constructor(props) {
         super(props);
@@ -36,7 +42,7 @@ export default class DeleteButtonView extends Component{
         return (
             <View style={styles.container}>
                 <TouchableOpacity style={styles.deleteView} onPress={()=>{this._onShowDeleteModel()}} >
-                    <Text style={styles.deleteText}>删除目录</Text>
+                    <Text style={styles.deleteText}>{this.props._viewButtonName}</Text>
                 </TouchableOpacity>
 
                 <Modal

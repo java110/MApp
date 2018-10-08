@@ -443,6 +443,89 @@ class ShopMobx{
             console.log("_retrieveData ",error)
         }
     }
+
+    /**
+     * 根据对象属性名称和 商品ID获取对应属性值
+     * @param {对象属性名} columnName 
+     * @param {商品ID} shopId 
+     */
+    @action
+    getShopColumnValueByColumnNameAndShopId(columnName,shopId){
+        let shopItemDataSize = this.shopItemData.length;
+        for(let shopItemIndex = 0;shopItemIndex < shopItemDataSize;shopItemIndex++){
+            let data = this.shopItemData[shopItemIndex].data;
+
+            for(let shopDataIndex = 0;shopDataIndex < data.length;shopDataIndex ++){
+                let tempData = data[shopDataIndex];
+                if(shopId == tempData.shopId){
+                    return tempData[columnName];
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @action
+    editShopItemData(stateInfo){
+
+        let shopItemDataSize = this.shopItemData.length;
+        for(let shopItemIndex = 0;shopItemIndex < shopItemDataSize;shopItemIndex++){
+            let data = this.shopItemData[shopItemIndex].data;
+
+            for(let shopDataIndex = 0;shopDataIndex < data.length;shopDataIndex ++){
+                let tempData = data[shopDataIndex];
+                if(shopId == tempData.shopId){
+                    _flushShopItemData(stateInfo,tempData);
+                    
+                }
+            }
+        }
+    }
+    /**
+     * 将页面填写的数据刷到数据对象中
+     * 
+     * @param {页面填写数据} stateInfo 
+     * @param {商品数据对象} shopData 
+     */
+    _flushShopItemData(stateInfo,shopData){
+            shopData.catalogId=stateInfo.catalogId;
+            shopData.name=stateInfo.shopName;
+            shopData.salePrice=stateInfo.shopPrice;
+            shopData.openShopCount=stateInfo.openShopCount;
+            shopData.shopCount=stateInfo.shopCount;
+            shopData.startDate=stateInfo.startDate;
+            shopData.endDate=stateInfo.endDate;
+            //保存头像信息
+            for(let shopPhotoIndex = 0;shopPhotoIndex < shopData.shopPhoto.length;shopPhotoIndex ++){
+                if(shopData.shopPhoto[shopPhotoIndex].shopPhotoTypeCd == 'L'){
+                    shopData.shopPhoto[shopPhotoIndex].photo = stateInfo.shopLogo
+                }
+            }
+            shopData.shopDescribe=stateInfo.shopDesc;
+            this.saveShopItemToPhone();
+    }
+
+    @action
+    deleteShopItemData(shopId){
+        let shopItemDataSize = this.shopItemData.length;
+        for(let shopItemIndex = 0;shopItemIndex < shopItemDataSize;shopItemIndex++){
+            let data = this.shopItemData[shopItemIndex].data;
+            if(data.length == 1){
+                this.shopItemData.remove(this.shopItemData[shopItemIndex]);
+                this.saveShopItemToPhone();
+                return;
+            }
+            for(let shopDataIndex = 0;shopDataIndex < data.length;shopDataIndex ++){
+                let tempData = data[shopDataIndex];
+                if(shopId == tempData.shopId){
+                    data.remove(tempData); 
+                    this.saveShopItemToPhone();
+                    return ;
+                }
+            }
+        }
+    }
 }
 
 

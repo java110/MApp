@@ -28,6 +28,8 @@ import SettingPrinterPage from "./pages/settings/SettingPrinterPage";
 import ShopManagePage from "./pages/shop/ShopManagePage";
 import AddShopPage from "./pages/shop/AddShopPage";
 
+import EditShopPage from "./pages/shop/EditShopPage";
+
 /**
  *
  *   this.props.navigation.navigate('Details') 将新路由推送到堆栈导航器（如果它尚未在堆栈中），否则它将跳转到该屏幕
@@ -120,6 +122,9 @@ const RootStack = createStackNavigator({
     },
     AddShop:{
         screen:AddShopPage
+    },
+    EditShop:{
+        screen:EditShopPage
     }
 
 },{

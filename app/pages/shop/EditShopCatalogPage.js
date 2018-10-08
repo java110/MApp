@@ -132,6 +132,7 @@ export default class EditShopCatalogPage extends Component{
             <View style={{marginTop:12,flex:1}}>
                 <DeleteButtonView
                     _onDelete = {this._onDelete}
+                    _viewButtonName = "删除目录"
                     ></DeleteButtonView>
             </View>
         );
