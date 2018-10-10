@@ -40,14 +40,14 @@ class ShopMobx{
         {
             imagePath:require("../../images/buy.png"),
             name:"未上架商品",
-            routeName:"OrderList",
+            routeName:"DownlineShop",
             menuCd:ShopMenu.MENU_CD_NO_DELIVERY,
             count:0,
         },
         {
             imagePath:require("../../images/logisticsMenu.png"),
             name:"推荐商品",
-            routeName:"OrderList",
+            routeName:"RecommendShop",
             menuCd:ShopMenu.MENU_CD_DELIVERY,
             count:0,
         },
@@ -451,6 +451,7 @@ class ShopMobx{
 
     /**
      * 根据对象属性名称和 商品ID获取对应属性值
+     * 
      * @param {对象属性名} columnName 
      * @param {商品ID} shopId 
      */
@@ -463,6 +464,15 @@ class ShopMobx{
             for(let shopDataIndex = 0;shopDataIndex < data.length;shopDataIndex ++){
                 let tempData = data[shopDataIndex];
                 if(shopId == tempData.shopId){
+                    //如果是商品logo 则从shopPhoto中获取
+                    if('shopLogo' == columnName ){
+                        let shopPhotoes = tempData.shopPhoto;
+                        for(let shopPhotoIndex = 0 ; shopDataIndex < shopPhotoes.length;shopPhotoIndex ++){
+                            if(shopPhotoes[shopPhotoIndex].shopPhotoTypeCd == 'L'){
+                                return shopPhotoes[shopPhotoIndex].photo;
+                            }
+                        }
+                    }
                     return tempData[columnName];
                 }
             }
@@ -475,16 +485,22 @@ class ShopMobx{
     editShopItemData(stateInfo){
 
         let shopItemDataSize = this.shopItemData.length;
+        let shopId = stateInfo.shopId;
         for(let shopItemIndex = 0;shopItemIndex < shopItemDataSize;shopItemIndex++){
             let data = this.shopItemData[shopItemIndex].data;
 
             for(let shopDataIndex = 0;shopDataIndex < data.length;shopDataIndex ++){
                 let tempData = data[shopDataIndex];
                 if(shopId == tempData.shopId){
-                    _flushShopItemData(stateInfo,tempData);
-                    
+                    let retData = this._flushShopItemData(stateInfo,tempData);
+                    // data.remove(tempData);
+                    // data.push(retData);
                 }
             }
+            
+            //这边会存在前台不刷新的情况 这里强制删一下 data节点和 重写一下
+            this.shopItemData[shopItemIndex].data = {};
+            this.shopItemData[shopItemIndex].data = data;
         }
     }
     /**
@@ -509,6 +525,7 @@ class ShopMobx{
             }
             shopData.shopDescribe=stateInfo.shopDesc;
             this.saveShopItemToPhone();
+        return shopData;
     }
 
     @action

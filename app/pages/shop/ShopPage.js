@@ -120,7 +120,7 @@ export default class ShopPage extends Component{
      */
     _onPressMenu(routeName,name,menuCd){
         let tmpName = name.endsWith('订单')?name:name+"订单";
-
+        console.log("_onPressMenu",routeName);
         this.props.navigation.navigate(routeName,{'name':tmpName,'menuCd':menuCd});
     }
 

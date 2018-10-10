@@ -169,7 +169,7 @@ export default class AddShopPage extends Component {
                 />
                 <RowRightSwitchView
                     leftText="显示库存"
-                    switchValue={false}
+                    switchValue={this.state.openShopCount == 'Y'?true:false}
                     _onSwitchValueChange={(value) => { this._onSwitchValueChange(value) }}
                     style={AddShopStyles.shopItemRowView}
                 />

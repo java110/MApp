@@ -9,11 +9,14 @@ import { observer } from "mobx-react";
 import { Button } from "teaset";
 
 import {
-    PlusSearchHeaderView
+    NoActionHeaderView
 } from 'Java110';
 
+/**
+ * 下线 商品
+ */
 @observer
-export default class ShopManagePage extends Component {
+export default class RecommendShopPage extends Component {
 
 
     // 构造
@@ -28,8 +31,6 @@ export default class ShopManagePage extends Component {
         this.pressLeftWait = false; //定时器是否在工作
         this.timers = [];
         this._onBackPage = this._onBackPage.bind(this);
-        this._onSearch = this._onSearch.bind(this);
-        this._onPlus = this._onPlus.bind(this);
         this._onPressMenu = this._onPressMenu.bind(this);
         this.itemChange = this.itemChange.bind(this);
         this._getItemLayout = this._getItemLayout.bind(this);
@@ -40,7 +41,6 @@ export default class ShopManagePage extends Component {
      * @returns {XML}
      */
     render() {
-        console.log("render 方法执行", shopMobx.catalogData);
         return (
             <View style={ShopManageStyles.container}>
                 {this.renderHeader()}
@@ -57,11 +57,10 @@ export default class ShopManagePage extends Component {
 
         return (
             <View style={((Platform.OS === 'android' && Platform.Version >= 19) || Platform.OS === 'ios') ? CommonStyles.header : CommonStyles.header_android_low}>
-                <PlusSearchHeaderView
+                <NoActionHeaderView
+                    currentPageName={"推荐商品"}
+                    backPageName={""}
                     _onBackPage={this._onBackPage}
-                    _onSearch={this._onSearch}
-                    _onPlus={this._onPlus}
-                    placeholder="请输入商品名称"
                 />
             </View>
         );
@@ -219,24 +218,8 @@ export default class ShopManagePage extends Component {
                         size="sm"
                         titleStyle={{ color: '#555', fontSize: 12 }}
                         style={ShopManageStyles.rightViewRowDownButton}
-                        title="下架"
+                        title="取消推荐"
                         onPress={() => { }}
-                    />
-                    <Button
-                        type="default"
-                        size="sm"
-                        titleStyle={{ color: '#555', fontSize: 12 }}
-                        style={ShopManageStyles.rightViewRowDownButton}
-                        title="推荐"
-                        onPress={() => { }} 
-                    />
-                    <Button
-                        type="default"
-                        size="sm"
-                        titleStyle={{ color: '#555', fontSize: 12 }}
-                        style={[ShopManageStyles.rightViewRowDownButton]}
-                        title="修改商品"
-                        onPress={() => { this.props.navigation.navigate('EditShop', { shopId: rowData.shopId }) }} 
                     />
                     <Button
                         type="default"
@@ -313,18 +296,6 @@ export default class ShopManagePage extends Component {
      */
     _onBackPage() {
         this.props.navigation.goBack();
-    }
-
-    /**
-     * 搜索
-     * @private
-     */
-    _onSearch(value: String) {
-        console.log("搜索文本为：", value);
-    }
-
-    _onPlus() {
-        this.props.navigation.navigate("AddShop", {});
     }
 
     _onPressMenu(itemName, action) {

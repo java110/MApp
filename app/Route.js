@@ -29,6 +29,9 @@ import ShopManagePage from "./pages/shop/ShopManagePage";
 import AddShopPage from "./pages/shop/AddShopPage";
 
 import EditShopPage from "./pages/shop/EditShopPage";
+import ViewShopPage from "./pages/shop/ViewShopPage";
+import DownlineShopPage from './pages/shop/DownlineShopPage';
+import RecommendShopPage from './pages/shop/RecommendShopPage';
 
 /**
  *
@@ -125,7 +128,18 @@ const RootStack = createStackNavigator({
     },
     EditShop:{
         screen:EditShopPage
+    },
+    
+    ViewShop:{
+        screen:ViewShopPage
+    },
+    DownlineShop:{
+        screen:DownlineShopPage
+    },
+    RecommendShop:{
+        screen:RecommendShopPage
     }
+    
 
 },{
     headerMode:'none'});

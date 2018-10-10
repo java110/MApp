@@ -25,6 +25,8 @@ import RowRightHasImageView from './row/RowRightHasImageView';
 import RowRightSwitchView from './row/RowRightSwitchView';
 import RowRightTextInputView from './row/RowRightTextInputView';
 import RowRightHasTextView from './row/RowRightHasTextView';
+import RowRightTextView from './row/RowRightTextView';
+import RowRightImageView from './row/RowRightImageView';
 
 import SearchInput from './search/SearchInput';
 
@@ -49,7 +51,9 @@ const Java110={
     RowRightTextInputView,
     SearchInput,
     SelectView,
-    RowRightHasTextView
+    RowRightHasTextView,
+    RowRightTextView,
+    RowRightImageView
 };
 
 module.exports=Java110

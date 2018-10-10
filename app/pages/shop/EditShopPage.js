@@ -36,11 +36,11 @@ export default class EditShopPage extends Component{
         this.state = {
             shopId:shopId,
             shopLogo: shopMobx.getShopColumnValueByColumnNameAndShopId('shopLogo',shopId),
-            shopName: shopMobx.getShopColumnValueByColumnNameAndShopId('shopName',shopId),
-            shopPrice: shopMobx.getShopColumnValueByColumnNameAndShopId('shopPrice',shopId),
+            shopName: shopMobx.getShopColumnValueByColumnNameAndShopId('name',shopId),
+            shopPrice: shopMobx.getShopColumnValueByColumnNameAndShopId('salePrice',shopId),
             openShopCount: shopMobx.getShopColumnValueByColumnNameAndShopId('openShopCount',shopId),
             shopCount: shopMobx.getShopColumnValueByColumnNameAndShopId('shopCount',shopId),
-            shopDesc: shopMobx.getShopColumnValueByColumnNameAndShopId('shopDesc',shopId),
+            shopDesc: shopMobx.getShopColumnValueByColumnNameAndShopId('shopDescribe',shopId),
             startDate:shopMobx.getShopColumnValueByColumnNameAndShopId('startDate',shopId),
             endDate: shopMobx.getShopColumnValueByColumnNameAndShopId('endDate',shopId),
             catalogId: shopMobx.getShopColumnValueByColumnNameAndShopId('catalogId',shopId),
@@ -174,7 +174,7 @@ export default class EditShopPage extends Component{
                 />
                 <RowRightSwitchView
                     leftText="显示库存"
-                    switchValue={false}
+                    switchValue={this.state.openShopCount == 'Y'?true:false}
                     _onSwitchValueChange={(value) => { this._onSwitchValueChange(value) }}
                     style={AddShopStyles.shopItemRowView}
                 />
