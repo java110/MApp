@@ -32,6 +32,10 @@ import EditShopPage from "./pages/shop/EditShopPage";
 import ViewShopPage from "./pages/shop/ViewShopPage";
 import DownlineShopPage from './pages/shop/DownlineShopPage';
 import RecommendShopPage from './pages/shop/RecommendShopPage';
+import StoreListPage from './pages/store/StoreListPage';
+import StoreAuditPage from './pages/store/StoreAuditPage';
+import ViewStorePage from './pages/store/ViewStorePage';
+import OpenStorePage from './pages/store/OpenStorePage';
 
 /**
  *
@@ -138,6 +142,18 @@ const RootStack = createStackNavigator({
     },
     RecommendShop:{
         screen:RecommendShopPage
+    },
+    StoreList:{
+        screen:StoreListPage,
+    },
+    StoreAudit:{
+        screen:StoreAuditPage,
+    },
+    ViewStore:{
+        screen:ViewStorePage,
+    },
+    OpenStore:{
+        screen:OpenStorePage,
     }
     
 

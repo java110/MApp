@@ -4,6 +4,7 @@
 
 import DeleteButtonView from './button/DeleteButtonView';
 import ExitLoginButtonView from './button/ExitLoginButtonView';
+import ButtonView from './button/ButtonView';
 
 
 import CompleteHeaderView from './header/CompleteHeaderView'
@@ -53,7 +54,8 @@ const Java110={
     SelectView,
     RowRightHasTextView,
     RowRightTextView,
-    RowRightImageView
+    RowRightImageView,
+    ButtonView
 };
 
 module.exports=Java110

@@ -17,12 +17,12 @@ export default class IndexPage extends Component{
             {
                 imagePath:require("../../images/openStore.png"),
                 name:"开店",
-                routeName:"",
+                routeName:"OpenStore",
             },
             {
                 imagePath:require("../../images/Auditing.png"),
-                name:"审核",
-                routeName:"",
+                name:"审核中",
+                routeName:"StoreAudit",
             },
             {
                 imagePath:require("../../images/buy.png"),
@@ -111,7 +111,10 @@ export default class IndexPage extends Component{
     _renderRow(rowData){
 
         return (
-            <TouchableOpacity onPress={this._onPressMenu} style={IndexStyles.cellBackStyle}>
+            <TouchableOpacity 
+                onPress={()=>{this._onPressMenu(rowData.routeName)}} 
+                style={IndexStyles.cellBackStyle}
+                >
                 <View style={IndexStyles.menuViewImageView}>
                     <Image source={rowData.imagePath} style={IndexStyles.menuViewImage}/>
                     <Text style={IndexStyles.menuViewText}>{rowData.name}</Text>
@@ -120,8 +123,16 @@ export default class IndexPage extends Component{
         );
     }
 
-    _onPressMenu(){
-
+    /**
+     * 点击菜单
+     * 根据配置的路由名称跳转至相应的页面
+     * 
+     * @param {页面路由名称} routeName 
+     */
+    _onPressMenu(routeName){
+        if(routeName != ''){
+            this.props.navigation.navigate(routeName,{});
+        }
     }
 
 
@@ -196,7 +207,7 @@ export default class IndexPage extends Component{
                         <Text style={IndexStyles.headerView_2_text}>发动态</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={IndexStyles.headerViewCenter}>
+                <TouchableOpacity style={IndexStyles.headerViewCenter} onPress={()=>this.props.navigation.navigate('StoreList',{})}>
                     <View style={IndexStyles.headerViewCenter}>
                         <Image style={IndexStyles.headerView_2_image} source={require('../../images/store.png')}></Image>
                     </View>
