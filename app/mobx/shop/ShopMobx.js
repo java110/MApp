@@ -467,7 +467,7 @@ class ShopMobx{
                     //如果是商品logo 则从shopPhoto中获取
                     if('shopLogo' == columnName ){
                         let shopPhotoes = tempData.shopPhoto;
-                        for(let shopPhotoIndex = 0 ; shopDataIndex < shopPhotoes.length;shopPhotoIndex ++){
+                        for(let shopPhotoIndex = 0 ; shopPhotoIndex < shopPhotoes.length;shopPhotoIndex ++){
                             if(shopPhotoes[shopPhotoIndex].shopPhotoTypeCd == 'L'){
                                 return shopPhotoes[shopPhotoIndex].photo;
                             }
