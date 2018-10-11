@@ -2,28 +2,39 @@ import React, { Component } from 'react';
 
 import { View, Image, Text, TouchableOpacity, Platform,ScrollView } from 'react-native';
 
-import StoreMbox from '../../mobx/store/StoreMobx';
+import storeMobx from '../../mobx/store/StoreMobx';
 
 import StoreStyles from '../../styles/store/StoreStyles';
 import CommonStyles from "../../styles/CommonStyles";
 import { Badge } from 'teaset';
+import { observer } from "mobx-react";
 import {
     NoActionHeaderView,
-    ButtonView
+    ButtonView,
+    RowRightTextInputView,
+    RowRightHasTextView,
+    RowRightHasImageView,
+    RowRightSwitchView
 } from 'Java110';
 /**
  * 开店 页面
  * 
  * add by wuxw 2018-10-10
  */
+@observer
 export default class OpenStorePage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             showExplain: true,
+
+
         };
         this._onBackPage = this._onBackPage.bind(this);
+
+        this._onClickOpenStore = this._onClickOpenStore.bind(this);
+        this._onClickCommitStore = this._onClickCommitStore.bind(this);
     }
 
     /**
@@ -36,7 +47,7 @@ export default class OpenStorePage extends Component {
                 {
                     this.state.showExplain
                         ? this._renderExplain()
-                        : null
+                        : this._renderStoreInfo()
                 }
             </View>
         );
@@ -69,6 +80,7 @@ export default class OpenStorePage extends Component {
                 <ScrollView >
                     {this._renderExplainTop()}
                     {this._renderExplainCenter()}
+                    {this._renderSpace()}
                 </ScrollView>       
                 {this._renderExplainBottom()}
             </View>
@@ -139,21 +151,222 @@ export default class OpenStorePage extends Component {
 
     _renderExplainBottom() {
         return (
-            <View style={StoreStyles.explainViewBottom}>
+            <View style={StoreStyles.viewBottom}>
                 <ButtonView
                     _viewButtonName="马上开店"
-                    _onClick={() => { }}
+                    _onClick={() => {this._onClickOpenStore()}}
                 />
             </View>
         );
     }
 
+    /**
+     * 商户信息
+     */
+    _renderStoreInfo(){
+        return(
+            <View style={StoreStyles.storeView}>
+                <ScrollView>
+                    {this._renderStoreBaseInfo()}
+                    {this._renderStoreCerdentialsInfo()}
+                    {this._renderStoreOthersInfo()}
+                    {this._renderSpace()}
+                </ScrollView>
+                {this._renderStoreBottom()}  
+            </View>
+        );
+    }
 
+    /**
+     * 商户基本信息
+     * 
+     * 
+     */
+    _renderStoreBaseInfo(){
+        return(
+            <View style={StoreStyles.storeInfo}>
+                <View style={StoreStyles.storeInfoTitle}>
+                    <Text style={StoreStyles.storeInfoTitleText}>基本信息</Text>
+                </View>
+                
+                <RowRightTextInputView
+                    leftText="门店名称"
+                    textPlaceholder={"请输入门店名称，必填"}
+                    _onChangeText={(value) => { storeMobx.refreshStoreInfoProperty('name',value) }}
+                    rightText={storeMobx.storeInfo.name}
+                    style={StoreStyles.storeItemRow}
+                />
+                <RowRightHasTextView
+                    leftText="门店地址"
+                    rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'必填，请填写详细地址'}
+                    _onClick={() => {  }}
+                    style={StoreStyles.storeItemRow}
+                />
+                <RowRightHasTextView
+                    leftText="经营种类"
+                    rightText={storeMobx.storeInfo.storeTypeCd ? storeMobx.storeInfo.storeTypeCd:'必填，请选择'}
+                    _onClick={() => {  }}
+                    style={StoreStyles.storeItemRow}
+                />
+                <RowRightTextInputView
+                    leftText="门店电话"
+                    textPlaceholder={"请输入联系电话，必填"}
+                    _onChangeText={(value) => { storeMobx.refreshStoreInfoProperty('tel',value) }}
+                    inputValue={storeMobx.storeInfo.tel}
+                    style={StoreStyles.storeItemRow}
+                />
+
+                <RowRightHasImageView
+                    leftText="门头照"
+                    imageData={{ uri: storeMobx.storeInfo.tStorePhoto }}
+                    _onClick={() => { }}
+                    style={[StoreStyles.storeItemRow, { height: 70 }]}
+                />
+
+                <RowRightHasTextView
+                    leftText="内景照"
+                    rightText={storeMobx.storeInfo.tStorePhotoText ? storeMobx.storeInfo.tStorePhotoText:'必填，请上传内景照'}
+                    _onClick={() => {  }}
+                    style={StoreStyles.storeItemRow}
+                />
+            </View>
+        );
+    }
+
+    /**
+     * 证件信息
+     */
+    _renderStoreCerdentialsInfo(){
+        return(
+            <View style={StoreStyles.storeInfo}>
+                <View style={StoreStyles.storeInfoTitle}>
+                    <Text style={StoreStyles.storeInfoTitleText}>证件信息</Text>
+                </View>
+                
+                <RowRightHasTextView
+                    leftText="营业执照"
+                    rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'必填，请上传'}
+                    _onClick={() => {  }}
+                    style={StoreStyles.storeItemRow}
+                />
+                <RowRightHasTextView
+                    leftText="授权函"
+                    rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'必填，请上传'}
+                    _onClick={() => {  }}
+                    style={StoreStyles.storeItemRow}
+                />
+                <RowRightHasTextView
+                    leftText="经营许可证"
+                    rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'选填，有证则上传'}
+                    _onClick={() => {  }}
+                    style={StoreStyles.storeItemRow}
+                />
+                <RowRightHasTextView
+                    leftText="其他证明"
+                    rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'选填，有证则上传'}
+                    _onClick={() => {  }}
+                    style={StoreStyles.storeItemRow}
+                />
+            </View>
+        );
+    }
+
+    /**
+     * 其他信息，保存到 shopAttr 中
+     */
+    _renderStoreOthersInfo(){
+        return(
+            <View style={StoreStyles.storeInfo}>
+                <View style={StoreStyles.storeInfoTitle}>
+                    <Text style={StoreStyles.storeInfoTitleText}>其他信息</Text>
+                </View>
+                
+                <RowRightTextInputView
+                    leftText="品牌名称"
+                    textPlaceholder={"请输入品牌，必填"}
+                    _onChangeText={(value) => { storeMobx.refreshStoreInfoOfStoreAttr('name',value) }}
+                    rightText={storeMobx.storeInfo.name}
+                    style={StoreStyles.storeItemRow}
+                />
+                <RowRightTextInputView
+                    leftText="收款账户"
+                    textPlaceholder={"请输入收款账户，必填"}
+                    _onChangeText={(value) => { storeMobx.refreshStoreInfoOfStoreAttr('name',value) }}
+                    rightText={storeMobx.storeInfo.name}
+                    style={StoreStyles.storeItemRow}
+                />
+                <RowRightHasTextView
+                    leftText="营业起始日"
+                    rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'请选择'}
+                    _onClick={() => {  }}
+                    style={StoreStyles.storeItemRow}
+                />
+                <RowRightHasTextView
+                    leftText="营业结束日"
+                    rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'请选择'}
+                    _onClick={() => {  }}
+                    style={StoreStyles.storeItemRow}
+                />
+                <RowRightSwitchView
+                    leftText="24小时"
+                    switchValue={this.state.openShopCount == 'Y'?true:false}
+                    _onSwitchValueChange={(value) => { storeMobx.refreshStoreInfoOfStoreAttr('is24',value) }}
+                    style={StoreStyles.storeItemRow}
+                />
+                <RowRightHasTextView
+                    leftText="营业起始时段"
+                    rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'请选择'}
+                    _onClick={() => {  }}
+                    style={StoreStyles.storeItemRow}
+                />
+                <RowRightHasTextView
+                    leftText="营业结束时段"
+                    rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'请选择'}
+                    _onClick={() => {  }}
+                    style={StoreStyles.storeItemRow}
+                />
+            </View>
+        );
+    }
+
+    _renderStoreBottom() {
+        return (
+            <View style={StoreStyles.viewBottom}>
+                <ButtonView
+                    _viewButtonName="提交"
+                    _onClick={() => {this._onClickCommitStore()}}
+                />
+            </View>
+        );
+    }
+
+    _renderSpace(){
+        return (
+                <View style={StoreStyles.spaceView}></View>
+        );
+    }
     /**
      * 返回
      * @private
      */
     _onBackPage() {
         this.props.navigation.goBack();
+    }
+
+    /**
+     * 点击马上开店按钮
+     */
+    _onClickOpenStore(){
+        this.setState({
+            showExplain:false,
+        });
+    }
+    /**
+     * 提交
+     */
+    _onClickCommitStore(){
+        //提交数据
+        //提示在审核中查看
+        this._onBackPage();
     }
 }

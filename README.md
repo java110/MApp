@@ -3,7 +3,7 @@
 
 1、安装 react native，android 及IOS 环境（请自行百度）
 
-2、打包
+2、debug模式运行
 
 ```
 
@@ -15,6 +15,24 @@ react-native run-android
 
 react-native start
 
+```
+
+3、打包release版本
+
+```
+git clone https://github.com/java110/MApp.git
+
+cd Mapp/
+
+react-native bundle --entry-file index.js --platform android --dev false --bundle-output ./android/app/src/main/assets/index.android.bundle --assets-dest ./android/app/src/main/res/
+
+cd .\android\
+
+.\gradlew clean
+
+查看.\android\app\src\res\ 是否有
+
+.\gradlew assembleRelease
 ```
 
 ### 系统效果图

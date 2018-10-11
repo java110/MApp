@@ -81,7 +81,6 @@ const StoreStyles=StyleSheet.create({
         alignItems:'center',
     },
     explainViewCenterRow:{
-        
         width:explainViewWidth,
         paddingBottom:10,
         paddingLeft:10,
@@ -91,18 +90,43 @@ const StoreStyles=StyleSheet.create({
         color:"#666",
         lineHeight:18,
     },
-    explainViewBottom:{
+    spaceView:{
+        height:80,
+    },
+    viewBottom:{
         position: 'absolute',
         bottom: 0,
         width:holdScreenWidth,
         height:70,
         alignItems:'center',
         justifyContent:'center',
-        backgroundColor:'#F3F3F3',   
+        backgroundColor:'#FFF',   
         //marginTop:40,
         //width:60,
-        // borderTopColor:'#F3F3F3',
-        // borderTopWidth:1,
+        borderTopColor:'#F3F3F3',
+        borderTopWidth:1,
+    },
+    storeView:{
+        flex:1,
+    },
+
+    storeInfo:{
+        marginTop:10,
+        backgroundColor:'#FFF',
+
+    },
+    storeInfoTitle:{
+        height:40, 
+        justifyContent:'center',
+    },
+    storeInfoTitleText:{
+        color:'#333',
+        fontSize:18,
+        marginLeft:10,
+
+    },
+    storeItemRow:{
+        height:45,
     },
    
 });
