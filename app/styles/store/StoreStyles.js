@@ -22,7 +22,7 @@ const StoreStyles=StyleSheet.create({
         height:45
     },
     explainView:{
-
+        flex:1,
     },
     
     explainViewTop:{
@@ -33,25 +33,36 @@ const StoreStyles=StyleSheet.create({
         // flexDirection:'row',
         // justifyContent:'justifyContent',
     },
+    explainViewRowTopLine:{marginLeft:15,backgroundColor:'#F24E3E',width:2},
+    customBadge:{backgroundColor: '#F24E3E',width:22,height:22,borderRadius:11, paddingLeft: 0, paddingRight: 0},
+    customBadgeText:{color: '#fff',fontSize:18},
     explainViewRowTitle:{
         height:50,
         justifyContent:'center',
         width:explainViewWidth,
     },
+    explainViewRowTitleText:{
+        fontSize: 18,
+    },
     explainViewRow:{
         flexDirection:'row',
         width:explainViewWidth,
-        marginBottom:20,
+        alignItems:'stretch',
+        //backgroundColor:"#666"
     },
     
     explainViewRowLeft:{
-        marginTop:2,
+        //marginTop:2,
+        marginLeft:-16,
         width:30,
-        //alignItems:'center',
+        height:30,
+        alignItems:'center',
     },
     explainViewRowTextView:{
-        marginLeft:5,
-        //height:70,
+        marginLeft:8,
+        marginTop:-2,
+        paddingBottom:20,
+        //backgroundColor:"#666"
     },
     explainViewRowBigText:{
         fontSize:18,
@@ -81,7 +92,17 @@ const StoreStyles=StyleSheet.create({
         lineHeight:18,
     },
     explainViewBottom:{
-        marginTop:40,
+        position: 'absolute',
+        bottom: 0,
+        width:holdScreenWidth,
+        height:70,
+        alignItems:'center',
+        justifyContent:'center',
+        backgroundColor:'#F3F3F3',   
+        //marginTop:40,
+        //width:60,
+        // borderTopColor:'#F3F3F3',
+        // borderTopWidth:1,
     },
    
 });

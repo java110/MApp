@@ -52,10 +52,11 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         alignItems:'center',
+        justifyContent:'center'
     },
     exitView:{
         backgroundColor:'#F24E3E',
-        height:40,
+        height:45,
         width:screenWidth,
         borderRadius:5,
         alignItems:'center',
