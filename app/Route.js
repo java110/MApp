@@ -36,6 +36,7 @@ import StoreListPage from './pages/store/StoreListPage';
 import StoreAuditPage from './pages/store/StoreAuditPage';
 import ViewStorePage from './pages/store/ViewStorePage';
 import OpenStorePage from './pages/store/OpenStorePage';
+import EnterCommunityPage from './pages/community/EnterCommunityPage';
 
 /**
  *
@@ -154,6 +155,9 @@ const RootStack = createStackNavigator({
     },
     OpenStore:{
         screen:OpenStorePage,
+    },
+    EnterCommunity:{
+        screen:EnterCommunityPage
     }
     
 

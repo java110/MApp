@@ -243,6 +243,7 @@ export default class AddShopPage extends Component {
         return (
             <SelectView
                 selectModelShow={this.state.catalogSelectModelShow}
+                currentPageName="选择目录"
                 data={tmpCatalogData.slice()}
                 _onSelectCheck={(id) => {
                     this._onSelectCatalog(id);

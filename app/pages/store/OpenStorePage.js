@@ -28,7 +28,8 @@ export default class OpenStorePage extends Component {
         super(props);
         this.state = {
             showExplain: true,
-
+            currentPageName:"开店说明",
+            storeTypeModelShow:false,
 
         };
         this._onBackPage = this._onBackPage.bind(this);
@@ -63,7 +64,7 @@ export default class OpenStorePage extends Component {
         return (
             <View style={((Platform.OS === 'android' && Platform.Version >= 19) || Platform.OS === 'ios') ? CommonStyles.header : CommonStyles.header_android_low}>
                 <NoActionHeaderView
-                    currentPageName={"免费开店"}
+                    currentPageName={this.state.currentPageName}
                     backPageName={"返回"}
                     _onBackPage={this._onBackPage}
                 />
@@ -115,14 +116,26 @@ export default class OpenStorePage extends Component {
                     </View>
                     <View style={StoreStyles.explainViewRowTextView}>
                         <Text style={StoreStyles.explainViewRowBigText}>待审核</Text>
-                        <Text style={StoreStyles.explainViewRowSmallText}>门店申请提交后，后台审核人员将在1-3个工作日内审核，并通知您结果</Text>
+                        <Text style={StoreStyles.explainViewRowSmallText}>门店申请提交后，后台审核人员将在1-3个工作日内审核，请关注待审核页面</Text>
+                    </View>
+                </View>
+                <View style={[StoreStyles.explainViewRow, { marginTop: -1 }]}>
+                    <View style={StoreStyles.explainViewRowTopLine}></View>
+                    <View style={StoreStyles.explainViewRowLeft}>
+                        <Badge style={StoreStyles.customBadge}>
+                            <Text style={StoreStyles.customBadgeText}>3</Text>
+                        </Badge>
+                    </View>
+                    <View style={StoreStyles.explainViewRowTextView}>
+                        <Text style={StoreStyles.explainViewRowBigText}>入驻小区</Text>
+                        <Text style={StoreStyles.explainViewRowSmallText}>收到审核通过消息，在入驻小区页面选择小区入驻</Text>
                     </View>
                 </View>
                 <View style={[StoreStyles.explainViewRow, { marginTop: -1 }]}>
                     <View style={[StoreStyles.explainViewRowTopLine, { backgroundColor: '#FFF' }]}></View>
                     <View style={StoreStyles.explainViewRowLeft}>
                         <Badge style={StoreStyles.customBadge}>
-                            <Text style={StoreStyles.customBadgeText}>3</Text>
+                            <Text style={StoreStyles.customBadgeText}>4</Text>
                         </Badge>
                     </View>
                     <View style={StoreStyles.explainViewRowTextView}>
@@ -141,9 +154,8 @@ export default class OpenStorePage extends Component {
                     <Text style={StoreStyles.explainViewRowTitleText}>收费说明</Text>
                 </View>
                 <View style={StoreStyles.explainViewCenterRow}>
-                    <Text style={[StoreStyles.explainViewCenterRowText]}>超市便利店: 每笔交易的0.01%</Text>
-                    <Text style={[StoreStyles.explainViewCenterRowText, { marginTop: 5 }]}>非超市便利店: 每笔交易的0.02%</Text>
-                    <Text style={[StoreStyles.explainViewCenterRowText, { marginTop: 5 }]}>注: 优惠期至2020年12月31日, 优惠期满后恢复为0.05%</Text>
+                    <Text style={[StoreStyles.explainViewCenterRowText]}>根据您入驻的小区，收费方式收取</Text>
+                    <Text style={[StoreStyles.explainViewCenterRowText, { marginTop: 5 }]}>注: 费用收取由系统自动收取，谨防上当</Text>
                 </View>
             </View>
         );
@@ -204,8 +216,8 @@ export default class OpenStorePage extends Component {
                 />
                 <RowRightHasTextView
                     leftText="经营种类"
-                    rightText={storeMobx.storeInfo.storeTypeCd ? storeMobx.storeInfo.storeTypeCd:'必填，请选择'}
-                    _onClick={() => {  }}
+                    rightText={storeMobx.storeInfo.storeTypeCd ? storeMobx.getStoreTypeNameByStoreTypeCd(storeMobx.storeInfo.storeTypeCd):'必填，请选择'}
+                    _onClick={() => { this.setState({storeTypeModelShow:true,}) }}
                     style={StoreStyles.storeItemRow}
                 />
                 <RowRightTextInputView
@@ -345,6 +357,29 @@ export default class OpenStorePage extends Component {
                 <View style={StoreStyles.spaceView}></View>
         );
     }
+
+    /**
+     * 选择经营种类
+     */
+    _renderSelectStoreType() {
+        //封装目录信息
+        let tmpStoreTypeData = shopMobx.getStoreTypeData();
+        return (
+            <SelectView
+                selectModelShow={this.state.storeTypeModelShow}
+                currentPageName="经营种类"
+                data={tmpStoreTypeData.slice()}
+                _onSelectCheck={(id) => {
+                    this._onSelectStore(id);
+                }}
+                _onCancle={()=>{
+                    this.setState({
+                        storeTypeModelShow:false,
+                    });    
+                }}
+            />
+        );
+    }
     /**
      * 返回
      * @private
@@ -359,6 +394,7 @@ export default class OpenStorePage extends Component {
     _onClickOpenStore(){
         this.setState({
             showExplain:false,
+            currentPageName:"免费开店",
         });
     }
     /**
@@ -368,5 +404,13 @@ export default class OpenStorePage extends Component {
         //提交数据
         //提示在审核中查看
         this._onBackPage();
+    }
+
+
+    /**
+     * 选择商店种类
+     */
+    _onSelectStoreType(id) {
+        storeMobx.refreshStoreInfoProperty('storeTypeCd',id);
     }
 }

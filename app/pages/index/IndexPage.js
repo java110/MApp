@@ -26,8 +26,8 @@ export default class IndexPage extends Component{
             },
             {
                 imagePath:require("../../images/buy.png"),
-                name:"营销中心",
-                routeName:"",
+                name:"入驻小区",
+                routeName:"EnterCommunity",
             },
             {
                 imagePath:require("../../images/storeMenu.png"),
@@ -41,7 +41,7 @@ export default class IndexPage extends Component{
             },
             {
                 imagePath:require("../../images/sampleMenu.png"),
-                name:"素材",
+                name:"营销中心",
                 routeName:"",
             },
             {

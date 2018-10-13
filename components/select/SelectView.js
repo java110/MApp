@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 
 /**
  * 选择 选项 
- * 
+ * currentPageName 当前页面名称
  * data {id:"",value:"",isCheck:"0"}选项数据
  * _onSelectCheck 选择回调方法
  * selectModelShow 是否展示model
@@ -21,6 +21,7 @@ import PropTypes from 'prop-types';
 export default class SelectView extends Component{
 
     static propTypes = {
+        currentPageName:PropTypes.string.isRequired,
         selectModelShow:PropTypes.bool.isRequired,
         data: PropTypes.array.isRequired,
         _onSelectCheck: PropTypes.func.isRequired,
@@ -82,7 +83,7 @@ export default class SelectView extends Component{
                         <Image source={require('../../icon/header/back.png')} style={styles.backImage}/>
                 </TouchableOpacity>
                 <View style={styles.centerView}>
-                    <Text style={styles.headerText}>选择目录</Text>
+                    <Text style={styles.headerText}>{this.props.currentPageName}</Text>
                 </View>
                 <View style={styles.rightView}>
 
