@@ -71,20 +71,21 @@ class StoreMobx {
     storeCerdentials.positivePhoto = negativePhoto;
     this.storeInfo.storeCerdentials.push(storeCerdentials);
   }
-
+  
+  @observable
   storeTypeData: Array = [
     {
-      storeTypeCd: 1,
+      storeTypeCd: "1",
       check: 0,
       name: "饭店",
     },
     {
-      storeTypeCd: 1,
+      storeTypeCd: "2",
       check: 0,
       name: "超市",
     },
     {
-      storeTypeCd: 1,
+      storeTypeCd: "3",
       check: 0,
       name: "水果店",
     }
@@ -104,9 +105,17 @@ class StoreMobx {
         this.storeTypeData[tmpIndex].check = '0';
       }
     }
-    storeTypeData = storeTypeData.sort(this.compare('value'));
-    return storeTypeData;
+    this.storeTypeData = this.storeTypeData.sort(this.compare('value'));
+    return this.storeTypeData;
   }
+
+  compare(itemValue){
+    return (a,b) =>{
+        let value1 = a[itemValue];
+        let value2 = b[itemValue];
+        return value1 - value2;
+    }
+}
 
   /**
    * 根据 商户类别编码 storeTypeCd 查询 名称

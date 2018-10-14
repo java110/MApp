@@ -14,7 +14,8 @@ import {
     RowRightTextInputView,
     RowRightHasTextView,
     RowRightHasImageView,
-    RowRightSwitchView
+    RowRightSwitchView,
+    SelectView
 } from 'Java110';
 /**
  * 开店 页面
@@ -30,7 +31,7 @@ export default class OpenStorePage extends Component {
             showExplain: true,
             currentPageName:"开店说明",
             storeTypeModelShow:false,
-
+            storeTypePageName:"经营种类",
         };
         this._onBackPage = this._onBackPage.bind(this);
 
@@ -183,6 +184,7 @@ export default class OpenStorePage extends Component {
                     {this._renderStoreCerdentialsInfo()}
                     {this._renderStoreOthersInfo()}
                     {this._renderSpace()}
+                    {this._renderSelectStoreType()}
                 </ScrollView>
                 {this._renderStoreBottom()}  
             </View>
@@ -211,7 +213,7 @@ export default class OpenStorePage extends Component {
                 <RowRightHasTextView
                     leftText="门店地址"
                     rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'必填，请填写详细地址'}
-                    _onClick={() => {  }}
+                    _onClick={() => {this.props.navigation.navigate('AddStoreAddress',{})}}
                     style={StoreStyles.storeItemRow}
                 />
                 <RowRightHasTextView
@@ -363,14 +365,14 @@ export default class OpenStorePage extends Component {
      */
     _renderSelectStoreType() {
         //封装目录信息
-        let tmpStoreTypeData = shopMobx.getStoreTypeData();
+        let tmpStoreTypeData = storeMobx.getStoreTypeData();
         return (
             <SelectView
                 selectModelShow={this.state.storeTypeModelShow}
-                currentPageName="经营种类"
+                currentPageName={this.state.storeTypePageName}
                 data={tmpStoreTypeData.slice()}
                 _onSelectCheck={(id) => {
-                    this._onSelectStore(id);
+                    this._onSelectStoreType(id);
                 }}
                 _onCancle={()=>{
                     this.setState({
@@ -412,5 +414,8 @@ export default class OpenStorePage extends Component {
      */
     _onSelectStoreType(id) {
         storeMobx.refreshStoreInfoProperty('storeTypeCd',id);
+        this.setState({
+            storeTypePageName:"经营种类",
+        });
     }
 }
