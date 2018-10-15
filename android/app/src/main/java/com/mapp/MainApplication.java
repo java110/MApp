@@ -3,6 +3,7 @@ package com.mapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import cn.qiuxiang.react.amap3d.AMap3DPackage;
 import it.innove.BleManagerPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import org.reactnative.camera.RNCameraPackage;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new AMap3DPackage(),
             new BleManagerPackage(),
             new PickerPackage(),
             new RNCameraPackage()

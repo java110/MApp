@@ -6,6 +6,8 @@ import CommonStyles from "../../styles/CommonStyles";
 import StoreStyles from '../../styles/store/StoreStyles';
 import storeMobx from '../../mobx/store/StoreMobx';
 
+import {MapView} from 'react-native-amap3d';
+
 import {
     NoActionHeaderView,
     RowRightTextInputView
@@ -33,6 +35,7 @@ export default class AddStoreAddressPage extends Component {
             <View>
                 {this._renderHeader()}
                 {this._renderAddressInfo()}
+                {this._renderAMaps()}
             </View>
         );
     }
@@ -79,6 +82,14 @@ export default class AddStoreAddressPage extends Component {
         );
     }
 
+    /**
+     * 引入地图
+     */
+    _renderAMaps(){
+        return (
+            <MapView />
+        );
+    }
 
     /**
      * 返回
