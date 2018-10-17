@@ -197,6 +197,7 @@ export default class OpenStorePage extends Component {
      * 
      */
     _renderStoreBaseInfo(){
+        console.log("_renderStoreBaseInfo",storeMobx.storeInfo,storeMobx.storeInfo.address);
         return(
             <View style={StoreStyles.storeInfo}>
                 <View style={StoreStyles.storeInfoTitle}>
@@ -207,7 +208,7 @@ export default class OpenStorePage extends Component {
                     leftText="门店名称"
                     textPlaceholder={"请输入门店名称，必填"}
                     _onChangeText={(value) => { storeMobx.refreshStoreInfoProperty('name',value) }}
-                    rightText={storeMobx.storeInfo.name}
+                    inputValue={storeMobx.storeInfo.name}
                     style={StoreStyles.storeItemRow}
                 />
                 <RowRightHasTextView
@@ -226,6 +227,7 @@ export default class OpenStorePage extends Component {
                     leftText="门店电话"
                     textPlaceholder={"请输入联系电话，必填"}
                     _onChangeText={(value) => { storeMobx.refreshStoreInfoProperty('tel',value) }}
+                    keyboardText={'numeric'}
                     inputValue={storeMobx.storeInfo.tel}
                     style={StoreStyles.storeItemRow}
                 />

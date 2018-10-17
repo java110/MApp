@@ -128,6 +128,12 @@ const StoreStyles=StyleSheet.create({
     storeItemRow:{
         height:45,
     },
+
+    amapView:{
+        flex:1,
+        width:holdScreenWidth,
+        //height:holdScreenWidth,
+    }
    
 });
 

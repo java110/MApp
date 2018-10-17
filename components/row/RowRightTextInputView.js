@@ -54,12 +54,19 @@ export default class RowRightTextInputView extends Component{
                           onChangeText={(value)=>{this._onChangeText(value)}}
                           keyboardType={this.props.keyboardText}
                           value={this.state.inputValue}
+                          onBlur={()=>{if(this.props.hasOwnProperty('onBlur')){this.props.onBlur()}}}
                           ref="keyWordInput"
                           onSubmitEditing={() => { this.refs.keyWordInput.blur() }}/>
                   </View>
               </View>
           </View>
         );
+    }
+
+    componentWillReceiveProps(props){
+        this.setState({
+            inputValue : props.inputValue
+        });  
     }
 
     /**

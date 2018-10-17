@@ -99,6 +99,7 @@ android {
 
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
         applicationId "com.mapp"
         minSdkVersion 19
         targetSdkVersion 27

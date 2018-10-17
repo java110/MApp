@@ -1,6 +1,6 @@
 import { observable, action, runInAction, autorun, computed } from 'mobx';
 import { AsyncStorage } from 'react-native';
-
+import SysConfig from '../../config/SysConfig';
 
 /**
  * 商户 处理类
@@ -16,7 +16,7 @@ class StoreMobx {
 
   @observable
   storeInfo: Object = {
-
+    addr:'',
     storeAttr: [],
     storePhoto: [],
     storeCerdentials: []
@@ -129,6 +129,43 @@ class StoreMobx {
       }
     }
     return null;
+  }
+
+  @action
+  getRegeoByLocation(latitude,longitude){
+    let url = SysConfig.amapWebRegeoUrl.replace("@KEY@",SysConfig.amapWebKey).replace("@LOCATION@",longitude+","+latitude);
+        fetch(url)
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson);
+            //请求失败
+            if(responseJson.status != "1"){
+                return;
+            }
+            let tmpRegeocode = responseJson.regeocode;
+            let addressComponent = tmpRegeocode.addressComponent;
+            let province = addressComponent.province;
+            let city = addressComponent.city;
+            let district = addressComponent.district; 
+            //let address = responseJson.regeocode.formatted_address;
+            this.refreshStoreInfoProperty('addr',province+city+district);
+            console.log(url,storeMobx.storeInfo);  
+            return responseJson;
+          }).catch(error=>{
+            console.error(error);
+        });
+  }
+
+
+  /**
+   * 刷新对象地址
+   */
+  refreshStoreInfo(){
+      let tmpStoreInfo = this.storeInfo;
+
+      this.storeInfo = {};
+
+      this.storeInfo = tmpStoreInfo;
   }
 
 
