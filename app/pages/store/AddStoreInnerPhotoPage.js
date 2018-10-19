@@ -14,16 +14,16 @@ import {
 import StoreStyles from '../../styles/store/StoreStyles';
 import StoreConst from '../../constants/StoreConst';
 /**
- * 添加图片 门头照
+ * 添加图片 内景照
  * 
- * add by wuxw 2018-10-18
+ * add by wuxw 2018-10-19
  */
-export default class AddStoreDoorHeaderPhotoPage extends Component{
+export default class AddStoreInnerPhotoPage extends Component{
 
     constructor(props){
         super(props);
         this.state={
-            currentPageName:'门头照',
+            currentPageName:'内景照',
             showTakePhoto: false,
             imageModelShow:false,
         };
@@ -66,6 +66,7 @@ export default class AddStoreDoorHeaderPhotoPage extends Component{
                     {this._renderUploadImage()}
                     {this._renderUploadImageExample()}
                 </ScrollView>
+                
             </View>
         );
     }
@@ -92,7 +93,7 @@ export default class AddStoreDoorHeaderPhotoPage extends Component{
      * 加载照片组件
      */
     _renderUploadImage(){
-        let tmpStorePhotos = storeMobx.getStorePhotoOfStoreInfo(StoreConst.STORE_PHOTO_TYPE_CD_DOOR_HEADER).slice();
+        let tmpStorePhotos = storeMobx.getStorePhotoOfStoreInfo(StoreConst.STORE_PHOTO_TYPE_CD_INNER_PHOTO).slice();
         let photoData = [];
         for(let tmpStorePhotosIndex = 0; tmpStorePhotosIndex < tmpStorePhotos.length; tmpStorePhotosIndex++){
             photoData.push({uri:tmpStorePhotos[tmpStorePhotosIndex].photo,id:tmpStorePhotos[tmpStorePhotosIndex].storePhotoId});
@@ -104,9 +105,9 @@ export default class AddStoreDoorHeaderPhotoPage extends Component{
             <View style={StoreStyles.uploadImageView}>
                 <UploadImageView
                     imageModelShow={this.state.imageModelShow}
-                    requiredPhotoCount={1}
+                    requiredPhotoCount={8}
                     currentPhotoDatas={photoData}
-                    photoDesc={"需要上传1张照片"}
+                    photoDesc={"需要上传2至8张照片"}
                     _onOpenPhoto={()=>{
                         this._onOpenPhoto();
                     }}
@@ -130,10 +131,10 @@ export default class AddStoreDoorHeaderPhotoPage extends Component{
 
             <View style={StoreStyles.uploadImageExampleView}>
                 <View style={StoreStyles.uploadImageExampleTitleView}>
-                    <Text style={StoreStyles.uploadImageExampleTitleText}>门头照样例</Text>
+                    <Text style={StoreStyles.uploadImageExampleTitleText}>内景照样例</Text>
                 </View>
                 <Image
-                    source={require('../../images/store/doorHeaderPhoto.png')}
+                    source={require('../../images/store/innerPhoto.png')}
                     style={StoreStyles.uploadImageExampleViewImage}
                 />
 
@@ -167,7 +168,7 @@ export default class AddStoreDoorHeaderPhotoPage extends Component{
      * 相册中选取 图片
      */
     _onSelectPhoto(cameraImageContext) {
-        storeMobx.refreshStoreInfoOfStorePhoto(StoreConst.STORE_PHOTO_TYPE_CD_DOOR_HEADER,cameraImageContext);
+        storeMobx.refreshStoreInfoOfStorePhoto(StoreConst.STORE_PHOTO_TYPE_CD_INNER_PHOTO,cameraImageContext);
         this.setState({
             imageModelShow: false,
         });
@@ -178,7 +179,7 @@ export default class AddStoreDoorHeaderPhotoPage extends Component{
      * @param {照片信息} photoData 
      */
     _getPhotoData(photoData) {
-        storeMobx.refreshStoreInfoOfStorePhoto(StoreConst.STORE_PHOTO_TYPE_CD_DOOR_HEADER,photoData);
+        storeMobx.refreshStoreInfoOfStorePhoto(StoreConst.STORE_PHOTO_TYPE_CD_INNER_PHOTO,photoData);
         this.setState({
             showTakePhoto: false,
         });

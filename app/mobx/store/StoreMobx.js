@@ -53,8 +53,11 @@ class StoreMobx {
   @action
   refreshStoreInfoOfStorePhoto(key, value) {
     let storePhoto = {};
-    storePhoto.storePhotoTypeCd = key,
-      storePhoto.photo = value;
+    //服务端生成返回
+    let storePhotoId = Date.now()+""; 
+    storePhoto.storePhotoTypeCd = key;
+    storePhoto.photo = value;
+    storePhoto.storePhotoId = storePhotoId;
     this.storeInfo.storePhoto.push(storePhoto);
   }
   /**
@@ -178,7 +181,7 @@ class StoreMobx {
    */
   @action
   getStorePhotoOfStoreInfo(key) {
-
+    console.log('getStorePhotoOfStoreInfo',key);
     let tmpStorePhoto = this.storeInfo.storePhoto;
     let returnStorePhoto = [];
 
@@ -187,8 +190,27 @@ class StoreMobx {
             returnStorePhoto.push(tmpStorePhoto[tmpStorePhotoIndex]);
         }
     }
-    
+
     return returnStorePhoto;
+  }
+
+  /**
+   * 根据照片ID删除照片
+   * @param {照片ID} photoId 
+   */
+  @action
+  deleteStorePhotoOfStoreInfo(photoId){
+    console.log('deleteStorePhotoOfStoreInfo',photoId);
+    let tmpStorePhoto = this.storeInfo.storePhoto;
+    let returnStorePhoto = [];
+
+    for(let tmpStorePhotoIndex = 0 ;tmpStorePhotoIndex < tmpStorePhoto.length;tmpStorePhotoIndex ++){
+        if(tmpStorePhoto[tmpStorePhotoIndex].storePhotoId != photoId){
+            returnStorePhoto.push(tmpStorePhoto[tmpStorePhotoIndex]);
+        }
+    }
+
+    this.storeInfo.storePhoto = returnStorePhoto;
   }
 
 

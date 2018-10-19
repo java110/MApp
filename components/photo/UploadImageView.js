@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 
-import {View,Image,Text,StyleSheet,TouchableOpacity} from 'react-native';
+import {View,Image,Text,StyleSheet,TouchableOpacity,Dimensions} from 'react-native';
 
 import PropTypes from 'prop-types';
 
@@ -24,6 +24,7 @@ export default class UploadImageView extends Component{
         _onOpenPhoto:PropTypes.func.isRequired,
         _onSelectPhoto:PropTypes.func.isRequired,
         _deletePhoto:PropTypes.func.isRequired,
+        photoDesc:PropTypes.string.isRequired,
     };
     constructor(props){
         super(props);
@@ -41,6 +42,7 @@ export default class UploadImageView extends Component{
             <View style={style.container}>
                 {this._renderViewImageOrTakePhoto()}
                 {this._renderShowSelectPhotoModel()}
+                {this._renderUploadImageDesc()}
             </View>
         );
     }
@@ -49,32 +51,32 @@ export default class UploadImageView extends Component{
      * 显示照片或拍照
      */
     _renderViewImageOrTakePhoto(){
-        return (
-            <View style={style.ViewImageOrTakePhotoView}>
-                {this._renderViewImage()}
-                {this._renderTakePhoto()}
-                
-            </View>
-        );
-    }
 
-    /**
-     * 显示 照片
-     */
-    _renderViewImage(){
-
-        let tmpImage = null;
-        if(this.props.currentPhotoDatas != null && this.props.currentPhotoDatas.lenght>0){
-            for(let showPhotoIndex = 0; showPhotoIndex < this.props.currentPhotoDatas.lenght;showPhotoIndex ++){
-                tmpImage += <View style={style.showPhotoView}>
+        let tmpImage =[];
+        console.log('_renderViewImage',this.props.currentPhotoDatas);
+        if(this.props.currentPhotoDatas != null && this.props.currentPhotoDatas.length>0){
+            for(let showPhotoIndex = 0; showPhotoIndex < this.props.currentPhotoDatas.length;showPhotoIndex ++){
+                tmpImage.push(<View style={style.showPhotoView} key={showPhotoIndex}>
                                 <Image 
                                 source={this.props.currentPhotoDatas[showPhotoIndex]}
                                 style={style.showPhotoViewImage}></Image>
-                            </View>
+                                <TouchableOpacity style={style.deleteImageView} onPress={()=>{
+                                    this.props._deletePhoto(this.props.currentPhotoDatas[showPhotoIndex].id);
+                                }}>
+                                    <Image source={require('../../icon/button/delete.png')}
+                                            style={style.deleteImage}
+                                    />
+                                </TouchableOpacity>
+                            </View>);
             }
         }
+
         return (
-            tmpImage
+            <View style={style.ViewImageOrTakePhotoView}>
+                {tmpImage}
+                {this._renderTakePhoto()}
+                
+            </View>
         );
     }
 
@@ -90,10 +92,13 @@ export default class UploadImageView extends Component{
                             imageModelShow:true,
                         });
                     } }>
+                    <View style={style.takeCameraButtonImageView}>
                         <Image
-                                    source={require('../../icon/photo/openCamera.png')}
-                                    style={style.takeCameraButtonImage}
-                        />
+                                        source={require('../../icon/photo/openCamera.png')}
+                                        style={style.takeCameraButtonImage}
+                            />
+
+                    </View> 
                     </TouchableOpacity>
                 :null;
 
@@ -116,6 +121,17 @@ export default class UploadImageView extends Component{
         );
     }
 
+    /**
+     * 照片上传提示
+     */
+    _renderUploadImageDesc(){
+        return (
+            <View style={style.uploadImageDescView}>
+                <Text style={style.uploadImageDescViewText}>{this.props.photoDesc}</Text>
+            </View>
+        );
+    }
+
 
     componentWillReceiveProps(props){
         this.setState({
@@ -123,32 +139,61 @@ export default class UploadImageView extends Component{
         });
     }
 
+
+
 }
 /**
  * 样式
  */
+const holdScreenWidth = Dimensions.get('window').width;
+const cellWidth = holdScreenWidth /3;
+const cellImageWidth = cellWidth-10;
 let style = StyleSheet.create({
     container:{
-        flex:1,
+        //flex:1,
         backgroundColor:'#FFF',
     },
     ViewImageOrTakePhotoView:{
         flexDirection: 'row',
         //justifyContent:'center',
         alignItems:'center',
-        paddingTop:10,
-        paddingLeft:10,
-        paddingBottom:30,
+        flexWrap:'wrap',
+        //paddingTop:10,
+        //paddingLeft:10,
+        //paddingBottom:10,
     },
-    takeCameraView:{
+    takeCameraButtonImageView:{
         borderWidth:1,
         borderColor:'#ccc',
         borderStyle : 'dashed',
         borderRadius:10,
-        height:100,
-        width:100,
+        height:cellImageWidth,
+        width:cellImageWidth,
         justifyContent:'center',
         alignItems:'center'
+    },
+    deleteImageView:{
+        position:'absolute',
+        height:21,
+        width:21,
+        backgroundColor:'#FFF',
+        borderRadius:21,
+        borderWidth:0,
+        right:10,
+        top:5,
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    deleteImage:{
+        tintColor:'#333', 
+        height:30,
+        width:30,
+    },
+    takeCameraView:{
+        marginTop:10,
+        justifyContent:'center',
+        alignItems:'center',
+        width:cellWidth
     },
     takeCameraButtonImage:{
         height:40,
@@ -156,12 +201,27 @@ let style = StyleSheet.create({
         tintColor:'#ccc'
     },
     showPhotoView:{
-        height:100,
-        width:100,
+        marginTop:10,
+        height:cellImageWidth,
+        justifyContent:'center',
+        alignItems:'center',
+        width:cellWidth,
+        
     },
     showPhotoViewImage:{
-        height:100,
-        width:100,
+        height:cellImageWidth,
+        width:cellImageWidth,
+        borderRadius:10,
+    },
+    uploadImageDescView:{
+        //flex:1,
+        height:40,
+        justifyContent:'center',
+        alignItems:'flex-end',
+    },
+    uploadImageDescViewText:{
+        fontSize:12,
+        marginRight:15,
     }
 });
 

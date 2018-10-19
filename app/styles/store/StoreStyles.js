@@ -135,9 +135,30 @@ const StoreStyles=StyleSheet.create({
         //height:holdScreenWidth,
     },
     uploadImageView:{
+        //flex:1,
         marginTop:10,
-        height:150,
-        //backgroundColor:'#FFF'
+        //height:150,
+        backgroundColor:'#666'
+    },
+    uploadImageExampleView:{
+        backgroundColor:'#FFF',
+        marginTop:10,
+        alignItems:'center',
+        paddingBottom:20,
+
+    },
+    uploadImageExampleTitleView:{
+        height:40,
+        alignItems:'center',
+        justifyContent:'center',
+    },
+    uploadImageExampleTitleText:{
+        fontSize:14,
+
+    },
+    uploadImageExampleViewImage:{
+        height:250,
+        width:holdScreenWidth-10,
     }
    
 });

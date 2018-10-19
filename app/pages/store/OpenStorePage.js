@@ -203,7 +203,12 @@ export default class OpenStorePage extends Component {
         let doorHeaderPhoto = 
             storeMobx.getStorePhotoOfStoreInfo(StoreConst.STORE_PHOTO_TYPE_CD_DOOR_HEADER).slice().length >0 
             ? "已上传"
-            :"";
+            :"必填，请上传门头照";
+        let innerPhotoLength = storeMobx.getStorePhotoOfStoreInfo(StoreConst.STORE_PHOTO_TYPE_CD_INNER_PHOTO).slice().length
+        let innerPhoto = 
+            innerPhotoLength >0 
+            ? "已上传"+innerPhotoLength+"张照片"
+            :"必填，请上传内景照";
         
         return(
             <View style={StoreStyles.storeInfo}>
@@ -242,14 +247,14 @@ export default class OpenStorePage extends Component {
                 <RowRightHasTextView
                     leftText="门头照"
                     rightText={doorHeaderPhoto}
-                    _onClick={() => {this.props.navigation.navigate('AddStoreDoorHeader',{})}}
-                    style={[StoreStyles.storeItemRow, { height: 70 }]}
+                    _onClick={() => {this.props.navigation.navigate('AddStoreDoorHeaderPhoto',{})}}
+                    style={StoreStyles.storeItemRow}
                 />
 
                 <RowRightHasTextView
                     leftText="内景照"
-                    rightText={storeMobx.storeInfo.tStorePhotoText ? storeMobx.storeInfo.tStorePhotoText:'必填，请上传内景照'}
-                    _onClick={() => {  }}
+                    rightText={innerPhoto}
+                    _onClick={() => {this.props.navigation.navigate('AddStoreInnerPhoto',{})}}
                     style={StoreStyles.storeItemRow}
                 />
             </View>
