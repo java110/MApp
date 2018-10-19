@@ -38,6 +38,7 @@ import ViewStorePage from './pages/store/ViewStorePage';
 import OpenStorePage from './pages/store/OpenStorePage';
 import EnterCommunityPage from './pages/community/EnterCommunityPage';
 import AddStoreAddressPage from './pages/store/AddStoreAddressPage';
+import AddStoreDoorHeaderPage from './pages/store/AddStoreDoorHeaderPhotoPage';
 
 /**
  *
@@ -162,6 +163,9 @@ const RootStack = createStackNavigator({
     },
     AddStoreAddress:{
         screen:AddStoreAddressPage
+    },
+    AddStoreDoorHeader:{
+        screen:AddStoreDoorHeaderPage
     }
     
 

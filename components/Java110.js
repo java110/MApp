@@ -33,6 +33,8 @@ import SearchInput from './search/SearchInput';
 
 import SelectView from './select/SelectView';
 
+import UploadImageView from './photo/UploadImageView';
+
 const Java110={
     DeleteButtonView,
     ExitLoginButtonView,
@@ -55,7 +57,8 @@ const Java110={
     RowRightHasTextView,
     RowRightTextView,
     RowRightImageView,
-    ButtonView
+    ButtonView,
+    UploadImageView,
 };
 
 module.exports=Java110

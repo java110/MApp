@@ -19,7 +19,7 @@ import SelectPhotoModelView from './SelectPhotoModelView';
 export default class UploadImageView extends Component{
 
     static propTypes = {
-        requiredPhotoCount: PropTypes.string.isRequired,
+        requiredPhotoCount: PropTypes.number.isRequired,
         currentPhotoDatas: PropTypes.array.isRequired,
         _onOpenPhoto:PropTypes.func.isRequired,
         _onSelectPhoto:PropTypes.func.isRequired,
@@ -38,7 +38,7 @@ export default class UploadImageView extends Component{
      */
     render(){
         return (
-            <View>
+            <View style={style.container}>
                 {this._renderViewImageOrTakePhoto()}
                 {this._renderShowSelectPhotoModel()}
             </View>
@@ -50,7 +50,7 @@ export default class UploadImageView extends Component{
      */
     _renderViewImageOrTakePhoto(){
         return (
-            <View style={style.container}>
+            <View style={style.ViewImageOrTakePhotoView}>
                 {this._renderViewImage()}
                 {this._renderTakePhoto()}
                 
@@ -83,7 +83,7 @@ export default class UploadImageView extends Component{
      */
     _renderTakePhoto(){
         let tmpTakePhotoImage = 
-                this.props.currentPhotoDatas == null || this.props.currentPhotoDatas.lenght < this.props.requiredPhotoCount?
+                this.props.currentPhotoDatas == null || this.props.currentPhotoDatas.length < this.props.requiredPhotoCount?
                     <TouchableOpacity style={style.takeCameraView} onPress={()=>{
                         this.setState({
                             imageModelShow:true,
@@ -95,8 +95,10 @@ export default class UploadImageView extends Component{
                         />
                     </TouchableOpacity>
                 :null;
+
+        console.log("_renderTakePhoto",this.props.currentPhotoDatas);
         return (
-            tmpTakePhotoImage  
+            tmpTakePhotoImage
         );
     }
 
@@ -120,30 +122,38 @@ export default class UploadImageView extends Component{
 let style = StyleSheet.create({
     container:{
         flex:1,
+        backgroundColor:'#FFF',
+    },
+    ViewImageOrTakePhotoView:{
         flexDirection: 'row',
-        justifyContent:'center',
+        //justifyContent:'center',
         alignItems:'center',
-        height:300,
-        backageColor:'#FFF'
+        paddingTop:10,
+        paddingLeft:10,
+        paddingBottom:30,
     },
     takeCameraView:{
         borderWidth:1,
         borderColor:'black',
         borderStyle : 'dashed',
-        height:120,
-        width:120,
+        borderRadius:10,
+        height:100,
+        width:100,
+        justifyContent:'center',
+        alignItems:'center'
     },
     takeCameraButtonImage:{
+        height:40,
+        width:50,
+        tintColor:'#eee'
+    },
+    showPhotoView:{
         height:100,
         width:100,
     },
-    showPhotoView:{
-        height:120,
-        width:120,
-    },
     showPhotoViewImage:{
-        height:120,
-        width:120,
+        height:100,
+        width:100,
     }
 });
 

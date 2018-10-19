@@ -235,7 +235,7 @@ export default class OpenStorePage extends Component {
                 <RowRightHasImageView
                     leftText="门头照"
                     imageData={{ uri: storeMobx.storeInfo.tStorePhoto }}
-                    _onClick={() => { }}
+                    _onClick={() => {this.props.navigation.navigate('AddStoreDoorHeader',{})}}
                     style={[StoreStyles.storeItemRow, { height: 70 }]}
                 />
 

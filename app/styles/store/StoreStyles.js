@@ -133,6 +133,11 @@ const StoreStyles=StyleSheet.create({
         flex:1,
         width:holdScreenWidth,
         //height:holdScreenWidth,
+    },
+    uploadImageView:{
+        marginTop:10,
+        height:150,
+        //backgroundColor:'#FFF'
     }
    
 });
