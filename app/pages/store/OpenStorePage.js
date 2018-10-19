@@ -17,6 +17,7 @@ import {
     RowRightSwitchView,
     SelectView
 } from 'Java110';
+import StoreConst from '../../constants/StoreConst';
 /**
  * 开店 页面
  * 
@@ -198,6 +199,12 @@ export default class OpenStorePage extends Component {
      */
     _renderStoreBaseInfo(){
         console.log("_renderStoreBaseInfo",storeMobx.storeInfo,storeMobx.storeInfo.address);
+
+        let doorHeaderPhoto = 
+            storeMobx.getStorePhotoOfStoreInfo(StoreConst.STORE_PHOTO_TYPE_CD_DOOR_HEADER).slice().length >0 
+            ? "已上传"
+            :"";
+        
         return(
             <View style={StoreStyles.storeInfo}>
                 <View style={StoreStyles.storeInfoTitle}>
@@ -232,9 +239,9 @@ export default class OpenStorePage extends Component {
                     style={StoreStyles.storeItemRow}
                 />
 
-                <RowRightHasImageView
+                <RowRightHasTextView
                     leftText="门头照"
-                    imageData={{ uri: storeMobx.storeInfo.tStorePhoto }}
+                    rightText={doorHeaderPhoto}
                     _onClick={() => {this.props.navigation.navigate('AddStoreDoorHeader',{})}}
                     style={[StoreStyles.storeItemRow, { height: 70 }]}
                 />

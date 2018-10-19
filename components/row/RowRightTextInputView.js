@@ -109,13 +109,13 @@ const styles = StyleSheet.create({
         borderBottomColor:"#F3F3F3",
     },
     rowView_1_left:{
-        width:70,
+        //width:70,
         justifyContent:'center'
     },
     rowView_1:{
         flexDirection:'row',
         alignItems:'center',
-        marginLeft:0,
+        marginLeft:5,
     },
     rowViewRightImage:{
         height:12,

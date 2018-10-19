@@ -68,7 +68,7 @@ export default class UploadImageView extends Component{
             for(let showPhotoIndex = 0; showPhotoIndex < this.props.currentPhotoDatas.lenght;showPhotoIndex ++){
                 tmpImage += <View style={style.showPhotoView}>
                                 <Image 
-                                source={this.props.imageData[showPhotoIndex]}
+                                source={this.props.currentPhotoDatas[showPhotoIndex]}
                                 style={style.showPhotoViewImage}></Image>
                             </View>
             }
@@ -82,6 +82,7 @@ export default class UploadImageView extends Component{
      * 拍照按钮 显示
      */
     _renderTakePhoto(){
+        
         let tmpTakePhotoImage = 
                 this.props.currentPhotoDatas == null || this.props.currentPhotoDatas.length < this.props.requiredPhotoCount?
                     <TouchableOpacity style={style.takeCameraView} onPress={()=>{
@@ -115,6 +116,13 @@ export default class UploadImageView extends Component{
         );
     }
 
+
+    componentWillReceiveProps(props){
+        this.setState({
+            imageModelShow:props.imageModelShow,
+        });
+    }
+
 }
 /**
  * 样式
@@ -134,7 +142,7 @@ let style = StyleSheet.create({
     },
     takeCameraView:{
         borderWidth:1,
-        borderColor:'black',
+        borderColor:'#ccc',
         borderStyle : 'dashed',
         borderRadius:10,
         height:100,
@@ -145,7 +153,7 @@ let style = StyleSheet.create({
     takeCameraButtonImage:{
         height:40,
         width:50,
-        tintColor:'#eee'
+        tintColor:'#ccc'
     },
     showPhotoView:{
         height:100,

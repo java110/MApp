@@ -169,6 +169,29 @@ class StoreMobx {
   }
 
 
+  /**
+   * 根据照片类型查询照片信息
+   * 
+   * @param {照片类型} key 
+   * 
+   * @returns {照片类型} storePhotoTypeCd ,{照片信息} photo
+   */
+  @action
+  getStorePhotoOfStoreInfo(key) {
+
+    let tmpStorePhoto = this.storeInfo.storePhoto;
+    let returnStorePhoto = [];
+
+    for(let tmpStorePhotoIndex = 0 ;tmpStorePhotoIndex < tmpStorePhoto.length;tmpStorePhotoIndex ++){
+        if(tmpStorePhoto[tmpStorePhotoIndex].storePhotoTypeCd == key){
+            returnStorePhoto.push(tmpStorePhoto[tmpStorePhotoIndex]);
+        }
+    }
+    
+    return returnStorePhoto;
+  }
+
+
 
 
 }
