@@ -28,11 +28,23 @@ export default class OpenStorePage extends Component {
 
     constructor(props) {
         super(props);
+        let startHour = this._getStoreAttrShowText(StoreConst.STORE_ATTR_START_HOUR,'请选择');
+        let endHour = this._getStoreAttrShowText(StoreConst.STORE_ATTR_END_HOUR,'请选择');
+        let is24 = startHour == StoreConst.STORE_TIME_00 && endHour == StoreConst.STORE_TIME_24 ? true:false;
         this.state = {
             showExplain: true,
             currentPageName:"开店说明",
             storeTypeModelShow:false,
             storeTypePageName:"经营种类",
+            startDayModelShow:false,
+            startDayPageName:"选择营业起始日",
+            endDayModelShow:false,
+            endDayPageName:"选择营业结束日",
+            startHourModelShow:false,
+            startHourPageName:"选择营业起始时段",
+            endHourModelShow:false,
+            endHourPageName:"选择营业结束时段",
+            is24:is24,
         };
         this._onBackPage = this._onBackPage.bind(this);
 
@@ -187,6 +199,10 @@ export default class OpenStorePage extends Component {
                     {this._renderStoreOthersInfo()}
                     {this._renderSpace()}
                     {this._renderSelectStoreType()}
+                    {this._renderSelectStartDay()}
+                    {this._renderSelectEndDay()}
+                    {this._renderSelectStartHour()}
+                    {this._renderSelectEndHour()}
                 </ScrollView>
                 {this._renderStoreBottom()}  
             </View>
@@ -306,16 +322,53 @@ export default class OpenStorePage extends Component {
                     _onClick={() => { this.props.navigation.navigate('AddBusinessCertificate',{})  }}
                     style={StoreStyles.storeItemRow}
                 />
-                <RowRightHasTextView
-                    leftText="其他证明"
-                    rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'选填，有证则上传'}
-                    _onClick={() => {  }}
-                    style={StoreStyles.storeItemRow}
-                />
             </View>
         );
     }
 
+    /**
+     * 根据属性规格查询属性值 页面展示文本
+     * @param {证件类型} cerdentialsCd 
+     */
+    _getStoreAttrShowText(specCd,mess = ""){
+        let tmpStoreAttr = storeMobx.getStoreAttrOfStoreInfo(specCd);
+        let tmpText = 
+            tmpStoreAttr.slice().length >0 
+            ? tmpStoreAttr[0].value
+            :mess;
+
+            return  tmpText;
+    }
+
+    /**
+     * 根据属性ID 查询属性值
+     * @param {规格ID} specCd 
+     * @param {提示语} mess 
+     */
+    _getStoreAttrSelectDayShowText(specCd,mess = ""){
+        let tmpStoreAttr = storeMobx.getStoreAttrOfStoreInfo(specCd);
+        let tmpText = 
+            tmpStoreAttr.slice().length >0 
+            ? storeMobx.getDayName(tmpStoreAttr[0].value)
+            :mess;
+
+            return  tmpText;
+    }
+
+    /**
+     * 根据属性ID 查询属性值
+     * @param {规格ID} specCd 
+     * @param {提示语} mess 
+     */
+    _getStoreAttrSelectHourShowText(specCd,mess = ""){
+        let tmpStoreAttr = storeMobx.getStoreAttrOfStoreInfo(specCd);
+        let tmpText = 
+            tmpStoreAttr.slice().length >0 
+            ? storeMobx.getHourName(tmpStoreAttr[0].value)
+            :mess;
+
+            return  tmpText;
+    }
     /**
      * 其他信息，保存到 shopAttr 中
      */
@@ -329,47 +382,65 @@ export default class OpenStorePage extends Component {
                 <RowRightTextInputView
                     leftText="品牌名称"
                     textPlaceholder={"请输入品牌，必填"}
-                    _onChangeText={(value) => { storeMobx.refreshStoreInfoOfStoreAttr('name',value) }}
-                    rightText={storeMobx.storeInfo.name}
+                    _onChangeText={(value) => { storeMobx.refreshStoreInfoOfStoreAttr(StoreConst.STORE_ATTR_BRAND_NAME,value) }}
+                    rightText={this._getStoreAttrShowText(StoreConst.STORE_ATTR_BRAND_NAME)}
                     style={StoreStyles.storeItemRow}
                 />
                 <RowRightTextInputView
                     leftText="收款账户"
                     textPlaceholder={"请输入收款账户，必填"}
-                    _onChangeText={(value) => { storeMobx.refreshStoreInfoOfStoreAttr('name',value) }}
-                    rightText={storeMobx.storeInfo.name}
+                    _onChangeText={(value) => { storeMobx.refreshStoreInfoOfStoreAttr(StoreConst.STORE_ATTR_ACCOUNT,value) }}
+                    rightText={this._getStoreAttrShowText(StoreConst.STORE_ATTR_ACCOUNT)}
                     style={StoreStyles.storeItemRow}
                 />
                 <RowRightHasTextView
                     leftText="营业起始日"
-                    rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'请选择'}
-                    _onClick={() => {  }}
+                    rightText={this._getStoreAttrSelectDayShowText(StoreConst.STORE_ATTR_START_DAY,'请选择')}
+                    _onClick={() => { this.setState({startDayModelShow:true}); }}
                     style={StoreStyles.storeItemRow}
                 />
                 <RowRightHasTextView
                     leftText="营业结束日"
-                    rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'请选择'}
-                    _onClick={() => {  }}
+                    rightText={this._getStoreAttrSelectDayShowText(StoreConst.STORE_ATTR_END_DAY,'请选择')}
+                    _onClick={() => { this.setState({endDayModelShow:true}); }}
                     style={StoreStyles.storeItemRow}
                 />
                 <RowRightSwitchView
                     leftText="24小时"
-                    switchValue={this.state.openShopCount == 'Y'?true:false}
-                    _onSwitchValueChange={(value) => { storeMobx.refreshStoreInfoOfStoreAttr('is24',value) }}
+                    switchValue={this.state.is24}
+                    _onSwitchValueChange={(value) => { 
+                        storeMobx.refreshStoreInfoOfStoreAttr('is24',value);
+                        //如果是24 小时则将 开始时间和结束时间刷成 0点至 24点
+                        if(value){
+                            storeMobx.refreshStoreInfoProperty(StoreConst.STORE_ATTR_START_HOUR,StoreConst.STORE_TIME_00);
+                            storeMobx.refreshStoreInfoProperty(StoreConst.STORE_ATTR_END_HOUR,StoreConst.STORE_TIME_24);
+                        }else{
+                        //如果不是24 小时 则删除之前开始时间和结束时间值
+                            storeMobx.deleteStoreAttrBySpecCd(StoreConst.STORE_ATTR_START_HOUR);
+                            storeMobx.deleteStoreAttrBySpecCd(StoreConst.STORE_ATTR_END_HOUR);
+                        }
+                        this.setState({is24:value});
+                     }}
                     style={StoreStyles.storeItemRow}
                 />
-                <RowRightHasTextView
+                {
+                    this.state.is24?null:
+                    <RowRightHasTextView
                     leftText="营业起始时段"
-                    rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'请选择'}
-                    _onClick={() => {  }}
+                    rightText={this._getStoreAttrSelectHourShowText(StoreConst.STORE_ATTR_START_HOUR,'请选择')}
+                    _onClick={() => { this.setState({startHourModelShow:true});  }}
                     style={StoreStyles.storeItemRow}
-                />
-                <RowRightHasTextView
-                    leftText="营业结束时段"
-                    rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'请选择'}
-                    _onClick={() => {  }}
-                    style={StoreStyles.storeItemRow}
-                />
+                    />
+                }
+                {
+                    this.state.is24?null:
+                    <RowRightHasTextView
+                        leftText="营业结束时段"
+                        rightText={this._getStoreAttrSelectHourShowText(StoreConst.STORE_ATTR_END_HOUR,'请选择')}
+                        _onClick={() => {this.setState({endHourModelShow:true});  }}
+                        style={StoreStyles.storeItemRow}
+                    />
+                }
             </View>
         );
     }
@@ -435,6 +506,7 @@ export default class OpenStorePage extends Component {
      */
     _onClickCommitStore(){
         //提交数据
+        storeMobx.saveStoreInfo();
         //提示在审核中查看
         this._onBackPage();
     }
@@ -448,5 +520,109 @@ export default class OpenStorePage extends Component {
         this.setState({
             storeTypePageName:"经营种类",
         });
+    }
+
+    /**
+     * 选择营业起始日
+     */
+    _renderSelectStartDay() {
+        //封装目录信息
+        let tmpDays = storeMobx.getDays(StoreConst.STORE_ATTR_START_DAY);
+        return (
+            <SelectView
+                selectModelShow={this.state.startDayModelShow}
+                currentPageName={this.state.startDayPageName}
+                data={tmpDays.slice()}
+                _onSelectCheck={(id) => {
+                    storeMobx.refreshStoreInfoOfStoreAttr(StoreConst.STORE_ATTR_START_DAY,id);
+                    this.setState({
+                        startDayPageName:"选择营业起始日",
+                    });
+                }}
+                _onCancle={()=>{
+                    this.setState({
+                        startDayModelShow:false,
+                    });    
+                }}
+            />
+        );
+    }
+
+    /**
+     * 选择营业结束日
+     */
+    _renderSelectEndDay() {
+        //封装目录信息
+        let tmpDays = storeMobx.getDays(StoreConst.STORE_ATTR_END_DAY);
+        return (
+            <SelectView
+                selectModelShow={this.state.endDayModelShow}
+                currentPageName={this.state.endDayPageName}
+                data={tmpDays.slice()}
+                _onSelectCheck={(id) => {
+                    storeMobx.refreshStoreInfoOfStoreAttr(StoreConst.STORE_ATTR_END_DAY,id);
+                    this.setState({
+                        endDayPageName:"选择营业结束日",
+                    });
+                }}
+                _onCancle={()=>{
+                    this.setState({
+                        endDayModelShow:false,
+                    });    
+                }}
+            />
+        );
+    }
+
+    /**
+     * 选择营业起始时段
+     */
+    _renderSelectStartHour() {
+        //封装目录信息
+        let tmpDays = storeMobx.getHours(StoreConst.STORE_ATTR_START_HOUR);
+        return (
+            <SelectView
+                selectModelShow={this.state.startHourModelShow}
+                currentPageName={this.state.startHourPageName}
+                data={tmpDays.slice()}
+                _onSelectCheck={(id) => {
+                    storeMobx.refreshStoreInfoOfStoreAttr(StoreConst.STORE_ATTR_START_HOUR,id);
+                    this.setState({
+                        startHourPageName:"选择营业起始时段",
+                    });
+                }}
+                _onCancle={()=>{
+                    this.setState({
+                        startHourModelShow:false,
+                    });    
+                }}
+            />
+        );
+    }
+
+    /**
+     * 选择营业结束时段
+     */
+    _renderSelectEndHour() {
+        //封装目录信息
+        let tmpDays = storeMobx.getHours(StoreConst.STORE_ATTR_END_HOUR);
+        return (
+            <SelectView
+                selectModelShow={this.state.endHourModelShow}
+                currentPageName={this.state.endHourPageName}
+                data={tmpDays.slice()}
+                _onSelectCheck={(id) => {
+                    storeMobx.refreshStoreInfoOfStoreAttr(StoreConst.STORE_ATTR_END_HOUR,id);
+                    this.setState({
+                        endHourPageName:"选择营业结束时段",
+                    });
+                }}
+                _onCancle={()=>{
+                    this.setState({
+                        endHourModelShow:false,
+                    });    
+                }}
+            />
+        );
     }
 }
