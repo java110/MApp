@@ -49,6 +49,7 @@ class StoreMobx {
     storeAttr.specCd = key;
     storeAttr.value = value;
     this.storeInfo.storeAttr.push(storeAttr);
+    console.log('refreshStoreInfoOfStoreAttr',this.storeInfo);
   }
   /**
    * 向对象storeInfo 的 storePhoto 刷入数据
@@ -149,7 +150,7 @@ class StoreMobx {
    * 初始化星期
    */
   _initDays() {
-    var Days = { "1": "星期一", "2": "星期二", "3": "星期三", "4": "星期四", "5": "星期五", "6": "星期六", "7": "星期七" };
+    var Days = { "1": "星期一", "2": "星期二", "3": "星期三", "4": "星期四", "5": "星期五", "6": "星期六", "7": "星期日" };
     for (let dayIndex = 1; dayIndex < 8; dayIndex++) {
       let day = {
         check: 0,
@@ -422,21 +423,30 @@ class StoreMobx {
      * 保存数据
      */
     saveStoreInfoToPhone(){
+      console.log("saveStoreInfoToPhone");
       // 先从手机中加载数据
-      let tmpStoreInfos = this.reloadStoreInfoFromPhone();
-      if(tmpStoreInfos == null || tmpStoreInfos.length == 0){
-        tmpStoreInfos = [];
-      }
-      tmpStoreInfos.push(this.storeInfo);
-
-      AsyncStorage.setItem(StoreConst.SAVE_STORE_INFO_KEY, JSON.stringify(tmpStoreInfos),(error)=>{
+      this.reloadStoreInfoFromPhone().then((tmpStoreInfos)=>{
+        console.log("saveStoreInfoToPhone",tmpStoreInfos);
+          if(tmpStoreInfos == null || tmpStoreInfos.length ==0){
+            tmpStoreInfos=[]; 
+          } 
+          tmpStoreInfos.push(this.storeInfo);
+          return tmpStoreInfos;
+      }).then((tmpStoreInfos)=>{
+        AsyncStorage.setItem(StoreConst.SAVE_STORE_INFO_KEY, JSON.stringify(tmpStoreInfos),(error)=>{
           if (error){
               console.log("存值失败",error);
           }else{
               console.log('存值成功!');
               //这里调用后端发起保存数据
           }
-      });
+        });
+      }).catch((error)=>{
+        console.error("保存商户信息失败",error);
+      })
+      
+
+      
   }
 
   /**
@@ -448,12 +458,15 @@ class StoreMobx {
           const value = await AsyncStorage.getItem(StoreConst.SAVE_STORE_INFO_KEY);
           if (value !== null) {
               let valueObj = JSON.parse(value);
+              console.log('reloadStoreInfoFromPhone',valueObj);
               return valueObj;
           }
+          return null;
       } catch (error) {
           // Error retrieving data
           console.log("_retrieveData ",error)
       }
+      
   }
 
 

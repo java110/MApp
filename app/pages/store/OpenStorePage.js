@@ -37,13 +37,13 @@ export default class OpenStorePage extends Component {
             storeTypeModelShow:false,
             storeTypePageName:"经营种类",
             startDayModelShow:false,
-            startDayPageName:"选择营业起始日",
+            startDayPageName:"营业起始日",
             endDayModelShow:false,
-            endDayPageName:"选择营业结束日",
+            endDayPageName:"营业结束日",
             startHourModelShow:false,
-            startHourPageName:"选择营业起始时段",
+            startHourPageName:"营业起始时段",
             endHourModelShow:false,
-            endHourPageName:"选择营业结束时段",
+            endHourPageName:"营业结束时段",
             is24:is24,
         };
         this._onBackPage = this._onBackPage.bind(this);
@@ -331,9 +331,10 @@ export default class OpenStorePage extends Component {
      * @param {证件类型} cerdentialsCd 
      */
     _getStoreAttrShowText(specCd,mess = ""){
-        let tmpStoreAttr = storeMobx.getStoreAttrOfStoreInfo(specCd);
+        let tmpStoreAttr = storeMobx.getStoreAttrOfStoreInfo(specCd).slice();
+        console.log('_getStoreAttrShowText',tmpStoreAttr);
         let tmpText = 
-            tmpStoreAttr.slice().length >0 
+            tmpStoreAttr.length >0 
             ? tmpStoreAttr[0].value
             :mess;
 
@@ -383,14 +384,15 @@ export default class OpenStorePage extends Component {
                     leftText="品牌名称"
                     textPlaceholder={"请输入品牌，必填"}
                     _onChangeText={(value) => { storeMobx.refreshStoreInfoOfStoreAttr(StoreConst.STORE_ATTR_BRAND_NAME,value) }}
-                    rightText={this._getStoreAttrShowText(StoreConst.STORE_ATTR_BRAND_NAME)}
+                    inputValue={this._getStoreAttrShowText(StoreConst.STORE_ATTR_BRAND_NAME)}
                     style={StoreStyles.storeItemRow}
                 />
                 <RowRightTextInputView
                     leftText="收款账户"
                     textPlaceholder={"请输入收款账户，必填"}
+                    keyboardText={'numeric'}
                     _onChangeText={(value) => { storeMobx.refreshStoreInfoOfStoreAttr(StoreConst.STORE_ATTR_ACCOUNT,value) }}
-                    rightText={this._getStoreAttrShowText(StoreConst.STORE_ATTR_ACCOUNT)}
+                    inputValue={this._getStoreAttrShowText(StoreConst.STORE_ATTR_ACCOUNT)}
                     style={StoreStyles.storeItemRow}
                 />
                 <RowRightHasTextView
@@ -409,7 +411,7 @@ export default class OpenStorePage extends Component {
                     leftText="24小时"
                     switchValue={this.state.is24}
                     _onSwitchValueChange={(value) => { 
-                        storeMobx.refreshStoreInfoOfStoreAttr('is24',value);
+                        //storeMobx.refreshStoreInfoOfStoreAttr('is24',value);
                         //如果是24 小时则将 开始时间和结束时间刷成 0点至 24点
                         if(value){
                             storeMobx.refreshStoreInfoProperty(StoreConst.STORE_ATTR_START_HOUR,StoreConst.STORE_TIME_00);
@@ -536,7 +538,7 @@ export default class OpenStorePage extends Component {
                 _onSelectCheck={(id) => {
                     storeMobx.refreshStoreInfoOfStoreAttr(StoreConst.STORE_ATTR_START_DAY,id);
                     this.setState({
-                        startDayPageName:"选择营业起始日",
+                        startDayPageName:"营业起始日",
                     });
                 }}
                 _onCancle={()=>{
@@ -562,7 +564,7 @@ export default class OpenStorePage extends Component {
                 _onSelectCheck={(id) => {
                     storeMobx.refreshStoreInfoOfStoreAttr(StoreConst.STORE_ATTR_END_DAY,id);
                     this.setState({
-                        endDayPageName:"选择营业结束日",
+                        endDayPageName:"营业结束日",
                     });
                 }}
                 _onCancle={()=>{
@@ -588,7 +590,7 @@ export default class OpenStorePage extends Component {
                 _onSelectCheck={(id) => {
                     storeMobx.refreshStoreInfoOfStoreAttr(StoreConst.STORE_ATTR_START_HOUR,id);
                     this.setState({
-                        startHourPageName:"选择营业起始时段",
+                        startHourPageName:"营业起始时段",
                     });
                 }}
                 _onCancle={()=>{
@@ -614,7 +616,7 @@ export default class OpenStorePage extends Component {
                 _onSelectCheck={(id) => {
                     storeMobx.refreshStoreInfoOfStoreAttr(StoreConst.STORE_ATTR_END_HOUR,id);
                     this.setState({
-                        endHourPageName:"选择营业结束时段",
+                        endHourPageName:"营业结束时段",
                     });
                 }}
                 _onCancle={()=>{
