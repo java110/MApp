@@ -40,6 +40,9 @@ import EnterCommunityPage from './pages/community/EnterCommunityPage';
 import AddStoreAddressPage from './pages/store/AddStoreAddressPage';
 import AddStoreDoorHeaderPhotoPage from './pages/store/AddStoreDoorHeaderPhotoPage';
 import AddStoreInnerPhotoPage from './pages/store/AddStoreInnerPhotoPage';
+import AddBusinessLicencePage from './pages/store/AddBusinessLicencePage';
+import AddAuthorizationLetterPage from './pages/store/AddAuthorizationLetterPage';
+import AddBusinessCertificatePage from './pages/store/AddBusinessCertificatePage';
 
 /**
  *
@@ -170,6 +173,15 @@ const RootStack = createStackNavigator({
     },
     AddStoreInnerPhoto:{
         screen:AddStoreInnerPhotoPage,
+    },
+    AddBusinessLicence:{
+        screen:AddBusinessLicencePage
+    },
+    AddAuthorizationLetter:{
+        screen:AddAuthorizationLetterPage
+    },
+    AddBusinessCertificate:{
+        screen:AddBusinessCertificatePage
     }
     
 

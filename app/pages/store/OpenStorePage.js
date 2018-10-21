@@ -38,6 +38,7 @@ export default class OpenStorePage extends Component {
 
         this._onClickOpenStore = this._onClickOpenStore.bind(this);
         this._onClickCommitStore = this._onClickCommitStore.bind(this);
+        this._getStoreCerdentialsShowText = this._getStoreCerdentialsShowText.bind(this);
     }
 
     /**
@@ -262,9 +263,25 @@ export default class OpenStorePage extends Component {
     }
 
     /**
+     * 根据证件类型 页面展示文本
+     * @param {证件类型} cerdentialsCd 
+     */
+    _getStoreCerdentialsShowText(cerdentialsCd,mess = "必填，请上传"){
+        let count = storeMobx.getStoreCerdentialsOfStoreInfo(cerdentialsCd).slice().length;
+        let tmpText = 
+            count >0 
+            ? "已上传"
+            :mess;
+
+            return  tmpText;
+    }
+
+    /**
      * 证件信息
      */
     _renderStoreCerdentialsInfo(){
+        
+
         return(
             <View style={StoreStyles.storeInfo}>
                 <View style={StoreStyles.storeInfoTitle}>
@@ -273,20 +290,20 @@ export default class OpenStorePage extends Component {
                 
                 <RowRightHasTextView
                     leftText="营业执照"
-                    rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'必填，请上传'}
-                    _onClick={() => {  }}
+                    rightText={this._getStoreCerdentialsShowText(StoreConst.STORE_CREDENTIALS_CD_BUSINESS_LICENCE)}
+                    _onClick={() => {this.props.navigation.navigate('AddBusinessLicence',{})}}
                     style={StoreStyles.storeItemRow}
                 />
                 <RowRightHasTextView
                     leftText="授权函"
-                    rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'必填，请上传'}
-                    _onClick={() => {  }}
+                    rightText={this._getStoreCerdentialsShowText(StoreConst.STORE_CREDENTIALS_CD_AUTHORIZATION_LETTER)}
+                    _onClick={() => { this.props.navigation.navigate('AddAuthorizationLetter',{}) }}
                     style={StoreStyles.storeItemRow}
                 />
                 <RowRightHasTextView
                     leftText="经营许可证"
-                    rightText={storeMobx.storeInfo.address ?storeMobx.storeInfo.address:'选填，有证则上传'}
-                    _onClick={() => {  }}
+                    rightText={this._getStoreCerdentialsShowText(StoreConst.STORE_CREDENTIALS_CD_BUSINESS_CERTIFICATE,'选填')}
+                    _onClick={() => { this.props.navigation.navigate('AddBusinessCertificate',{})  }}
                     style={StoreStyles.storeItemRow}
                 />
                 <RowRightHasTextView

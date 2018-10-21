@@ -66,13 +66,23 @@ class StoreMobx {
    * @param {属性} value 
    */
   @action
-  refreshStoreInfoOfStoreCerdentials(credentialsCd, value, validityPeriod, positivePhoto, negativePhoto) {
+  refreshStoreInfoOfStoreCerdentials(storeCerdentialsId,credentialsCd, value, validityPeriod, positivePhoto, negativePhoto) {
     let storeCerdentials = {};
-    storeCerdentials.credentialsCd = credentialsCd,
+    //服务端生成返回
+      if(storeCerdentialsId != '-1'){
+          this.deleteStoreCerdentialsByCredentialsId(storeCerdentialsId)
+      }else{
+          storeCerdentialsId = Date.now()+"";  
+      }
+      storeCerdentialsId = Date.now()+""; 
+      storeCerdentials.storeCerdentialsId = storeCerdentialsId,
+      storeCerdentials.credentialsCd = credentialsCd,
       storeCerdentials.value = value;
-    storeCerdentials.validityPeriod = validityPeriod;
-    storeCerdentials.positivePhoto = negativePhoto;
-    this.storeInfo.storeCerdentials.push(storeCerdentials);
+      storeCerdentials.validityPeriod = validityPeriod;
+      storeCerdentials.positivePhoto = positivePhoto;
+      storeCerdentials.negativePhoto = negativePhoto;
+      this.storeInfo.storeCerdentials.push(storeCerdentials);
+   
   }
   
   @observable
@@ -190,8 +200,41 @@ class StoreMobx {
             returnStorePhoto.push(tmpStorePhoto[tmpStorePhotoIndex]);
         }
     }
-
     return returnStorePhoto;
+  }
+
+  /**
+   * 根据证件类型查询证件
+   * @param {证件类型} credentialsCd 
+   */
+  @action
+  getStoreCerdentialsOfStoreInfo(credentialsCd){
+      let tmpStoreCerdentials = this.storeInfo.storeCerdentials;
+      let returnStoreCerdentials = [];
+
+      for(let tmpStoreCerdentialsIndex = 0; tmpStoreCerdentialsIndex< tmpStoreCerdentials.length;tmpStoreCerdentialsIndex++){
+          if(tmpStoreCerdentials[tmpStoreCerdentialsIndex].credentialsCd == credentialsCd){
+            returnStoreCerdentials.push(tmpStoreCerdentials[tmpStoreCerdentialsIndex]);
+          }
+      }
+
+      return returnStoreCerdentials;
+  }
+
+  /**
+   * 根据证件类型查询证件
+   * @param {证件ID} credentialsId 
+   */
+  @action
+  deleteStoreCerdentialsByCredentialsId(credentialsId){
+      let tmpStoreCerdentials = this.storeInfo.storeCerdentials;
+      let tempStoreCerdentials = [];
+      for(let tmpStoreCerdentialsIndex = 0; tmpStoreCerdentialsIndex< tmpStoreCerdentials.length;tmpStoreCerdentialsIndex++){
+          if(tmpStoreCerdentials[tmpStoreCerdentialsIndex].storeCerdentialsId != credentialsId){
+            tempStoreCerdentials.push(tmpStoreCerdentials[tmpStoreCerdentialsIndex]);
+          }
+      }
+      this.storeInfo.storeCerdentials = tempStoreCerdentials;
   }
 
   /**

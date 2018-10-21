@@ -159,6 +159,9 @@ const StoreStyles=StyleSheet.create({
     uploadImageExampleViewImage:{
         height:250,
         width:holdScreenWidth-10,
+    },
+    businessLicenceView:{
+        marginTop:10,
     }
    
 });
