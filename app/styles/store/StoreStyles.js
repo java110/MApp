@@ -167,7 +167,7 @@ const StoreStyles=StyleSheet.create({
         flex:1,
         backgroundColor:'#FFF',
         flexDirection:'row',
-        marginTop:20,
+        marginTop:10,
     },
     auditImageView:{
         height:100,
@@ -176,15 +176,25 @@ const StoreStyles=StyleSheet.create({
         alignItems:'center',
     },
     auditViewImage:{
-        height:90,
-        width:90,
+        height:80,
+        width:80,
+        borderRadius:10,
+    },
+    auditTextView:{
+        height:100,
+        justifyContent:'center',
+    },
+    auditViewText:{
+        height:80,
     },
     auditTextName:{
-        fontSize:14,
+        fontSize:16,
+        color:'#333',
 
     },
     auditText:{
-        fontSize:12,
+        marginTop:5,
+        fontSize:14,
     }
    
 });

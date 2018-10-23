@@ -44,6 +44,7 @@ import AddBusinessLicencePage from './pages/store/AddBusinessLicencePage';
 import AddAuthorizationLetterPage from './pages/store/AddAuthorizationLetterPage';
 import AddBusinessCertificatePage from './pages/store/AddBusinessCertificatePage';
 import AsyncStoragePage from './pages/test/AsyncStoragePage';
+import ViewStorePhotoPage from './pages/store/ViewStorePhotoPage';
 
 /**
  *
@@ -186,6 +187,9 @@ const RootStack = createStackNavigator({
     },
     AsyncStorage:{
         screen:AsyncStoragePage
+    },
+    ViewStorePhoto:{
+        screen:ViewStorePhotoPage
     }
     
 

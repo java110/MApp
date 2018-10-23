@@ -21,6 +21,7 @@ class StoreMobx {
 
   @observable
   storeInfo: Object = {
+    addr:'',
     storeAttr: [],
     storePhoto: [],
     storeCerdentials: []
@@ -31,6 +32,7 @@ class StoreMobx {
    */
   _reInitStoreInfo(){
     this.storeInfo = {
+      addr:'',
       storeAttr: [],
       storePhoto: [],
       storeCerdentials: []

@@ -4,7 +4,7 @@ import {View,Image,Text,TouchableOpacity,Platform,FlatList} from 'react-native';
 
 import StoreStyles from '../../styles/store/StoreStyles';
 import CommonStyles from "../../styles/CommonStyles";
-
+import StoreConst from '../../constants/StoreConst';
 import {
     NoActionHeaderView,
 } from 'Java110';
@@ -91,7 +91,7 @@ export default class EnterStorePage extends Component{
         let imageData = {uri:''};
         for (let tmpStorePhotoIndex = 0; tmpStorePhotoIndex < tmpStorePhoto.length; tmpStorePhotoIndex++) {
           if (tmpStorePhoto[tmpStorePhotoIndex].storePhotoTypeCd == StoreConst.STORE_PHOTO_TYPE_CD_DOOR_HEADER) {
-            imageData.uri = tmpStorePhoto[tmpStorePhotoIndex];
+            imageData.uri = tmpStorePhoto[tmpStorePhotoIndex].photo;
           }
         }
 
@@ -105,10 +105,12 @@ export default class EnterStorePage extends Component{
                         style={StoreStyles.auditViewImage}
                     />
                 </View>
-                <View>
-                    <Text style={StoreStyles.auditTextName}>{rowData.name}</Text>
-                    <Text style={StoreStyles.auditText}>{rowData.address}</Text>
-                    <Text style={StoreStyles.auditText}>创建时间: {rowData.createTime}</Text>
+                <View style={StoreStyles.auditTextView}>
+                    <View style={StoreStyles.auditViewText}>
+                        <Text style={StoreStyles.auditTextName}>{rowData.name}</Text>
+                        <Text style={StoreStyles.auditText}>{rowData.address}</Text>
+                        <Text style={StoreStyles.auditText}>创建时间: {rowData.createTime}</Text>
+                    </View>
                 </View>
             </TouchableOpacity>
         );
