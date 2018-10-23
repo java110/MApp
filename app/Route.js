@@ -43,6 +43,7 @@ import AddStoreInnerPhotoPage from './pages/store/AddStoreInnerPhotoPage';
 import AddBusinessLicencePage from './pages/store/AddBusinessLicencePage';
 import AddAuthorizationLetterPage from './pages/store/AddAuthorizationLetterPage';
 import AddBusinessCertificatePage from './pages/store/AddBusinessCertificatePage';
+import AsyncStoragePage from './pages/test/AsyncStoragePage';
 
 /**
  *
@@ -182,6 +183,9 @@ const RootStack = createStackNavigator({
     },
     AddBusinessCertificate:{
         screen:AddBusinessCertificatePage
+    },
+    AsyncStorage:{
+        screen:AsyncStoragePage
     }
     
 

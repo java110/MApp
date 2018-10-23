@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, Image, Text, TouchableOpacity, Platform,ScrollView } from 'react-native';
 
 import storeMobx from '../../mobx/store/StoreMobx';
+import AsyncStorageUtils from '../../Utils/AsynStorageUtils';
 
 import StoreStyles from '../../styles/store/StoreStyles';
 import CommonStyles from "../../styles/CommonStyles";

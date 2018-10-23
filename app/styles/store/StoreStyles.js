@@ -162,6 +162,29 @@ const StoreStyles=StyleSheet.create({
     },
     businessLicenceView:{
         marginTop:10,
+    },
+    auditView:{
+        flex:1,
+        backgroundColor:'#FFF',
+        flexDirection:'row',
+        marginTop:20,
+    },
+    auditImageView:{
+        height:100,
+        width:100,
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    auditViewImage:{
+        height:90,
+        width:90,
+    },
+    auditTextName:{
+        fontSize:14,
+
+    },
+    auditText:{
+        fontSize:12,
     }
    
 });

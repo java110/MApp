@@ -32,7 +32,7 @@ export default class IndexPage extends Component{
             {
                 imagePath:require("../../images/storeMenu.png"),
                 name:"门店动态",
-                routeName:"",
+                routeName:"AsyncStorage",
             },
             {
                 imagePath:require("../../images/marketMenu.png"),

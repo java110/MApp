@@ -2,7 +2,9 @@ import { observable, action, runInAction, autorun, computed } from 'mobx';
 import { AsyncStorage } from 'react-native';
 import SysConfig from '../../config/SysConfig';
 import _ from 'lodash';
+import moment from 'moment';
 import StoreConst from '../../constants/StoreConst';
+import AsyncStorageUtils from '../../Utils/AsynStorageUtils';
 
 /**
  * 商户 处理类
@@ -19,11 +21,24 @@ class StoreMobx {
 
   @observable
   storeInfo: Object = {
-    addr: '',
     storeAttr: [],
     storePhoto: [],
     storeCerdentials: []
   };
+
+  /**
+   * 将storeInfo 的值重新刷为 空
+   */
+  _reInitStoreInfo(){
+    this.storeInfo = {
+      storeAttr: [],
+      storePhoto: [],
+      storeCerdentials: []
+    };
+  }
+
+  @observable
+  auditStoreInfos: Array = [];
 
 
   /**
@@ -49,7 +64,7 @@ class StoreMobx {
     storeAttr.specCd = key;
     storeAttr.value = value;
     this.storeInfo.storeAttr.push(storeAttr);
-    console.log('refreshStoreInfoOfStoreAttr',this.storeInfo);
+    console.log('refreshStoreInfoOfStoreAttr', this.storeInfo);
   }
   /**
    * 向对象storeInfo 的 storePhoto 刷入数据
@@ -154,7 +169,7 @@ class StoreMobx {
     for (let dayIndex = 1; dayIndex < 8; dayIndex++) {
       let day = {
         check: 0,
-        id: dayIndex+'',
+        id: dayIndex + '',
         value: Days[dayIndex]
       };
       this.days.push(day);
@@ -191,14 +206,14 @@ class StoreMobx {
    * @param {ID} id 
    */
   @action
-  getDayName(dayId){
-      console.log('getDayName',dayId)
-      for(let tmpDayIndex = 0;tmpDayIndex < this.days.length; tmpDayIndex ++){
-        if(this.days[tmpDayIndex].id == dayId+''){
-          return this.days[tmpDayIndex].value;
-        }
+  getDayName(dayId) {
+    console.log('getDayName', dayId)
+    for (let tmpDayIndex = 0; tmpDayIndex < this.days.length; tmpDayIndex++) {
+      if (this.days[tmpDayIndex].id == dayId + '') {
+        return this.days[tmpDayIndex].value;
       }
-      return "";
+    }
+    return "";
   }
 
   /**
@@ -208,7 +223,7 @@ class StoreMobx {
     for (let dayIndex = 0; dayIndex < 25; dayIndex++) {
       let hour = {
         check: 0,
-        id: dayIndex+'',
+        id: dayIndex + '',
         value: dayIndex < 10 ? '0' + dayIndex + ':00' : dayIndex + ':00'
       };
       this.hours.push(hour);
@@ -244,9 +259,9 @@ class StoreMobx {
    * @param {时间ID} hourId 
    */
   @action
-  getHourName(hourId){
-    for(let tmpHourIndex = 0;tmpHourIndex < this.hours.length; tmpHourIndex ++){
-      if(this.hours[tmpHourIndex].id == hourId){
+  getHourName(hourId) {
+    for (let tmpHourIndex = 0; tmpHourIndex < this.hours.length; tmpHourIndex++) {
+      if (this.hours[tmpHourIndex].id == hourId) {
         return this.hours[tmpHourIndex].value;
       }
     }
@@ -411,65 +426,77 @@ class StoreMobx {
   }
 
   @action
-  saveStoreInfo(){
+  saveStoreInfo() {
     //保存数据至远程服务器，远程服务做校验
 
+    //根据远程返回的ID 将 storeId 刷入到storeInfo
+    let storeId = Date.now() + "";
+    this.refreshStoreInfoProperty('storeId', storeId);
+    this.refreshStoreInfoProperty('createTime', moment().format('YYYY-MM-DD HH:mm:ss'));
     //将storeInfo 数据保存到硬盘中
     this.saveStoreInfoToPhone();
 
   }
 
-   /**
-     * 保存数据
-     */
-    saveStoreInfoToPhone(){
-      console.log("saveStoreInfoToPhone");
-      // 先从手机中加载数据
-      this.reloadStoreInfoFromPhone().then((tmpStoreInfos)=>{
-        console.log("saveStoreInfoToPhone",tmpStoreInfos);
-          if(tmpStoreInfos == null || tmpStoreInfos.length ==0){
-            tmpStoreInfos=[]; 
-          } 
-          tmpStoreInfos.push(this.storeInfo);
-          return tmpStoreInfos;
-      }).then((tmpStoreInfos)=>{
-        AsyncStorage.setItem(StoreConst.SAVE_STORE_INFO_KEY, JSON.stringify(tmpStoreInfos),(error)=>{
-          if (error){
-              console.log("存值失败",error);
-          }else{
-              console.log('存值成功!');
-              //这里调用后端发起保存数据
-          }
+  /**
+    * 保存数据
+    */
+  saveStoreInfoToPhone() {
+    console.log("saveStoreInfoToPhone");
+    let tmpStoreInfos = []
+    AsyncStorageUtils._get(StoreConst.SAVE_STORE_INFO_KEY, (error, result) => {
+      if (error) {
+        return new Promise(function (resolve, reject) {
+          reject('读取[' + StoreConst.SAVE_STORE_INFO_KEY + ']数据失败' + error);
         });
-      }).catch((error)=>{
-        console.error("保存商户信息失败",error);
+      }
+    }).then((result) => {
+      console.log('saveStoreInfoToPhone result', result);
+      if ( result != null && result != '') {
+        tmpStoreInfos = JSON.parse(result);
+      }
+      return tmpStoreInfos;
+    }).then((tmpStoreInfos) => {
+      tmpStoreInfos.push(this.storeInfo);
+      return tmpStoreInfos;
+    }).then((tmpStoreInfos) => {
+      AsyncStorageUtils._save(StoreConst.SAVE_STORE_INFO_KEY, JSON.stringify(tmpStoreInfos), (error) => {
+        if (error) {
+          console.log("存值失败", error);
+        } else {
+          console.log('存值成功!');
+          //这里调用后端发起保存数据
+          this._reInitStoreInfo();
+        }
       })
-      
-
-      
+    }).catch((error) => {
+      console.log('saveStoreInfoToPhone', error);
+    });
   }
 
   /**
-   * 加载 商户数据
-   * @returns {Promise.<void>} 多个商户
+   * 刷新 审核商户信息
    */
-  reloadStoreInfoFromPhone = async () =>{
-      try {
-          const value = await AsyncStorage.getItem(StoreConst.SAVE_STORE_INFO_KEY);
-          if (value !== null) {
-              let valueObj = JSON.parse(value);
-              console.log('reloadStoreInfoFromPhone',valueObj);
-              return valueObj;
-          }
-          return null;
-      } catch (error) {
-          // Error retrieving data
-          console.log("_retrieveData ",error)
+  @action
+  refreshAuditStoreInfos() {
+    //首先从本地加载数据
+    AsyncStorageUtils._get(StoreConst.SAVE_STORE_INFO_KEY, (error, result) => {
+      if (error) {
+        return new Promise(function (resolve, reject) {
+          reject('读取[' + StoreConst.SAVE_STORE_INFO_KEY + ']数据失败' + error);
+        });
       }
-      
+    }).then((result) => {
+      console.log('saveStoreInfoToPhone result', result);
+      if (result != '') {
+        tmpStoreInfos = JSON.parse(result);
+        this.auditStoreInfos = tmpStoreInfos;
+      }
+    }).catch((error) => {
+      console.log('refreshAuditStoreInfos', error);
+    });
+    //异步请求服务器加载数据
   }
-
-
 
 }
 
