@@ -25,28 +25,28 @@ export default class IndexPage extends Component{
                 routeName:"StoreAudit",
             },
             {
-                imagePath:require("../../images/buy.png"),
+                imagePath:require("../../images/marketMenu.png"),
                 name:"入驻小区",
                 routeName:"EnterCommunity",
             },
             {
-                imagePath:require("../../images/storeMenu.png"),
-                name:"门店动态",
+                imagePath:require("../../images/buy.png"),
+                name:"我的小区",
                 routeName:"AsyncStorage",
             },
             {
-                imagePath:require("../../images/marketMenu.png"),
-                name:"服务市场",
+                imagePath:require("../../images/storeMenu.png"),
+                name:"门店",
+                routeName:"StoreList",
+            },
+            {
+                imagePath:require("../../images/logisticsMenu.png"),
+                name:"物流",
                 routeName:"",
             },
             {
                 imagePath:require("../../images/sampleMenu.png"),
                 name:"营销中心",
-                routeName:"",
-            },
-            {
-                imagePath:require("../../images/logisticsMenu.png"),
-                name:"物流",
                 routeName:"",
             },
             {
@@ -191,28 +191,28 @@ export default class IndexPage extends Component{
                         <Text style={IndexStyles.headerView_2_text}>扫一扫</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={IndexStyles.headerViewCenter} onPress={()=>this.props.navigation.navigate('Shop',{})}>
+                <TouchableOpacity style={IndexStyles.headerViewCenter} onPress={()=>{}}>
                     <View style={IndexStyles.headerViewCenter}>
-                        <Image style={IndexStyles.headerView_2_image} source={require('../../images/shopping.png')}></Image>
+                        <Image style={IndexStyles.headerView_2_image} source={require('../../images/qrCode.png')}></Image>
                     </View>
                     <View style={[IndexStyles.headerViewCenter,IndexStyles.headerView_2_text_top]}>
-                        <Text style={IndexStyles.headerView_2_text}>商品</Text>
+                        <Text style={IndexStyles.headerView_2_text}>二维码</Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={IndexStyles.headerViewCenter}>
                     <View style={IndexStyles.headerViewCenter}>
-                        <Image style={IndexStyles.headerView_2_image} source={require('../../images/write.png')}></Image>
+                        <Image style={IndexStyles.headerView_2_image} source={require('../../images/businessFriend.png')}></Image>
                     </View>
                     <View style={[IndexStyles.headerViewCenter,IndexStyles.headerView_2_text_top]}>
-                        <Text style={IndexStyles.headerView_2_text}>发动态</Text>
+                        <Text style={IndexStyles.headerView_2_text}>商圈</Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={IndexStyles.headerViewCenter} onPress={()=>this.props.navigation.navigate('StoreList',{})}>
                     <View style={IndexStyles.headerViewCenter}>
-                        <Image style={IndexStyles.headerView_2_image} source={require('../../images/store.png')}></Image>
+                        <Image style={IndexStyles.headerView_2_image} source={require('../../images/write.png')}></Image>
                     </View>
                     <View style={[IndexStyles.headerViewCenter,IndexStyles.headerView_2_text_top]}>
-                        <Text style={IndexStyles.headerView_2_text}>门店</Text>
+                        <Text style={IndexStyles.headerView_2_text}>发公告</Text>
                     </View>
                 </TouchableOpacity>
             </View>

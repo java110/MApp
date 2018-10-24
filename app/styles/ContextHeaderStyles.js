@@ -44,9 +44,11 @@ const ContextHeaderStyles=StyleSheet.create({
     },
     headerText:{
         color:'#FFF',
-        fontSize:16
+        fontSize:16,
+        fontWeight: '200',
     },
     centerView:{
+        
         width:screenWidth,
         justifyContent:'center',
         alignItems:'center',

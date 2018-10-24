@@ -3,10 +3,6 @@ import React,{Component} from 'react';
 import {View, Image, Text, Platform, ScrollView, TouchableOpacity, ListView} from 'react-native';
 import ShopStyles from "../../styles/shop/ShopStyles";
 import IndexHeaderPage from "../index/IndexHeaderPage";
-import CountTag from "../common/CountTag";
-import ShopMenu from "../../constants/ShopMenu"
-import ContextHeaderPage from "../ContextHeaderPage";
-import CommonStyles from "../../styles/CommonStyles";
 
 import shopMobx from '../../mobx/shop/ShopMobx';
 
@@ -71,8 +67,8 @@ export default class ShopPage extends Component{
      */
     renderHeader(){
         return (
-            <View style={((Platform.OS === 'android' && Platform.Version >= 19) || Platform.OS ==='ios')?CommonStyles.header:CommonStyles.header_android_low}>
-                <ContextHeaderPage {... this.state.header} {... this.props}/>
+            <View style={((Platform.OS === 'android' && Platform.Version >= 19) || Platform.OS ==='ios')?ShopStyles.header:ShopStyles.header_android_low}>
+                <IndexHeaderPage pageTitle={"商品管理"}/>
             </View>
         );
 

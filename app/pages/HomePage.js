@@ -9,6 +9,7 @@ import HomeStyles from '../styles/HomeStyles';
 import MyPage from './MyPage'
 import IndexPage from './index/IndexPage'
 import OrderPage from "./order/OrderPage";
+import ShopPage from './shop/ShopPage';
 
 
 export default class HomePage extends Component{
@@ -52,15 +53,14 @@ export default class HomePage extends Component{
 
                 <TabNavigator.Item
                     selected={this.state.selectedTab==='trading'}
-                    title="商圈"
+                    title="商品"
                     selectedTitleStyle={HomeStyles.menuIconTextColor}
-                    renderIcon={()=><Image style={HomeStyles.menuIcon} source={require('../images/ic_trading.png')} />}
+                    renderIcon={()=><Image style={HomeStyles.menuIcon} source={require('../images/ic_shop.png')} />}
                     renderSelectedIcon={() =>
-                        <Image style={[HomeStyles.menuIcon,HomeStyles.menuIconImageColor]} source={require('../images/ic_trading.png')}/>}
+                        <Image style={[HomeStyles.menuIcon,HomeStyles.menuIconImageColor]} source={require('../images/ic_shop.png')}/>}
                     onPress={()=>this.setState({selectedTab:'trading'})}
                 >
-                    {/*<CustomViewPage {...this.props} />*/}
-                    <View style={{backgroundColor:'#0F0',flex:1}}></View>
+                    <ShopPage {...this.props} />
                 </TabNavigator.Item>
 
                 <TabNavigator.Item
