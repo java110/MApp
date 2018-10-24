@@ -104,10 +104,10 @@ export default class ViewStoreCerdentialsPage extends Component {
 
         let positivePhoto = tmpStoreCerdentials.positivePhoto;
         let negativePhoto = tmpStoreCerdentials.negativePhoto;
-        if (positivePhoto != null || positivePhoto != '') {
+        if (positivePhoto != null && positivePhoto != '') {
             photoData.push({ uri: positivePhoto, id: tmpStoreCerdentials.storeCerdentialsId });
         }
-        if (negativePhoto != null || negativePhoto != '') {
+        if (negativePhoto != null && negativePhoto != '') {
             photoData.push({ uri: negativePhoto, id: tmpStoreCerdentials.storeCerdentialsId + '1' });
         }
 
