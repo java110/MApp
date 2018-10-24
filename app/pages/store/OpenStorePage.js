@@ -415,8 +415,8 @@ export default class OpenStorePage extends Component {
                         //storeMobx.refreshStoreInfoOfStoreAttr('is24',value);
                         //如果是24 小时则将 开始时间和结束时间刷成 0点至 24点
                         if(value){
-                            storeMobx.refreshStoreInfoProperty(StoreConst.STORE_ATTR_START_HOUR,StoreConst.STORE_TIME_00);
-                            storeMobx.refreshStoreInfoProperty(StoreConst.STORE_ATTR_END_HOUR,StoreConst.STORE_TIME_24);
+                            storeMobx.refreshStoreInfoOfStoreAttr(StoreConst.STORE_ATTR_START_HOUR,StoreConst.STORE_TIME_00);
+                            storeMobx.refreshStoreInfoOfStoreAttr(StoreConst.STORE_ATTR_END_HOUR,StoreConst.STORE_TIME_24);
                         }else{
                         //如果不是24 小时 则删除之前开始时间和结束时间值
                             storeMobx.deleteStoreAttrBySpecCd(StoreConst.STORE_ATTR_START_HOUR);
