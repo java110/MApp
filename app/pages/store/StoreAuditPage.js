@@ -17,7 +17,7 @@ import storeMobx from '../../mobx/store/StoreMobx';
  * add by wuxw 2018-10-10
  */
 @observer
-export default class EnterStorePage extends Component{
+export default class StoreAuditPage extends Component{
 
     
     constructor(props){

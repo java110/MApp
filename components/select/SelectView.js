@@ -30,7 +30,7 @@ export default class SelectView extends Component{
 
     constructor(props){
         super(props);
-
+        
         this.state = {
             showModalBackGroundColor:false,
         };

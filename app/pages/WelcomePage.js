@@ -6,6 +6,8 @@ import WelcomeStyles from '../styles/WelcomeStyles'
 /***
  * 欢迎页面
  * 这里可以显示广告
+ * state
+ * props
  *
  */
 

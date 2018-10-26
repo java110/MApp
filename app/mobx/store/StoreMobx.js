@@ -490,7 +490,7 @@ class StoreMobx {
       }
     }).then((result) => {
       console.log('saveStoreInfoToPhone result', result);
-      if (result != '') {
+      if (result != null && result != '') {
         tmpStoreInfos = JSON.parse(result);
         this.auditStoreInfos = tmpStoreInfos;
       }
