@@ -21,7 +21,7 @@ class StoreMobx {
 
   @observable
   storeInfo: Object = {
-    addr:'',
+    addr: '',
     storeAttr: [],
     storePhoto: [],
     storeCerdentials: []
@@ -30,9 +30,9 @@ class StoreMobx {
   /**
    * 将storeInfo 的值重新刷为 空
    */
-  _reInitStoreInfo(){
+  _reInitStoreInfo() {
     this.storeInfo = {
-      addr:'',
+      addr: '',
       storeAttr: [],
       storePhoto: [],
       storeCerdentials: []
@@ -42,7 +42,23 @@ class StoreMobx {
   @observable
   auditStoreInfos: Array = [];
 
+  /**
+   * 审核过的 商户信息
+   */
+  @observable
+  auditedStoreInfos: Array = [];
 
+  /**
+   * 选择商户数据集
+   */
+  @observable
+  selectAuditedStore: Array = [];
+
+  /**
+   * 当前选择商户
+   */
+  @observable
+  currentAuditedStoreInfo: Object = {};
   /**
    * 向对象storeInfo 刷入属性
    * 
@@ -454,7 +470,7 @@ class StoreMobx {
       }
     }).then((result) => {
       console.log('saveStoreInfoToPhone result', result);
-      if ( result != null && result != '') {
+      if (result != null && result != '') {
         tmpStoreInfos = JSON.parse(result);
       }
       return tmpStoreInfos;
@@ -498,6 +514,77 @@ class StoreMobx {
       console.log('refreshAuditStoreInfos', error);
     });
     //异步请求服务器加载数据
+  }
+
+  /**
+   * 获取审核过的商户信息
+   */
+  @action
+  getAuditedStore() {
+    // 直接从网络中获取审核过商户信息
+
+    //目前 从手机中获取
+    AsyncStorageUtils._get(StoreConst.SAVE_STORE_INFO_KEY, (error, result) => {
+      if (error) {
+        return new Promise(function (resolve, reject) {
+          reject('读取[' + StoreConst.SAVE_STORE_INFO_KEY + ']数据失败' + error);
+        });
+      }
+    }).then((result) => {
+      console.log('getAuditedStore result', result);
+      if (result != null && result != '') {
+        tmpStoreInfos = JSON.parse(result);
+        this._refreshAuditedStore(tmpStoreInfos);
+      }
+    }).catch((error) => {
+      console.log('getAuditedStore', error);
+    });
+  }
+
+  /**
+   * 刷审核过数据
+   * @param {读取到的审核过的商户数据} tmpStoreInfos 
+   */
+  _refreshAuditedStore(tmpStoreInfos) {
+    this.auditedStoreInfos = tmpStoreInfos;
+    this.selectAuditedStore = [];
+    for (let auditStoreIndex = 0; auditStoreIndex < this.auditedStoreInfos.length; auditStoreIndex++) {
+      let tempSelectAudit = {
+        id: this.auditedStoreInfos[auditStoreIndex].storeId,
+        value: this.auditedStoreInfos[auditStoreIndex].name,
+        check: '0',
+      };
+      this.selectAuditedStore.push(tempSelectAudit);
+    }
+
+    //如果 有审核过的商户 则 默认取第一个
+    if (this.selectAuditedStore.length > 0) {
+      //this.currentAuditedStoreInfo = this.auditedStoreInfos[0];
+      this.refreshCurrentAuditedStoreInfo(this.auditedStoreInfos[0].storeId);
+    }
+
+    console.log('_refreshAuditedStore',this.auditedStoreInfos,this.selectAuditedStore,this.currentAuditedStoreInfo);
+  }
+
+  @action
+  refreshCurrentAuditedStoreInfo(storeId) {
+    let tempSelectAuditStore = this.selectAuditedStore;
+    for (let selectAuditStoreIndex = 0; selectAuditStoreIndex < tempSelectAuditStore.length; selectAuditStoreIndex++) {
+      if (storeId == tempSelectAuditStore[selectAuditStoreIndex].id) {
+        tempSelectAuditStore[selectAuditStoreIndex].check = '1';
+      } else {
+        tempSelectAuditStore[selectAuditStoreIndex].check = '0';
+      }
+    }
+
+    //刷入当前 商户信息
+    let tempAuditedStoreInfos = this.auditedStoreInfos;
+    for (let auditedStoreInfosIndex = 0; auditedStoreInfosIndex < tempAuditedStoreInfos.length; auditedStoreInfosIndex++) {
+      if (storeId == tempAuditedStoreInfos[auditedStoreInfosIndex].storeId) {
+        this.currentAuditedStoreInfo = tempAuditedStoreInfos[auditedStoreInfosIndex];
+        break;
+      }
+    }
   }
 
 }

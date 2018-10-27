@@ -46,6 +46,7 @@ import AsyncStoragePage from './pages/test/AsyncStoragePage';
 import ViewStorePhotoPage from './pages/store/ViewStorePhotoPage';
 import ViewStoreCerdentialsPage from './pages/store/ViewStoreCerdentialsPage';
 
+
 /**
  *
  *   this.props.navigation.navigate('Details') 将新路由推送到堆栈导航器（如果它尚未在堆栈中），否则它将跳转到该屏幕
@@ -191,7 +192,6 @@ const RootStack = createStackNavigator({
     ViewStoreCerdentials:{
         screen:ViewStoreCerdentialsPage
     }
-    
 
 },{
     headerMode:'none'});

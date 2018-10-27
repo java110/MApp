@@ -205,10 +205,25 @@ export default class AddStoreAddressPage extends Component {
   }
 
   componentWillMount() {
+    this.requestLocationPermission();  
 }
-componentDidMount() {
-    this.requestLocationPermission();
-}
+    componentDidMount() {
+        navigator.geolocation.getCurrentPosition(
+            (position)=>{
+                let longitude = position.coords.longitude;
+                let latitude = position.coords.latitude;
+                console.log('AddStoreAddressPage componentDidMount',position);
+                this.setState({
+                    mapLatitude:latitude,
+                    mapLongitude:longitude,
+                    latitude: latitude,
+                    longitude: longitude,
+                });
+
+                storeMobx.getRegeoByLocation(latitude,longitude);
+            }
+        );
+    }
 
 async requestLocationPermission() {
     try {
@@ -222,7 +237,7 @@ async requestLocationPermission() {
                 }
             )
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                console.log("You can use the location")
+                console.log("You can use the location");
             } else {
                 console.log("Camera permission denied")
             }
