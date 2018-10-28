@@ -142,11 +142,50 @@ const CommunityStyles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         backgroundColor:'#FFF',   
-        //marginTop:40,
-        //width:60,
         borderTopColor:'#F3F3F3',
         borderTopWidth:1,
     },
+
+    communityTabView:{
+        height:45,
+    },
+
+    auditView:{
+        flex:1,
+        backgroundColor:'#FFF',
+        flexDirection:'row',
+        //marginTop:10,
+    },
+    auditImageView:{
+        height:120,
+        width:100,
+        marginTop:15,
+        //justifyContent:'center',
+        alignItems:'center',
+    },
+    auditViewImage:{
+        height:80,
+        width:80,
+        
+        borderRadius:10,
+    },
+    auditTextView:{
+        height:120,
+        marginTop:10,
+        //justifyContent:'center',
+    },
+    auditViewText:{
+        height:80,
+    },
+    auditTextName:{
+        fontSize:16,
+        color:'#333',
+
+    },
+    auditText:{
+        marginTop:2,
+        fontSize:12,
+    }
 });
 
 export default CommunityStyles

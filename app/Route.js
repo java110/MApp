@@ -45,6 +45,8 @@ import AddBusinessCertificatePage from './pages/store/AddBusinessCertificatePage
 import AsyncStoragePage from './pages/test/AsyncStoragePage';
 import ViewStorePhotoPage from './pages/store/ViewStorePhotoPage';
 import ViewStoreCerdentialsPage from './pages/store/ViewStoreCerdentialsPage';
+import MyEnterCommunityPage from './pages/community/MyEnterCommunityPage';
+import ViewEnterCommunityPage from './pages/community/ViewEnterCommunityPage';
 
 
 /**
@@ -191,6 +193,12 @@ const RootStack = createStackNavigator({
     },
     ViewStoreCerdentials:{
         screen:ViewStoreCerdentialsPage
+    },
+    MyEnterCommunity:{
+        screen:MyEnterCommunityPage
+    },
+    ViewEnterCommunity:{
+        screen:ViewEnterCommunityPage
     }
 
 },{

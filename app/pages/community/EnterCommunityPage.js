@@ -13,7 +13,7 @@ import {
     SearchInput,
     ButtonView,
     RowRightHasTextView,
-    SelectView
+    SelectView,
 } from 'Java110';
 
 /**
@@ -388,6 +388,7 @@ export default class EnterCommunityPage extends Component {
      * 提交审核
      */
     _onClickSubmitAudit() {
+        communityMobx.submitAudit(storeMobx.currentAuditedStoreInfo);
         this._onBackPage();
     }
 }

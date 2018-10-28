@@ -35,6 +35,7 @@ import SelectView from './select/SelectView';
 
 import UploadImageView from './photo/UploadImageView';
 import ViewImageView from './photo/ViewImageView';
+import TwoTabView from './tab/TwoTabView';
 
 const Java110={
     DeleteButtonView,
@@ -61,6 +62,7 @@ const Java110={
     ButtonView,
     UploadImageView,
     ViewImageView,
+    TwoTabView,
 };
 
 module.exports=Java110
