@@ -1,6 +1,8 @@
-import React,{Component} from 'react';
-import { AppRegistry, Text, View ,Image,Dimensions,TouchableOpacity} from 'react-native';
+import React, { Component } from 'react';
+import { AppRegistry, Text, View, Image, Dimensions, TouchableOpacity } from 'react-native';
 import WelcomeStyles from '../styles/WelcomeStyles'
+import CommonConst from '../constants/CommonConst';
+import loginMobx from '../mobx/login/LoginMobx';
 
 
 /***
@@ -11,33 +13,45 @@ import WelcomeStyles from '../styles/WelcomeStyles'
  *
  */
 
-export default class WelcomePage extends Component{
+export default class WelcomePage extends Component {
 
-    constructor(){
+    constructor() {
         super();
-        this.state={
-            canClickEnter:false,
+        this.ifLoginFlag = CommonConst.LOGIN_TOKEN_TIMEOUT;
+        this.state = {
+            canClickEnter: false,
         }
     }
-    render(){
-        let wel = this.state.canClickEnter ? <TouchableOpacity onPress={() =>{this.props.navigation.navigate('Home',{})}} activeOpacity={1}>
-                <Image style={WelcomeStyles.backImage} source={require("../images/welcome.png")}></Image>
-            </TouchableOpacity>
+    render() {
+        let wel = this.state.canClickEnter ? <TouchableOpacity onPress={() => { this.props.navigation.navigate('Home', {}) }} activeOpacity={1}>
+            <Image style={WelcomeStyles.backImage} source={require("../images/welcome.png")}></Image>
+        </TouchableOpacity>
             : <Image style={WelcomeStyles.backImage} source={require("../images/welcome.png")}></Image>;
         return (
-                wel
+            wel
         );
     }
 
-    componentDidMount(){
-        console.log("componentDidMount 开始调用")
-        this.timer = setTimeout(() =>{
-            this.props.navigation.navigate('Home',{});
+    componentDidMount() {
+        loginMobx.login(this.loginCallBack);
+        this.timer = setTimeout(() => {
+            let nextPage =
+                (this.ifLoginFlag == CommonConst.LOGIN_TOKEN_TIMEOUT || this.ifLoginFlag == CommonConst.LOGIN_TOKEN_FAIL)
+                    ? 'Login' : 'Home';
+            this.props.navigation.navigate(nextPage, {});
             this.timer && clearTimeout(this.timer);
-        },3000)
+        }, 3000)
     }
 
-    componentWillUnmount(){
+    /**
+     * 登录回调
+     * @param {登录标志} ifOky 
+     */
+    loginCallBack(ifOky) {
+        this.ifLoginFlag = ifOky;
+    }
+
+    componentWillUnmount() {
         //this.timer && clearTimeout(this.timer);
     }
 }

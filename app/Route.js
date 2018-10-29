@@ -47,6 +47,7 @@ import ViewStorePhotoPage from './pages/store/ViewStorePhotoPage';
 import ViewStoreCerdentialsPage from './pages/store/ViewStoreCerdentialsPage';
 import MyEnterCommunityPage from './pages/community/MyEnterCommunityPage';
 import ViewEnterCommunityPage from './pages/community/ViewEnterCommunityPage';
+import LoginPage from './pages/login/LoginPage';
 
 
 /**
@@ -75,6 +76,9 @@ const RootStack = createStackNavigator({
 
     Welcome: {
         screen: WelcomePage
+    },
+    Login:{
+        screen:LoginPage
     },
     Order:{
         screen:OrderPage
