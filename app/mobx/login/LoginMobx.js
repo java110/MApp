@@ -92,6 +92,23 @@ class LoginMobx {
         callbackFunction(CommonConst.LOGIN_TOKEN_FAIL,"登录失败");
 
     }
+
+    /**
+     * 注册
+     * @param {数据封装对象} tmpState 
+     * @param {回调方法} callbackFunction 
+     */
+    @action
+    registerIn(tmpState,callbackFunction){
+
+    }
+    /**
+     * 点击后台发送验证码
+     */
+    @action
+    sendMessageCode(userPhoto){
+
+    }
 }
 
 loginMobx = new LoginMobx();
