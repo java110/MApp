@@ -108,12 +108,13 @@ export default class LoginPage extends Component {
                 </View>
 
                 <TouchableOpacity style={styles.loginButtonWechatView}
-                    onPress={() => { }}>
-                    <Text style={styles.loginButtonWechatText}>还没有账户，注册</Text>
+                    onPress={() => { this.props.navigation.navigate('Register',{})}}>
+                    <Text style={styles.loginButtonWechatText}>还没有账户，请注册</Text>
                 </TouchableOpacity>
             </View>
         );
     }
+
 
     /**
      * 其他登录方式

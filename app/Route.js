@@ -48,6 +48,7 @@ import ViewStoreCerdentialsPage from './pages/store/ViewStoreCerdentialsPage';
 import MyEnterCommunityPage from './pages/community/MyEnterCommunityPage';
 import ViewEnterCommunityPage from './pages/community/ViewEnterCommunityPage';
 import LoginPage from './pages/login/LoginPage';
+import RegisterPage from './pages/login/RegisterPage';
 
 
 /**
@@ -79,6 +80,9 @@ const RootStack = createStackNavigator({
     },
     Login:{
         screen:LoginPage
+    },
+    Register:{
+        screen:RegisterPage
     },
     Order:{
         screen:OrderPage
