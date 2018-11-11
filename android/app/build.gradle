@@ -149,6 +149,7 @@ android {
 }
 
 dependencies {
+    compile project(':RCTWeChat')
     compile project(':react-native-amap3d')
     compile project(':react-native-ble-manager')
     compile project(':react-native-image-crop-picker')
