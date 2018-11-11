@@ -120,7 +120,7 @@ const logStyles = StyleSheet.create({
     registerRowView: {
         flexDirection: 'row',
         alignItems: 'center',
-        width: registerViewWidth,
+        width: loginViewWidth,
         height: 45,
         marginTop: 10,
         borderBottomColor: '#F3F3F3',

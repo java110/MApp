@@ -50,7 +50,7 @@ export default class WelcomePage extends Component {
      * @param {登录标志} ifOky 
      */
     loginCallBack(ifOky) {
-        this.ifLoginFlag = ifOky;
+        //this.ifLoginFlag = ifOky;
         console.log('Welcome loginCallBack',ifOky);
     }
 
