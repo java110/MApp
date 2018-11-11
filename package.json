@@ -22,6 +22,7 @@
     "react-native-image-crop-picker": "^0.20.3",
     "react-native-swiper": "^1.5.13",
     "react-native-tab-navigator": "^0.3.4",
+    "react-native-wechat": "^1.9.10",
     "react-navigation": "^2.11.2",
     "teaset": "^0.5.8"
   },
