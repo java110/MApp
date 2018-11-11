@@ -21,6 +21,7 @@ export default class WelcomePage extends Component {
         this.state = {
             canClickEnter: false,
         }
+        this.loginCallBack = this.loginCallBack.bind(this);
     }
     render() {
         let wel = this.state.canClickEnter ? <TouchableOpacity onPress={() => { this.props.navigation.navigate('Home', {}) }} activeOpacity={1}>
@@ -35,6 +36,7 @@ export default class WelcomePage extends Component {
     componentDidMount() {
         loginMobx.login(this.loginCallBack);
         this.timer = setTimeout(() => {
+            console.log('componentDidMount',this.ifLoginFlag)
             let nextPage =
                 (this.ifLoginFlag == CommonConst.LOGIN_TOKEN_TIMEOUT || this.ifLoginFlag == CommonConst.LOGIN_TOKEN_FAIL)
                     ? 'Login' : 'Home';
@@ -49,6 +51,7 @@ export default class WelcomePage extends Component {
      */
     loginCallBack(ifOky) {
         this.ifLoginFlag = ifOky;
+        console.log('Welcome loginCallBack',ifOky);
     }
 
     componentWillUnmount() {

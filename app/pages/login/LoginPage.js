@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { View, Text, StyleSheet, Image, Dimensions, TextInput, TouchableOpacity } from 'react-native';
 import CommonConst from '../../constants/CommonConst';
+import loginMobx from '../../mobx/login/LoginMobx';
 
 
 /**
@@ -13,8 +14,13 @@ export default class LoginPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loginType: CommonConst.LOGIN_TYPE_PASSWORD
+            loginType: CommonConst.LOGIN_TYPE_PASSWORD,
+            userPhone:"",
+            userPasswd:"",
+            loginMsg:"",
         };
+
+        this.loginCallBack = this.loginCallBack.bind(this);
     }
 
     render() {
@@ -46,6 +52,7 @@ export default class LoginPage extends Component {
         return (
             <View style={styles.contextView}>
                 {this._renderLoginInfo()}
+                {this._renderOtherLoginWay()}
             </View>
         );
     }
@@ -58,6 +65,9 @@ export default class LoginPage extends Component {
         );
     }
 
+    /**
+     * 登录 view
+     */
     _renderLoginPassWordView() {
         return (
             <View>
@@ -67,8 +77,8 @@ export default class LoginPage extends Component {
                         underlineColorAndroid="transparent"
                         placeholder={"请输入手机号码"}
                         style={styles.rowViewTextInput}
-                        onChangeText={() => { }}
-                        value={""}
+                        onChangeText={(value) => { this.setState({userPhone:value})}}
+                        value={this.state.userPhone}
                         ref="keyWordInput"
                         keyboardType='numeric'
                         onSubmitEditing={() => { this.refs.keyWordInput.blur() }}>
@@ -80,18 +90,22 @@ export default class LoginPage extends Component {
                         underlineColorAndroid="transparent"
                         placeholder={"请输入密码"}
                         style={styles.rowViewTextInput}
-                        onChangeText={() => { }}
+                        onChangeText={(value) => {this.setState({userPasswd:value}) }}
                         secureTextEntry={true}
-                        value={""}
+                        value={this.userPasswd}
                         ref="keyWordInput"
                         onSubmitEditing={() => { this.refs.keyWordInput.blur() }}>
                     </TextInput>
                 </View>
 
                 <TouchableOpacity style={styles.loginButtonView}
-                    onPress={() => { }}>
+                    onPress={() => { loginMobx.loginIn(this.state.userPhone,this.state.userPasswd,this.loginCallBack);}}>
                     <Text style={styles.loginButtonText}>登录</Text>
                 </TouchableOpacity>
+
+                <View>
+                    <Text>{this.state.loginMsg}</Text>
+                </View>
 
                 <TouchableOpacity style={styles.loginButtonWechatView}
                     onPress={() => { }}>
@@ -99,6 +113,60 @@ export default class LoginPage extends Component {
                 </TouchableOpacity>
             </View>
         );
+    }
+
+    /**
+     * 其他登录方式
+     */
+    _renderOtherLoginWay() {
+        return (
+            <View style={styles.otherLoginView}>
+                <View style={styles.otherLoginTextView}>
+                    <View style={styles.otherLoginLine}></View>
+                    <Text style={styles.otherLoginText}>其他登录</Text>
+                    <View style={styles.otherLoginLine}></View>
+                </View>
+
+                <View style={styles.otherLoginImageView}>
+                    <TouchableOpacity
+                        onPress={() => { }}
+                        activeOpacity={0.5}
+                        style={styles.otherLoginImagePress}
+                    >
+                        <Image
+                            source={require('../../images/wechatLogin.png')}
+                            style={styles.otherLoginImage}
+                        />
+                    </TouchableOpacity>
+                    <View style={styles.otherLoginImageSpace}></View>
+                    <TouchableOpacity
+                        onPress={() => { }}
+                        activeOpacity={0.5}
+                        style={styles.otherLoginImagePress}
+                    >
+                        <Image
+                            source={require('../../images/messageLogin.png')}
+                            style={styles.otherLoginImage}
+                        />
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+    }
+
+
+    /**
+     * 登录回调
+     * @param {登录标志} ifOky 
+     */
+    loginCallBack(ifOky,msg = '成功') {
+        if(ifOky == CommonConst.LOGIN_TOKEN_OK){
+            this.props.navigation.navigate('Home', {});
+            return;
+        }
+        this.setState({
+            loginMsg:msg,
+        })
     }
 }
 const holdScreenWidth = Dimensions.get('window').width;
@@ -158,7 +226,7 @@ const styles = StyleSheet.create({
         width: 200,
     },
     loginButtonView: {
-        marginTop:30,
+        marginTop: 30,
         backgroundColor: '#F24E3E',
         height: 45,
         //width:screenWidth,
@@ -166,10 +234,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    loginButtonText:{
-        fontSize:18,color:'#FFF'
+    loginButtonText: {
+        fontSize: 18, color: '#FFF'
     },
-    loginButtonWechatView:{
+    loginButtonWechatView: {
         //marginTop:10,
         //backgroundColor: '#CBCBCB',
         height: 45,
@@ -177,7 +245,44 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         justifyContent: 'center'
     },
-    loginButtonWechatText:{
-        fontSize:14,color:'#777'
+    loginButtonWechatText: {
+        fontSize: 14,
+        color: '#777'
     },
+    otherLoginView: {
+        marginTop: 40,
+    },
+    otherLoginTextView: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    otherLoginLine: {
+        width: 100,
+        height:1.5,
+        backgroundColor: '#FFF',
+    },
+    otherLoginText: {
+        fontSize: 14,
+        marginLeft:10,
+        marginRight:10,
+    },
+    otherLoginImageView: {
+        marginTop:20,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    otherLoginImagePress: {     
+        borderRadius: 80,
+        backgroundColor: '#FFF',
+    },
+    otherLoginImage: {
+        width: 50,
+        height: 50,
+        
+    },
+    otherLoginImageSpace:{
+        width:100,
+    }
 });
