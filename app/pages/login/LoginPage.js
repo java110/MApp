@@ -140,7 +140,7 @@ export default class LoginPage extends Component {
                     </TouchableOpacity>
                     <View style={styles.otherLoginImageSpace}></View>
                     <TouchableOpacity
-                        onPress={() => { }}
+                        onPress={() => {this.props.navigation.navigate('MessageLog',{}) }}
                         activeOpacity={0.5}
                         style={styles.otherLoginImagePress}
                     >
@@ -286,3 +286,4 @@ const styles = StyleSheet.create({
         width:100,
     }
 });
+
